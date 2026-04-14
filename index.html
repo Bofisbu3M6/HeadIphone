@@ -3,196 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title id="web-title">HEAD Iphone Panel</title>
+    <title id="web-title">Aimlock Strongest iPhone❄️</title>
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #dfe6ef;
-            --shadow: #c2ccdf;
-            --light: #ffffff;
-            --primary: #4a8df8;
-            --admin-glow: #00f2ff;
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { 
-            background: var(--bg); 
-            font-family: 'Montserrat', sans-serif; 
-            margin: 0; padding: 20px; 
-            display: flex; flex-direction: column; align-items: center;
-        }
-
-        /* LOGIN SCREEN */
-        #login-screen { width: 100%; max-width: 400px; text-align: center; margin-top: 10vh; }
-        
-        /* MAIN PANEL (Hidden by default) */
-        #main-panel { display: none; width: 100%; max-width: 450px; }
-
-        .neumorphic-card {
-            background: var(--bg);
-            border-radius: 25px;
-            padding: 25px;
-            box-shadow: 12px 12px 24px var(--shadow), -12px -12px 24px var(--light);
-            margin-bottom: 25px;
-        }
-
-        .title { 
-            font-family: 'Orbitron'; font-size: 28px; color: var(--primary); 
-            text-shadow: 0 0 15px rgba(74, 141, 248, 0.4); margin-bottom: 10px;
-            transition: 0.3s ease;
-        }
-
-        .input-field {
-            width: 100%; border: none; padding: 15px; border-radius: 12px;
-            background: var(--bg); color: #555; font-weight: 600;
-            box-shadow: inset 6px 6px 12px var(--shadow), inset -6px -6px 12px var(--light);
-            outline: none; margin: 20px 0;
-        }
-
-        .btn {
-            width: 100%; padding: 15px; border: none; border-radius: 12px;
-            background: var(--bg); color: var(--primary); font-weight: 800;
-            box-shadow: 6px 6px 12px var(--shadow), -6px -6px 12px var(--light);
-            cursor: pointer; text-transform: uppercase;
-        }
-
-        .btn:active { box-shadow: inset 4px 4px 8px var(--shadow), inset -4px -4px 8px var(--light); }
-
-        /* TABS */
-        .tabs { display: flex; overflow-x: auto; gap: 10px; margin-bottom: 20px; padding: 5px; }
-        .tab { 
-            padding: 10px 20px; border-radius: 12px; font-size: 11px; font-weight: 700;
-            box-shadow: 4px 4px 8px var(--shadow), -4px -4px 8px var(--light);
-            cursor: pointer; white-space: nowrap;
-        }
-        .tab.active { color: var(--primary); box-shadow: inset 3px 3px 6px var(--shadow), inset -3px -3px 6px var(--light); }
-
-        /* STATUS BADGES */
-        .status-row { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 15px; }
-        .badge { 
-            font-size: 9px; font-weight: 800; padding: 5px 10px; border-radius: 20px;
-            box-shadow: 3px 3px 6px var(--shadow), -3px -3px 6px var(--light);
-        }
-        .green { color: #2ecc71; } .blue { color: var(--primary); }
-
-        /* CONTROL ELEMENTS */
-        .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; font-weight: 600; }
-        
-        .switch { position: relative; width: 44px; height: 24px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--bg); transition: .4s; border-radius: 34px;
-            box-shadow: inset 3px 3px 6px var(--shadow), inset -3px -3px 6px var(--light);
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px;
-            background: #8c9cb0; transition: .4s; border-radius: 50%;
-        }
-        input:checked + .slider:before { transform: translateX(20px); background: var(--primary); }
-
-        /* ADMIN SECTION */
-        .admin-only { border: 2px solid var(--primary); position: relative; overflow: hidden; }
-        .admin-badge { 
-            position: absolute; top: 0; right: 0; background: var(--primary); 
-            color: white; font-size: 8px; padding: 2px 10px; border-bottom-left-radius: 10px;
-        }
-    </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <h1 class="title">HEAD Iphone</h1>
-        <p style="font-size: 10px; letter-spacing: 2px; color: #92a1b5;">HỆ THỐNG XÁC THỰC</p>
-        <div class="neumorphic-card" style="margin-top: 30px;">
-            <input type="text" id="license-key" class="input-field" placeholder="NHẬP LICENSE KEY...">
-            <button class="btn" onclick="checkLogin()">ĐĂNG NHẬP</button>
-            <p style="font-size: 9px; margin-top: 15px; color: #92a1b5;">Gợi ý: Nhập <b>ADMIN-9999</b> để dùng quyền Admin</p>
+        <h1 class="title">Aimlock Strongest iPhone❄️</h1>
+        <div class="neumorphic-card">
+            <input type="password" id="license-key" class="input-field" placeholder="NHẬP LICENSE KEY...">
+            <button class="btn" onclick="checkLogin()">KÍCH HOẠT HỆ THỐNG</button>
         </div>
     </div>
 
-    <div id="main-panel">
-        <div class="header" style="text-align: center;">
-            <h1 id="app-title" class="title">HEAD Iphone</h1>
-            <div id="user-tag" style="font-size: 10px; font-weight: 800; color: #92a1b5; margin-bottom: 20px;">PHIÊN BẢN V3.1</div>
+    <div id="main-panel" class="hidden">
+        <div class="header">
+            <h1 id="app-title">Aimlock Strongest iPhone❄️</h1>
+            <div id="user-tag">PHIÊN BẢN v1.0</div>
         </div>
 
         <div class="status-row">
-            <div class="badge green">● SERVER LIVE</div>
-            <div id="key-type" class="badge blue">USER KEY</div>
-            <div class="badge">24ms</div>
+            <div class="badge green">● SERVER ONLINE</div>
+            <div id="key-type" class="badge">MEMBER</div>
+            <div class="badge">15ms</div>
         </div>
 
         <div class="tabs">
             <div class="tab active">DASHBOARD</div>
             <div class="tab">CHỨC NĂNG</div>
-            <div class="tab">AIM / ESP</div>
-            <div id="admin-tab" class="tab" style="display:none; color: #e74c3c;">ADMIN LOGS</div>
+            <div id="admin-only-tab" class="tab hidden" style="color: #ff4757;">ADMIN MENU</div>
         </div>
 
-        <div class="neumorphic-card admin-only" id="master-card">
-            <div class="admin-badge" id="lock-label">LOCKED</div>
+        <div id="admin-settings" class="neumorphic-card hidden" style="border: 1px solid #4a8df8;">
             <div class="row">
-                <span>Master Switch (Admin Only)</span>
+                <span style="color: #4a8df8;">KÍCH HOẠT STRONGET</span>
                 <label class="switch">
-                    <input type="checkbox" id="master-toggle" disabled>
+                    <input type="checkbox" id="master-toggle">
                     <span class="slider"></span>
                 </label>
             </div>
-            <p style="font-size: 9px; color: #92a1b5;">Cần đặc quyền Admin để kích hoạt trạng thái Strongert.</p>
         </div>
 
         <div class="neumorphic-card">
-            <div class="row"><span>Kills Today</span> <span style="font-family: 'Orbitron'; color: var(--primary);">4,291</span></div>
-            <div class="row"><span>Win Rate</span> <span style="font-family: 'Orbitron'; color: var(--primary);">98.7%</span></div>
+            <div class="row"><span>Kills Today</span> <span class="val">4,291</span></div>
+            <div class="row"><span>Win Rate</span> <span class="val">98.7%</span></div>
+            <div class="row"><span>K/D Ratio</span> <span class="val">24.1</span></div>
         </div>
     </div>
 
-    <script>
-        const loginScreen = document.getElementById('login-screen');
-        const mainPanel = document.getElementById('main-panel');
-        const appTitle = document.getElementById('app-title');
-        const webTitle = document.getElementById('web-title');
-        const masterToggle = document.getElementById('master-toggle');
-        const lockLabel = document.getElementById('lock-label');
-        const keyTypeBadge = document.getElementById('key-type');
-        const adminTab = document.getElementById('admin-tab');
-
-        function checkLogin() {
-            const key = document.getElementById('license-key').value;
-            
-            if (key === "") {
-                alert("Vui lòng nhập Key!");
-                return;
-            }
-
-            loginScreen.style.display = 'none';
-            mainPanel.style.display = 'block';
-
-            // KIỂM TRA ĐẶC QUYỀN ADMIN
-            if (key === "ADMIN-9999") {
-                masterToggle.disabled = false;
-                lockLabel.innerText = "UNLOCKED";
-                lockLabel.style.background = "#2ecc71";
-                keyTypeBadge.innerText = "ADMIN ACCESS";
-                keyTypeBadge.style.color = "#e74c3c";
-                adminTab.style.display = "block";
-                document.getElementById('user-tag').innerText = "ADMINISTRATOR MODE";
-            }
-        }
-
-        // LOGIC GẠT NÚT ĐỔI TÊN
-        masterToggle.addEventListener('change', function() {
-            if (this.checked) {
-                appTitle.innerText = "Aimlock Strongert iPhone❄️";
-                appTitle.style.color = "#2067e1";
-                webTitle.innerText = "Aimlock Strongert iPhone❄️";
-            } else {
-                appTitle.innerText = "HEAD Iphone";
-                appTitle.style.color = "#4a8df8";
-                webTitle.innerText = "HEAD Iphone Panel";
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

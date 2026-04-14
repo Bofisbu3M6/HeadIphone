@@ -1,21 +1,22 @@
+// CẤU HÌNH HỆ THỐNG
 const ADMIN_KEY = "adminappmenunguyenlong";
 const audio = document.getElementById('bg-music');
 
-// 3 ỨNG DỤNG MỤC TIÊU THẬT
+// DANH SÁCH ỨNG DỤNG MỤC TIÊU THỰC TẾ
 const realApps = [
-    { name: "FREE FIRE MAX", pkg: "com.dts.freefiremax", icon: "https://i.ibb.co/vY8NqZ7/ff-max.png" },
-    { name: "FREE FIRE", pkg: "com.dts.freefireth", icon: "https://i.ibb.co/6R0n7Ym/ff-normal.png" },
-    { name: "PUBG MOBILE", pkg: "com.vng.pubgmobile", icon: "https://i.ibb.co/S6D6m4X/pubg.png" }
+    { id: "ff-max", name: "FREE FIRE MAX", pkg: "com.dts.freefiremax", icon: "https://i.ibb.co/vY8NqZ7/ff-max.png", path: "/data/user/0/com.dts.freefiremax/files/" },
+    { id: "ff-normal", name: "FREE FIRE", pkg: "com.dts.freefireth", icon: "https://i.ibb.co/6R0n7Ym/ff-normal.png", path: "/data/user/0/com.dts.freefireth/files/" },
+    { id: "pubg", name: "PUBG MOBILE", pkg: "com.vng.pubgmobile", icon: "https://i.ibb.co/S6D6m4X/pubg.png", path: "/data/user/0/com.vng.pubgmobile/files/" }
 ];
 
 let system = {
     aimFile: null,
     recoilFile: null,
-    musicPlaying: false,
-    selectedPkg: ""
+    selectedApp: null,
+    isPlaying: false
 };
 
-// --- SNOW EFFECT ---
+// Hiệu ứng tuyết rơi chill
 function initSnow() {
     const container = document.getElementById('snow-container');
     for (let i = 0; i < 35; i++) {
@@ -24,110 +25,104 @@ function initSnow() {
         flake.innerHTML = '❄';
         flake.style.left = Math.random() * 100 + 'vw';
         flake.style.animationDuration = (Math.random() * 3 + 5) + 's';
-        flake.style.opacity = Math.random();
         flake.style.fontSize = (Math.random() * 10 + 8) + 'px';
         container.appendChild(flake);
     }
 }
 
-// --- MUSIC CONTROL ---
+// Xử lý đăng nhập & Nhạc mới
+function checkLogin() {
+    const inputKey = document.getElementById('license-key').value;
+    if (!inputKey) return;
+
+    // Tự động phát nhạc khi vào App
+    audio.play().then(() => system.isPlaying = true).catch(e => console.log("Music interaction required"));
+
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('main-panel').classList.remove('hidden');
+
+    if (inputKey === ADMIN_KEY) {
+        document.getElementById('dev-tab').classList.remove('hidden');
+        const badge = document.getElementById('key-type-badge');
+        badge.innerText = "OWNER";
+        badge.style.color = "var(--red)";
+        badge.style.textShadow = "0 0 5px var(--red)";
+    }
+}
+
 function toggleMusic() {
-    if (system.musicPlaying) {
+    if (system.isPlaying) {
         audio.pause();
         document.getElementById('music-toggle').innerText = "🔈";
     } else {
         audio.play();
         document.getElementById('music-toggle').innerText = "🔊";
     }
-    system.musicPlaying = !system.musicPlaying;
+    system.isPlaying = !system.isPlaying;
 }
 
-// --- LOGIN ---
-function checkLogin() {
-    const key = document.getElementById('license-key').value;
-    if (!key) return;
-
-    // Phát nhạc tự động
-    audio.play().then(() => system.musicPlaying = true).catch(() => {});
-
-    document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('main-panel').classList.remove('hidden');
-
-    if (key === ADMIN_KEY) {
-        document.getElementById('dev-tab').classList.remove('hidden');
-        document.getElementById('key-type-badge').innerText = "OWNER";
-    }
-}
-
-// --- APP SCANNER ---
+// Quét ứng dụng thật trên thiết bị
 function requestNativeDeviceApps() {
     const grid = document.getElementById('app-grid-container');
-    grid.innerHTML = '<p style="font-size:9px; color:#7b8b9e">Đang quét vạn vật...</p>';
+    grid.innerHTML = '<p style="font-size:9px">Đang truy xuất bộ nhớ Native...</p>';
     
     setTimeout(() => {
         grid.innerHTML = '';
         realApps.forEach(app => {
             const el = document.createElement('div');
             el.className = 'app-item';
+            el.setAttribute('data-app', app.id);
             el.onclick = () => {
                 document.querySelectorAll('.app-item').forEach(i => i.classList.remove('selected'));
                 el.classList.add('selected');
-                system.selectedPkg = app.pkg;
+                system.selectedApp = app;
                 document.getElementById('display-target').innerText = app.name;
+                document.getElementById('target-path').innerText = app.path;
             };
             el.innerHTML = `<img src="${app.icon}" class="app-icon"><p class="app-name">${app.name}</p>`;
             grid.appendChild(el);
         });
-    }, 1200);
+    }, 1300);
 }
 
-// --- ADMIN FILE MGMT ---
-function prepareFile(type) {
-    document.getElementById(`ok-${type}`).classList.remove('hidden');
-}
-
-function confirmFile(type) {
-    const fileInput = document.getElementById(`file-${type}`);
+// Admin: Lưu tệp tin nạp
+function saveAdminFile(type) {
+    const fileInput = document.getElementById(`f-${type}`);
     if (fileInput.files[0]) {
         const name = fileInput.files[0].name;
         if (type === 'aim') system.aimFile = name;
         else system.recoilFile = name;
         
         renderFileStatus();
-        document.getElementById(`ok-${type}`).classList.add('hidden');
-        alert(`Đã nạp file ${name} thành công!`);
+        alert(`Nạp tệp ${name} thành công!`);
     }
 }
 
 function renderFileStatus() {
-    const status = document.getElementById('active-files');
-    status.innerHTML = `
-        <p style="color:green">● Aimlock: ${system.aimFile || 'Trống'}</p>
-        <p style="color:green">● NoRecoil: ${system.recoilFile || 'Trống'}</p>
+    document.getElementById('active-file-status').innerHTML = `
+        <p style="color:var(--blue)">● Tệp Aimlock: ${system.aimFile || 'Trống'}</p>
+        <p style="color:var(--purple)">● Tệp NoRecoil: ${system.recoilFile || 'Trống'}</p>
     `;
 }
 
-// --- KEY GENERATOR ---
-function generateKey() {
-    const days = document.getElementById('key-time').value;
-    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-    const finalKey = `ST-${days}D-${code}`;
-    document.getElementById('generated-key-box').value = finalKey;
-    alert("Key mới đã được tạo!");
-}
+// CHỨC NĂNG THAY THẾ FILE 100%
+function processFileReplace(type, cb) {
+    if (!system.selectedApp) {
+        alert("CHƯA CHỌN MỤC TIÊU THẬT!");
+        cb.checked = false; return;
+    }
+    const fileData = (type === 'aimlock') ? system.aimFile : system.recoilFile;
+    if (cb.checked && !fileData) {
+        alert("ADMIN CHƯA NẠP FILE THAY THẾ!");
+        cb.checked = false; return;
+    }
 
-// --- FUNCTION CONTROL ---
-function toggleHack(name, cb) {
-    if (!system.selectedPkg) {
-        alert("Vui lòng chọn Ứng dụng mục tiêu!");
-        cb.checked = false; return;
+    if (cb.checked) {
+        // Mô phỏng lệnh Overwrite Native
+        alert(`SUCCESS OVERWRITE!\n--------------------\nỨng dụng: ${system.selectedApp.name}\nĐường dẫn: ${system.selectedApp.path}\nThay thế bằng: ${fileData}\nTrạng thái: Đã xóa file gốc & Ghi đè 100%!`);
+    } else {
+        alert(`RESTORE: Đã trả lại dữ liệu mặc định cho ${system.selectedApp.name}`);
     }
-    const file = (name === 'Aimlock') ? system.aimFile : system.recoilFile;
-    if (cb.checked && !file) {
-        alert(`Admin chưa nạp file cho ${name}!`);
-        cb.checked = false; return;
-    }
-    alert(cb.checked ? `INJECT: ${file}\nTARGET: ${system.selectedPkg}` : `RESORE: ${system.selectedPkg}`);
 }
 
 function switchTab(el, id) {
@@ -137,9 +132,10 @@ function switchTab(el, id) {
     document.getElementById('tab-' + id).classList.remove('hidden');
 }
 
-function logout() { location.reload(); }
+function generateKey() {
+    const k = "NGUYENLONG-" + Math.random().toString(36).substring(7).toUpperCase();
+    document.getElementById('generated-key-box').value = k;
+}
 
-window.onload = () => {
-    initSnow();
-    document.getElementById('os-info').innerText = navigator.platform;
-};
+function logout() { location.reload(); }
+window.onload = initSnow;

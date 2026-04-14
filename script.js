@@ -9,18 +9,6 @@ window.onload = function() {
     }
 };
 
-// Hàm lấy thông tin thiết bị thật
-function getDeviceInfo() {
-    const ua = navigator.userAgent;
-    let os = "iOS/Android Device";
-    if (ua.indexOf("Win") != -1) os = "Windows PC";
-    if (ua.indexOf("Mac") != -1) os = "MacOS / iPhone";
-    if (ua.indexOf("Android") != -1) os = "Android OS";
-
-    document.getElementById('os-info').innerText = os;
-    document.getElementById('browser-info').innerText = navigator.appName;
-}
-
 function checkLogin() {
     const keyInput = document.getElementById('license-key').value;
     if (keyInput === "") return;
@@ -29,15 +17,55 @@ function checkLogin() {
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('main-panel').classList.remove('hidden');
 
-    // Cập nhật Tab Logs
     document.getElementById('display-key').innerText = keyInput;
     
     if (keyInput === ADMIN_KEY) {
         document.getElementById('dev-tab').classList.remove('hidden');
-        document.getElementById('key-type-badge').innerText = "ADMIN ACCESS";
+        document.getElementById('key-type-badge').innerText = "OWNER / ADMIN";
         document.getElementById('key-type-badge').style.color = "#ff4757";
-        document.getElementById('display-type').innerText = "Admin Special";
+        document.getElementById('display-type').innerText = "Premium Admin";
     }
+}
+
+// Hàm tạo Key dành riêng cho Admin
+function generateKey() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ123456789';
+    let result = 'FF-';
+    
+    // Tạo chuỗi ngẫu nhiên định dạng FF-XXXX-XXXX
+    for (let i = 0; i < 4; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+    result += '-';
+    for (let i = 0; i < 4; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+    
+    document.getElementById('generated-key').value = result;
+}
+
+// Hàm kích hoạt chức năng với mục tiêu ứng dụng đã chọn
+function toggleHack(name, checkbox) {
+    const info = document.getElementById('process-info');
+    const targetApp = document.getElementById('app-select').value; // Lấy bundle ID từ Admin chọn
+
+    if (checkbox.checked) {
+        info.innerHTML = `<span style="color:#4a8df8; font-size: 9px;">Đang nạp file code ${name} vào ${targetApp}...</span>`;
+        
+        setTimeout(() => {
+            info.innerHTML = `
+                <span style="color:#2ecc71; font-size: 9px;">✓ SUCCESS: ${name} INJECTED!</span><br>
+                <span style="font-size: 8px; color: #8c9cb0;">Target: ${targetApp}</span>
+            `;
+        }, 2500);
+    } else {
+        info.innerHTML = `<span style="color:#ff4757; font-size: 9px;">Đã ngắt kết nối file code ${name}.</span>`;
+    }
+}
+
+// Các hàm bổ trợ khác
+function getDeviceInfo() {
+    const ua = navigator.userAgent;
+    let os = "iOS/iPhone";
+    if (ua.indexOf("Android") != -1) os = "Android OS";
+    document.getElementById('os-info').innerText = os;
+    document.getElementById('browser-info').innerText = "Strongest Engine v1";
 }
 
 function switchTab(element, tabId) {
@@ -45,19 +73,6 @@ function switchTab(element, tabId) {
     element.classList.add('active');
     document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
     document.getElementById('tab-' + tabId).classList.remove('hidden');
-}
-
-// Giả lập chạy code vào ứng dụng thiết bị
-function toggleHack(name, checkbox) {
-    const info = document.getElementById('process-info');
-    if (checkbox.checked) {
-        info.innerHTML = `<span style="color:#4a8df8">Đang Inject ${name} vào com.dts.freefireth...</span>`;
-        setTimeout(() => {
-            info.innerHTML = `<span style="color:#2ecc71">✓ ${name} Đã kích hoạt thành công!</span>`;
-        }, 2000);
-    } else {
-        info.innerHTML = `<span style="color:#ff4757">Đã gỡ bỏ ${name}</span>`;
-    }
 }
 
 function logout() {

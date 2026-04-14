@@ -1,42 +1,76 @@
 const ADMIN_KEY = "0933653553adminappmenu";
 
+// NHẬN DẠNG THIẾT BỊ NGAY LẬP TỨC KHI VỪA TẢI
+window.onload = function() {
+    autoDetectDevice();
+    const savedKey = localStorage.getItem('strongest_key');
+    if (savedKey) {
+        document.getElementById('license-key').value = savedKey;
+        checkLogin();
+    }
+};
+
+function autoDetectDevice() {
+    const ua = navigator.userAgent;
+    let deviceName = "Unknown Device";
+    let osName = "Unknown OS";
+
+    if (/iPhone/i.test(ua)) { deviceName = "iPhone"; osName = "iOS"; }
+    else if (/iPad/i.test(ua)) { deviceName = "iPad"; osName = "iOS"; }
+    else if (/Android/i.test(ua)) { deviceName = "Android Phone"; osName = "Android"; }
+    else if (/Windows/i.test(ua)) { deviceName = "PC / Desktop"; osName = "Windows"; }
+
+    // Gắn vào giao diện
+    if(document.getElementById('os-info')) {
+        document.getElementById('os-info').innerText = osName + " (" + deviceName + ")";
+        document.getElementById('browser-info').innerText = navigator.vendor || "Strongest Engine";
+    }
+}
+
+// LOGIC KÍCH HOẠT VÀ CHẠY CODE FILE
+function toggleHack(name, checkbox) {
+    const targetApp = document.getElementById('app-target-input').value;
+    
+    // Lấy đoạn code script tương ứng từ Admin Panel
+    let scriptToRun = "";
+    if (name === "Aimlock") {
+        scriptToRun = document.getElementById('script-aimlock').value;
+    } else if (name === "No Recoil") {
+        scriptToRun = document.getElementById('script-norecoil').value;
+    }
+
+    if (checkbox.checked) {
+        console.log(`[INJECTING] ${name} to ${targetApp}`);
+        console.log(`[CODE] ${scriptToRun}`);
+        
+        // Hiển thị thông báo (thay thế cho quick status cũ)
+        alert(`Đang nạp Script ${name} vào ${targetApp}...\nCode: ${scriptToRun.substring(0, 20)}...`);
+    } else {
+        alert(`Đã ngắt kết nối Script ${name}`);
+    }
+}
+
 function checkLogin() {
     const keyInput = document.getElementById('license-key').value;
-    const adminControls = document.getElementById('admin-controls-area');
-    const devTab = document.getElementById('dev-tab');
-
+    const adminArea = document.getElementById('admin-controls-area');
+    
     if (keyInput === "") return;
 
     localStorage.setItem('strongest_key', keyInput);
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('main-panel').classList.remove('hidden');
+    autoDetectDevice(); // Chạy lại lần nữa để chắc chắn hiển thị
 
-    // Mặc định luôn hiện tab Developer cho tất cả mọi người
-    devTab.classList.remove('hidden');
-
-    // KIỂM TRA NẾU LÀ ADMIN THÌ MỚI HIỆN PHẦN THÊM CODE/TẠO KEY
     if (keyInput === ADMIN_KEY) {
-        adminControls.classList.remove('hidden'); // Hiện bảng điều khiển code
+        adminArea.classList.remove('hidden');
         document.getElementById('key-type-badge').innerText = "OWNER / ADMIN";
         document.getElementById('key-type-badge').style.color = "#ff4757";
-    } else {
-        adminControls.classList.add('hidden'); // Ẩn đi nếu là người dùng thường
-        document.getElementById('key-type-badge').innerText = "MEMBER";
     }
 }
 
-// Hàm kích hoạt chức năng vẫn lấy giá trị từ ô nhập (nếu admin đã chỉnh)
-function toggleHack(name, checkbox) {
-    const info = document.getElementById('process-info');
-    // Nếu admin đã nhập app khác thì lấy app đó, nếu không mặc định là com.dts.freefireth
-    const targetApp = document.getElementById('app-target-input').value || "com.dts.freefireth"; 
-
-    if (checkbox.checked) {
-        info.innerHTML = `<span style="color:#4a8df8; font-size: 9px;">Đang nạp file code ${name} vào ${targetApp}...</span>`;
-        setTimeout(() => {
-            info.innerHTML = `<span style="color:#2ecc71; font-size: 9px;">✓ THÀNH CÔNG: Đã kích hoạt ${name} cho ${targetApp}</span>`;
-        }, 2000);
-    } else {
-        info.innerHTML = `<span style="color:#ff4757; font-size: 9px;">Đã ngắt kết nối file code ${name}.</span>`;
-    }
+// Giữ nguyên hàm tạo key FF-XXX
+function generateKey() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ123456789';
+    const r = () => chars.charAt(Math.floor(Math.random() * chars.length));
+    document.getElementById('generated-key').value = `FF-${r()}${r()}${r()}-${r()}${r()}${r()}`;
 }

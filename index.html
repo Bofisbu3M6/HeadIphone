@@ -13,43 +13,69 @@
         <h1 class="title">Aimlock Strongest iPhone❄️</h1>
         <div class="neumorphic-card">
             <input type="password" id="license-key" class="input-field" placeholder="NHẬP LICENSE KEY...">
-            <button class="btn" onclick="checkLogin()">KÍCH HOẠT HỆ THỐNG</button>
+            <div class="row" style="justify-content: center; gap: 10px; margin-bottom: 15px;">
+                <input type="checkbox" id="remember-key" checked>
+                <label for="remember-key" style="font-size: 11px; color: #7b8b9e;">Ghi nhớ đăng nhập</label>
+            </div>
+            <button class="btn" onclick="checkLogin()">ĐĂNG NHẬP</button>
         </div>
     </div>
 
     <div id="main-panel" class="hidden">
         <div class="header">
             <h1 id="app-title">Aimlock Strongest iPhone❄️</h1>
-            <div id="user-tag">PHIÊN BẢN v1.0</div>
-        </div>
-
-        <div class="status-row">
-            <div class="badge green">● SERVER ONLINE</div>
-            <div id="key-type" class="badge">MEMBER</div>
-            <div class="badge">15ms</div>
-        </div>
-
-        <div class="tabs">
-            <div class="tab active">DASHBOARD</div>
-            <div class="tab">CHỨC NĂNG</div>
-            <div id="admin-only-tab" class="tab hidden" style="color: #ff4757;">ADMIN MENU</div>
-        </div>
-
-        <div id="admin-settings" class="neumorphic-card hidden" style="border: 1px solid #4a8df8;">
-            <div class="row">
-                <span style="color: #4a8df8;">KÍCH HOẠT STRONGET</span>
-                <label class="switch">
-                    <input type="checkbox" id="master-toggle">
-                    <span class="slider"></span>
-                </label>
+            <div class="status-row">
+                <div class="badge green">● SERVER ONLINE</div>
+                <div id="key-type" class="badge">MEMBER</div>
+                <div class="badge">24ms</div>
             </div>
         </div>
 
-        <div class="neumorphic-card">
-            <div class="row"><span>Kills Today</span> <span class="val">4,291</span></div>
-            <div class="row"><span>Win Rate</span> <span class="val">98.7%</span></div>
-            <div class="row"><span>K/D Ratio</span> <span class="val">24.1</span></div>
+        <div class="nav-container">
+            <div class="nav-tabs">
+                <div class="tab active" onclick="switchTab(this, 'dashboard')">DASHBOARD</div>
+                <div class="tab" onclick="switchTab(this, 'chucnang')">CHỨC NĂNG</div>
+                <div class="tab" onclick="switchTab(this, 'aim')">AIM / ESP</div>
+                <div class="tab" onclick="switchTab(this, 'khac')">KHÁC</div>
+                <div class="tab" onclick="switchTab(this, 'logs')">LOGS</div>
+                <div id="dev-tab" class="tab hidden" onclick="switchTab(this, 'developer')" style="color:#ff4757">DEVELOPER</div>
+            </div>
         </div>
+
+        <div id="content-area">
+            <div id="tab-dashboard" class="tab-content">
+                <div class="neumorphic-card">
+                    <div class="section-title">TRẠNG THÁI HỆ THỐNG</div>
+                    <div class="row">
+                        <span>Kích hoạt Strongest Mode</span>
+                        <label class="switch">
+                            <input type="checkbox" id="master-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="neumorphic-card">
+                    <div class="section-title">THÔNG TIN THIẾT BỊ</div>
+                    <div class="row"><span>Thiết bị:</span> <span class="val">iPhone 15 Pro Max</span></div>
+                    <div class="row"><span>ID thiết bị:</span> <span class="val">STRONGEST-999-XXX</span></div>
+                </div>
+            </div>
+
+            <div id="tab-chucnang" class="tab-content hidden">
+                <div class="neumorphic-card">
+                    <div class="section-title">MENU CHỨC NĂNG</div>
+                    <p style="font-size: 12px; color: #7b8b9e; text-align: center;">Đang cập nhật thêm tính năng...</p>
+                </div>
+            </div>
+            
+            <div id="tab-aim" class="tab-content hidden"></div>
+            <div id="tab-khac" class="tab-content hidden"></div>
+            <div id="tab-logs" class="tab-content hidden"></div>
+            <div id="tab-developer" class="tab-content hidden"></div>
+        </div>
+        
+        <button class="btn-logout" onclick="logout()">ĐĂNG XUẤT</button>
     </div>
 
     <script src="script.js"></script>

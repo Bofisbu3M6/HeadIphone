@@ -1,9 +1,248 @@
-textarea.input-field {
-    resize: none;
-    line-height: 1.4;
-    padding: 10px;
-    border: 1px solid var(--shadow);
-    color: #2c3e50;
-    white-space: pre;
+/* DESIGN: NEUMORPHIC LUXURY UI 
+   COLOR PALETTE: SOFT BLUE & SNOW WHITE
+*/
+
+:root {
+    --bg: #e0e5ec;
+    --shadow: #a3b1c6;
+    --light: #ffffff;
+    --primary: #4a8df8;
+    --accent: #ff4757;
+    --success: #2ecc71;
+    --text-main: #44475a;
+    --text-sub: #7b8b9e;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg);
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+.hidden { display: none !important; }
+
+/* HIỆU ỨNG CHỮ TIÊU ĐỀ */
+.title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px var(--shadow), -1px -1px 2px var(--light);
+}
+
+/* CONTAINER THẺ NEUMORPHIC */
+.neumorphic-card {
+    background: var(--bg);
+    border-radius: 25px;
+    padding: 22px;
+    box-shadow: 9px 9px 16px var(--shadow), -9px -9px 16px var(--light);
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
+    transition: all 0.3s ease;
+}
+
+/* Ô NHẬP LIỆU (INPUT) */
+.input-field {
+    width: 100%;
+    border: none;
+    padding: 15px;
+    border-radius: 15px;
+    background: var(--bg);
+    box-shadow: inset 6px 6px 12px var(--shadow), inset -6px -6px 12px var(--light);
+    outline: none;
+    margin-bottom: 15px;
+    color: var(--text-main);
+    font-weight: 600;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.input-field:focus {
+    box-shadow: inset 2px 2px 5px var(--shadow), inset -2px -2px 5px var(--light);
+    color: var(--primary);
+}
+
+/* NÚT BẤM (BUTTON) */
+.btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 15px;
+    background: var(--bg);
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    box-shadow: 6px 6px 12px var(--shadow), -6px -6px 12px var(--light);
+    cursor: pointer;
+    transition: 0.2s active;
+}
+
+.btn:active {
+    box-shadow: inset 4px 4px 8px var(--shadow), inset -4px -4px 8px var(--light);
+    transform: scale(0.98);
+}
+
+/* THANH MENU NGANG (NAVBAR) */
+.nav-container {
+    width: 100%;
+    max-width: 400px;
     overflow-x: auto;
+    margin-bottom: 25px;
+    padding: 10px 5px;
+    display: flex;
+}
+
+.nav-container::-webkit-scrollbar { display: none; }
+
+.nav-tabs {
+    display: flex;
+    gap: 12px;
+}
+
+.tab {
+    padding: 12px 20px;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 15px;
+    color: var(--text-sub);
+    box-shadow: 4px 4px 8px var(--shadow), -4px -4px 8px var(--light);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tab.active {
+    color: var(--primary);
+    box-shadow: inset 3px 3px 6px var(--shadow), inset -3px -3px 6px var(--light);
+}
+
+/* TRẠNG THÁI (STATUS & BADGES) */
+.status-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.badge {
+    font-size: 9px;
+    font-weight: 900;
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 3px 3px 6px var(--shadow);
+    color: var(--text-sub);
+}
+
+.green { color: var(--success); }
+
+/* CÁC DÒNG THÔNG TIN (ROWS) */
+.section-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 18px;
+    padding-left: 10px;
+    border-left: 4px solid var(--primary);
+    text-transform: uppercase;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-sub);
+    margin-bottom: 15px;
+}
+
+.val {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--primary);
+    font-size: 11px;
+}
+
+/* CÔNG TẮC (SWITCH) */
+.switch {
+    position: relative;
+    width: 45px;
+    height: 24px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--bg);
+    transition: .4s;
+    border-radius: 34px;
+    box-shadow: inset 3px 3px 6px var(--shadow), inset -3px -3px 6px var(--light);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background: #adb5bd;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+input:checked + .slider:before {
+    transform: translateX(21px);
+    background: var(--primary);
+    box-shadow: 0 0 10px rgba(74, 141, 248, 0.6);
+}
+
+/* KHU VỰC ADMIN (SPECIAL) */
+textarea.input-field {
+    text-align: left;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    resize: none;
+    line-height: 1.5;
+}
+
+.btn-logout {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 11px;
+    margin-top: 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ANIMATION KHI HIỆN TRANG */
+#main-panel {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

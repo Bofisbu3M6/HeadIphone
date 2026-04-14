@@ -1,5 +1,13 @@
-const ADMIN_KEY = "adminappmenunguyenlong";
+/* ============================================================
+   STRONGEST SUPPORT SYSTEM - FULL SCRIPT 2024
+   Hệ thống quản lý Mod Menu qua Web + ESign (No PC)
+   ============================================================ */
+
+// 1. CẤU HÌNH HỆ THỐNG
+const ADMIN_KEY = "adminappmenunguyenlong"; // Key vào trang quản trị
 const audio = document.getElementById('bg-music');
+
+// Đường dẫn mặc định cho Game (Có thể thay đổi tùy bản cập nhật)
 const IOS_PATH = "container/documents/contentcache/compulory/ios/gameassetbundles/";
 
 const appList = [
@@ -9,85 +17,126 @@ const appList = [
 
 let system = { 
     selected: null, 
-    countdown: null 
+    countdown: null,
+    role: "GUEST"
 };
 
-// Hiệu ứng tuyết rơi
+// 2. KHỞI TẠO KHI MỞ TRANG
+window.onload = function() {
+    initSnow();
+    checkExistingSession(); // Kiểm tra nếu đã đăng nhập trước đó
+    updateAdminFileInfo(); // Cập nhật tên file admin đã nạp
+};
+
+// Hiệu ứng tuyết rơi chậm
 function initSnow() {
     const container = document.getElementById('snow-container');
-    for (let i = 0; i < 30; i++) {
+    if (!container) return;
+    for (let i = 0; i < 25; i++) {
         let flake = document.createElement('div');
         flake.className = 'snowflake';
         flake.innerHTML = '❄';
         flake.style.left = Math.random() * 100 + 'vw';
-        flake.style.animationDuration = (Math.random() * 5 + 10) + 's';
+        flake.style.animationDuration = (Math.random() * 5 + 7) + 's';
+        flake.style.opacity = Math.random();
         container.appendChild(flake);
     }
-    // Hiển thị tên file admin đã nạp nếu có
-    document.getElementById('name-aimlock').innerText = localStorage.getItem('shared_aimlock_name') || "Trống";
-    document.getElementById('name-norecoil').innerText = localStorage.getItem('shared_norecoil_name') || "Trống";
 }
 
-// Đăng nhập
+// 3. HỆ THỐNG ĐĂNG NHẬP & KEY
 function checkLogin() {
     const key = document.getElementById('license-key').value.trim();
-    if (key === ADMIN_KEY) return enterSystem("OWNER");
+    if (!key) return alert("VUI LÒNG NHẬP KEY!");
+
+    if (key === ADMIN_KEY) {
+        enterSystem("OWNER");
+        return;
+    }
 
     let keys = JSON.parse(localStorage.getItem('strongest_keys') || '{}');
-    if (!keys[key]) return alert("KEY KHÔNG TỒN TẠI!");
+    if (!keys[key]) return alert("KEY KHÔNG HỢP LỆ HOẶC ĐÃ BỊ XÓA!");
 
     const now = new Date().getTime();
-    if (now > keys[key].expiry) return alert("KEY HẾT HẠN!");
+    if (now > keys[key].expiry) return alert("KEY CỦA BẠN ĐÃ HẾT HẠN!");
 
     enterSystem("MEMBER", keys[key].expiry);
 }
 
 function enterSystem(role, expiry) {
+    system.role = role;
     audio.play().catch(() => {});
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('main-panel').classList.remove('hidden');
 
+    const badge = document.getElementById('key-type-badge');
+    const devTab = document.getElementById('dev-tab');
+
     if (role === "OWNER") {
-        document.getElementById('dev-tab').classList.remove('hidden');
-        document.getElementById('key-type-badge').innerText = "OWNER";
-        document.getElementById('key-countdown').innerText = "VĨNH VIỄN";
+        badge.innerText = "OWNER (ADMIN)";
+        badge.style.background = "#ff3b30";
+        devTab.classList.remove('hidden');
     } else {
+        badge.innerText = "MEMBER (VIP)";
         startCountdown(expiry);
     }
-
-    const hideUntil = localStorage.getItem('hide_notif_until');
-    if (!hideUntil || new Date().getTime() > hideUntil) {
-        document.getElementById('notification-overlay').classList.remove('hidden');
-    }
+    
+    // Lưu session để không phải đăng nhập lại khi F5
+    localStorage.setItem('session_role', role);
+    if(expiry) localStorage.setItem('session_expiry', expiry);
 }
 
 function startCountdown(expiry) {
     if (system.countdown) clearInterval(system.countdown);
     system.countdown = setInterval(() => {
         const diff = expiry - new Date().getTime();
-        if (diff <= 0) location.reload();
-        const d = Math.floor(diff / 86400000);
-        const h = Math.floor((diff % 86400000) / 3600000);
+        if (diff <= 0) {
+            alert("Hết thời hạn sử dụng!");
+            logout();
+        }
+        const h = Math.floor((diff / 3600000));
         const m = Math.floor((diff % 3600000) / 60000);
         const s = Math.floor((diff % 60000) / 1000);
-        document.getElementById('key-countdown').innerText = `${d}d:${h}h:${m}m:${s}s`;
+        document.getElementById('key-countdown').innerText = `${h}h : ${m}m : ${s}s`;
     }, 1000);
 }
 
-// Admin: Lưu file dùng chung cho tất cả user
+// 4. CHỨC NĂNG QUẢN TRỊ (ADMIN)
 function saveAdminFile(type) {
-    const file = document.getElementById(`f-${type}`).files[0];
+    const fileInput = document.getElementById(`f-${type}`);
+    const file = fileInput.files[0];
     if (file) {
         localStorage.setItem(`shared_${type}_name`, file.name);
-        document.getElementById(`name-${type}`).innerText = file.name;
-        alert("Đã cập nhật file dùng chung cho: " + type.toUpperCase());
+        updateAdminFileInfo();
+        alert(`NẠP FILE ${type.toUpperCase()} THÀNH CÔNG!`);
     }
 }
 
-// Dashboard: Quét App
+function updateAdminFileInfo() {
+    const types = ['aimlock', 'norecoil'];
+    types.forEach(t => {
+        const name = localStorage.getItem(`shared_${t}_name`) || "Trống";
+        const el = document.getElementById(`name-${t}`);
+        if(el) el.innerText = name;
+    });
+}
+
+function adminCreateKey() {
+    const dur = document.getElementById('key-duration').value;
+    const key = "STR-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+    let keys = JSON.parse(localStorage.getItem('strongest_keys') || '{}');
+    keys[key] = { expiry: new Date().getTime() + (dur * 1000) };
+    localStorage.setItem('strongest_keys', JSON.stringify(keys));
+    
+    // Copy key ngay lập tức
+    navigator.clipboard.writeText(key);
+    alert("ĐÃ TẠO & COPY KEY: " + key);
+}
+
+// 5. CHỨC NĂNG NGƯỜI DÙNG (ESIGN LOGIC)
 function requestNativeDeviceApps() {
     const grid = document.getElementById('app-grid-container');
-    grid.innerHTML = '<p style="font-size:8px">Scanning Apps...</p>';
+    grid.innerHTML = '<p style="font-size:10px; color:#8e8e93;">Đang quét bộ nhớ Game...</p>';
+    
     setTimeout(() => {
         grid.innerHTML = '';
         appList.forEach(app => {
@@ -98,58 +147,78 @@ function requestNativeDeviceApps() {
                 el.classList.add('selected');
                 system.selected = app;
                 document.getElementById('display-target').innerText = app.name;
-                document.getElementById('target-path').innerText = app.name;
+                document.getElementById('target-path').innerText = app.path;
             };
             el.innerHTML = `<img src="${app.icon}" class="app-icon"><span class="app-name">${app.name}</span>`;
             grid.appendChild(el);
         });
-    }, 1000);
+    }, 800);
 }
 
-// Chức năng: Xử lý file (Dùng chung và Path cho ESign)
 function processFileReplace(type, cb) {
-    if (!system.selected) { alert("HÃY CHỌN APP MỤC TIÊU!"); cb.checked = false; return; }
+    if (!system.selected) {
+        alert("⚠️ VUI LÒNG CHỌN GAME Ở TAB DASHBOARD TRƯỚC!");
+        cb.checked = false;
+        return;
+    }
 
-    const sharedFile = localStorage.getItem(`shared_${type}_name`);
+    const log = document.getElementById('overwrite-log');
+    const sharedFileName = localStorage.getItem(`shared_${type}_name`);
+
     if (cb.checked) {
-        if (!sharedFile) { alert("ADMIN CHƯA NẠP FILE!"); cb.checked = false; return; }
+        if (!sharedFileName) {
+            alert("ADMIN CHƯA CẬP NHẬT FILE NÀY!");
+            cb.checked = false;
+            return;
+        }
 
-        const log = document.getElementById('overwrite-log');
         log.classList.remove('hidden');
-        log.innerHTML += `> Chế độ: Dùng chung hệ thống...<br>`;
-        log.innerHTML += `> File Mod: ${sharedFile}<br>`;
-        log.innerHTML += `> Path: ${system.selected.path}<br>`;
-        
-        // Cung cấp công cụ cho ESign
-        log.innerHTML += `
-            <div style="margin-top:8px; display:flex; gap:5px;">
-                <button onclick="copyPath('${system.selected.path}')" style="background:#007aff; border:none; color:#fff; padding:5px; border-radius:5px; font-size:9px; cursor:pointer;">COPY PATH</button>
-                <button onclick="alert('Đã sẵn sàng! Hãy mở ESign dán file này vào đường dẫn vừa copy.')" style="background:#34c759; border:none; color:#fff; padding:5px; border-radius:5px; font-size:9px; cursor:pointer;">DÁN TRONG ESIGN</button>
-            </div><br>
+        log.innerHTML = `
+            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px;">
+                <span style="color: #007aff; font-weight: 800;">[STATUS: READY]</span><br>
+                <small style="color: #8e8e93;">File Mod: ${sharedFileName}</small><br>
+                <p style="font-size: 9px; margin: 8px 0; color: #fff;">
+                    <b>BƯỚC 1:</b> Nhấn COPY PATH.<br>
+                    <b>BƯỚC 2:</b> Mở ESign và tìm đến đường dẫn này trong file .ipa Game.<br>
+                    <b>BƯỚC 3:</b> Dán file Mod đè vào.
+                </p>
+                <div style="display:flex; gap:5px;">
+                    <button onclick="copyPath('${system.selected.path}')" style="background:#007aff; border:none; color:#fff; padding:8px; border-radius:6px; flex:1; font-weight:800; font-size:10px;">COPY PATH</button>
+                    <button onclick="window.location.href='esign://'" style="background:#34c759; border:none; color:#fff; padding:8px; border-radius:6px; flex:1; font-weight:800; font-size:10px;">MỞ ESIGN</button>
+                </div>
+            </div>
         `;
-        log.scrollTop = log.scrollHeight;
+    } else {
+        log.classList.add('hidden');
     }
 }
 
-// Tiện ích
-function copyPath(p) { navigator.clipboard.writeText(p); alert("Đã copy Path! Dùng Path này trong ESign để thay thế file."); }
-function adminCreateKey() {
-    const dur = document.getElementById('key-duration').value;
-    const key = "STR-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-    let keys = JSON.parse(localStorage.getItem('strongest_keys') || '{}');
-    keys[key] = { expiry: new Date().getTime() + (dur * 1000) };
-    localStorage.setItem('strongest_keys', JSON.stringify(keys));
-    navigator.clipboard.writeText(key);
-    alert("Đã tạo Key: " + key);
+// 6. TIỆN ÍCH HỖ TRỢ
+function copyPath(p) {
+    navigator.clipboard.writeText(p);
+    const log = document.getElementById('overwrite-log');
+    log.innerHTML += `<br><span style="color:#34c759;">> Đã sao chép đường dẫn!</span>`;
 }
+
 function switchTab(el, id) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
     el.classList.add('active');
     document.getElementById('tab-' + id).classList.remove('hidden');
 }
-function toggleMusic() { audio.paused ? audio.play() : audio.pause(); }
-function hideNotificationFor2Hours() { localStorage.setItem('hide_notif_until', new Date().getTime() + 7200000); closeNotification(); }
-function closeNotification() { document.getElementById('notification-overlay').classList.add('hidden'); }
-function logout() { location.reload(); }
-window.onload = initSnow;
+
+function toggleMusic() {
+    if (audio.paused) audio.play(); else audio.pause();
+}
+
+function logout() {
+    localStorage.removeItem('session_role');
+    localStorage.removeItem('session_expiry');
+    location.reload();
+}
+
+function checkExistingSession() {
+    const role = localStorage.getItem('session_role');
+    const expiry = localStorage.getItem('session_expiry');
+    if (role) enterSystem(role, expiry ? parseInt(expiry) : null);
+}

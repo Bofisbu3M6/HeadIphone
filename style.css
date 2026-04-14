@@ -4,55 +4,240 @@
     --apple-blue: #007aff;
     --apple-purple: #af52de;
     --apple-red: #ff3b30;
+    --glass-bg: rgba(255, 255, 255, 0.05);
 }
 
-* { box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-body { background: var(--bg-dark); color: #fff; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
+/* Reset & Nền tảng */
+* { 
+    box-sizing: border-box; 
+    font-family: 'Montserrat', sans-serif; 
+    -webkit-tap-highlight-color: transparent; 
+}
 
-/* Tuyết rơi chậm */
-.snowflake { position: absolute; top: -20px; color: rgba(255,255,255,0.3); animation: fall linear infinite; pointer-events: none; z-index: 1; }
-@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+body { 
+    background: var(--bg-dark); 
+    color: #fff; 
+    margin: 0; 
+    padding: 15px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    min-height: 100vh; 
+    overflow-x: hidden; 
+}
 
-/* Logo chính giữa */
-.apple-logo-container { width: 100%; display: flex; justify-content: center; margin-top: 50px; margin-bottom: 20px; }
-.main-logo { width: 90px; height: 90px; filter: drop-shadow(0 0 15px rgba(255,255,255,0.3)); }
+/* Hiệu ứng Tuyết rơi (Rơi chậm & Liên tục) */
+.snowflake { 
+    position: fixed; 
+    top: -20px; 
+    color: rgba(255, 255, 255, 0.3); 
+    animation: fall linear infinite; 
+    pointer-events: none; 
+    z-index: 1; 
+}
 
-.brand-title { font-weight: 800; font-size: 1.2rem; text-align: center; margin: 0; }
-.slogan { font-size: 8px; color: #8e8e93; font-weight: 600; text-align: center; letter-spacing: 2px; margin-top: 5px; }
+@keyframes fall { 
+    to { transform: translateY(105vh) rotate(360deg); } 
+}
 
-/* Metal Card */
+/* Apple Logo (Căn giữa tuyệt đối) */
+.apple-logo-container { 
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    margin-top: 40px; 
+    margin-bottom: 20px; 
+}
+
+.main-logo { 
+    width: 90px; 
+    height: 90px; 
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2)); 
+}
+
+.brand-title { 
+    font-weight: 800; 
+    font-size: 1.1rem; 
+    text-align: center; 
+    margin: 0; 
+    z-index: 2;
+}
+
+.slogan { 
+    font-size: 8px; 
+    color: #8e8e93; 
+    font-weight: 600; 
+    text-align: center; 
+    letter-spacing: 1.5px; 
+    margin-top: 8px; 
+    padding: 0 10px;
+    z-index: 2;
+}
+
+/* Thẻ Metal Card */
 .metal-card {
-    background: var(--metal-gradient); border-radius: 20px; padding: 20px; width: 100%; max-width: 360px;
-    box-shadow: 10px 10px 20px #000; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; z-index: 2;
+    background: var(--metal-gradient); 
+    border-radius: 20px; 
+    padding: 20px; 
+    width: 100%; 
+    max-width: 360px;
+    box-shadow: 10px 10px 20px #000; 
+    border: 1px solid rgba(255, 255, 255, 0.05); 
+    margin-bottom: 20px; 
+    z-index: 2;
 }
+
 .border-blue { border-left: 4px solid var(--apple-blue); }
 .border-purple { border-left: 4px solid var(--apple-purple); }
 .border-red { border-left: 4px solid var(--apple-red); }
 
+/* Header & Tab */
+.glass-header {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5px;
+    margin-bottom: 15px;
+}
+
+.header-title { font-weight: 800; font-size: 12px; color: var(--apple-blue); }
+
+.nav-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 360px;
+}
+
+.tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 800;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tab.active { background: #fff; color: #000; }
+
+/* Dashboard: Grid App */
+.app-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.app-item {
+    background: rgba(0,0,0,0.3);
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid transparent;
+}
+
+.app-item.selected {
+    border-color: var(--apple-blue);
+    background: rgba(0, 122, 255, 0.1);
+}
+
+.app-icon { width: 40px; height: 40px; border-radius: 10px; margin-bottom: 5px; }
+.app-name { font-size: 9px; font-weight: 600; }
+
 /* Inputs & Buttons */
-.metal-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; color: #fff; text-align: center; font-weight: 600; outline: none; margin-bottom: 10px; }
-.btn-metal.primary { width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: 800; background: #fff; color: #000; cursor: pointer; }
+.metal-input { 
+    width: 100%; 
+    background: rgba(0,0,0,0.3); 
+    border: 1px solid rgba(255,255,255,0.1); 
+    padding: 15px; 
+    border-radius: 12px; 
+    color: #fff; 
+    text-align: center; 
+    font-weight: 600; 
+    outline: none; 
+    margin-bottom: 10px; 
+}
+
+.btn-metal.primary { 
+    width: 100%; 
+    padding: 15px; 
+    border: none; 
+    border-radius: 12px; 
+    font-weight: 800; 
+    background: #fff; 
+    color: #000; 
+    cursor: pointer; 
+}
+
 .btn-action { width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: 800; color: #fff; cursor: pointer; }
 .blue-bg { background: var(--apple-blue); }
 
-/* Chức năng Admin */
-.admin-file-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; font-size: 11px; }
-.btn-sub { background: #3a3a3c; border: none; color: #fff; padding: 5px 15px; border-radius: 5px; font-size: 10px; }
-.file-name-display { font-size: 9px; color: var(--apple-blue); max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-/* Switch & Log */
+/* Switch iOS Style */
 .control-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+.main-lbl { display: block; font-size: 13px; font-weight: 700; }
+small { font-size: 9px; color: #8e8e93; }
+
 .ios-switch { position: relative; width: 42px; height: 22px; }
-.ios-slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: #3a3a3c; transition: .3s; border-radius: 30px; }
-.ios-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 2px; bottom: 2px; background-color: white; transition: .3s; border-radius: 50%; }
+.ios-switch input { opacity: 0; width: 0; height: 0; }
+.ios-slider { 
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; 
+    background-color: #3a3a3c; transition: .3s; border-radius: 34px; 
+}
+.ios-slider:before { 
+    position: absolute; content: ""; height: 18px; width: 18px; left: 2px; bottom: 2px; 
+    background-color: white; transition: .3s; border-radius: 50%; 
+}
 input:checked + .ios-slider { background-color: #34c759; }
 input:checked + .ios-slider:before { transform: translateX(20px); }
 
-.terminal-log { width: 100%; height: 80px; background: #000; border-radius: 10px; padding: 10px; font-family: monospace; font-size: 8px; color: #34c759; overflow-y: auto; margin-top: 10px; }
+/* Terminal & Logs */
+.terminal-log { 
+    width: 100%; 
+    max-height: 100px; 
+    background: rgba(0,0,0,0.5); 
+    border-radius: 10px; 
+    padding: 10px; 
+    font-family: monospace; 
+    font-size: 8px; 
+    color: #34c759; 
+    overflow-y: auto; 
+    margin-top: 10px; 
+    border: 1px solid rgba(175, 82, 222, 0.3);
+}
 
-/* Popup */
-.glass-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); display:flex; justify-content:center; align-items:center; z-index:10000; }
-.alert-box { width: 280px; padding: 0 !important; border: none; overflow: hidden; }
-.blue-text { color: var(--apple-blue); font-size: 18px; font-weight: 800; margin-top: 10px; }
+/* Admin File Styles */
+.admin-file-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; font-size: 11px; }
+.btn-sub { background: #3a3a3c; border: none; color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 9px; cursor: pointer; }
+.file-name-display { font-size: 9px; color: var(--apple-blue); max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+/* Popup Thông báo (Glassmorphism) */
+.glass-overlay { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); 
+    display: flex; justify-content: center; align-items: center; z-index: 10000; 
+}
+.alert-box { width: 300px; padding: 0 !important; border: none; overflow: hidden; text-align: center; }
+.alert-header { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 10px; color: #8e8e93; }
+.alert-body { padding: 25px 15px; }
+.alert-footer { display: flex; flex-direction: column; border-top: 1px solid rgba(255,255,255,0.1); }
+.btn-alert-close, .btn-alert-hide { 
+    background: none; border: none; padding: 15px; color: var(--apple-blue); 
+    font-weight: 700; font-size: 14px; cursor: pointer; 
+}
+.btn-alert-hide { border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: #8e8e93; }
+
+/* Utilities */
 .hidden { display: none !important; }
+.btn-logout { 
+    width: 100%; background: none; border: 1px solid var(--apple-red); 
+    color: var(--apple-red); padding: 10px; border-radius: 12px; 
+    margin-top: 10px; font-weight: 700; cursor: pointer;
+}

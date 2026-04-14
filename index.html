@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title id="web-title">Aimlock Strongest iPhone❄️</title>
+    <title>Aimlock Strongest iPhone❄️</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -13,10 +13,6 @@
         <h1 class="title">Aimlock Strongest iPhone❄️</h1>
         <div class="neumorphic-card">
             <input type="password" id="license-key" class="input-field" placeholder="NHẬP LICENSE KEY...">
-            <div class="row" style="justify-content: center; gap: 10px; margin-bottom: 15px;">
-                <input type="checkbox" id="remember-key" checked>
-                <label for="remember-key" style="font-size: 11px; color: #7b8b9e;">Ghi nhớ đăng nhập</label>
-            </div>
             <button class="btn" onclick="checkLogin()">ĐĂNG NHẬP</button>
         </div>
     </div>
@@ -25,9 +21,8 @@
         <div class="header">
             <h1 id="app-title">Aimlock Strongest iPhone❄️</h1>
             <div class="status-row">
-                <div class="badge green">● SERVER ONLINE</div>
-                <div id="key-type" class="badge">MEMBER</div>
-                <div class="badge">24ms</div>
+                <div class="badge green">● SERVER LIVE</div>
+                <div id="key-type-badge" class="badge">MEMBER</div>
             </div>
         </div>
 
@@ -35,8 +30,6 @@
             <div class="nav-tabs">
                 <div class="tab active" onclick="switchTab(this, 'dashboard')">DASHBOARD</div>
                 <div class="tab" onclick="switchTab(this, 'chucnang')">CHỨC NĂNG</div>
-                <div class="tab" onclick="switchTab(this, 'aim')">AIM / ESP</div>
-                <div class="tab" onclick="switchTab(this, 'khac')">KHÁC</div>
                 <div class="tab" onclick="switchTab(this, 'logs')">LOGS</div>
                 <div id="dev-tab" class="tab hidden" onclick="switchTab(this, 'developer')" style="color:#ff4757">DEVELOPER</div>
             </div>
@@ -45,34 +38,50 @@
         <div id="content-area">
             <div id="tab-dashboard" class="tab-content">
                 <div class="neumorphic-card">
-                    <div class="section-title">TRẠNG THÁI HỆ THỐNG</div>
-                    <div class="row">
-                        <span>Kích hoạt Strongest Mode</span>
-                        <label class="switch">
-                            <input type="checkbox" id="master-toggle">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="neumorphic-card">
                     <div class="section-title">THÔNG TIN THIẾT BỊ</div>
-                    <div class="row"><span>Thiết bị:</span> <span class="val">iPhone 15 Pro Max</span></div>
-                    <div class="row"><span>ID thiết bị:</span> <span class="val">STRONGEST-999-XXX</span></div>
+                    <div class="row"><span>Hệ điều hành:</span> <span class="val" id="os-info">Đang lấy...</span></div>
+                    <div class="row"><span>Trình duyệt:</span> <span class="val" id="browser-info">Đang lấy...</span></div>
+                    <div class="row"><span>Trạng thái:</span> <span class="val" style="color:#2ecc71">Đã kết nối</span></div>
+                </div>
+                <div class="neumorphic-card">
+                    <div class="section-title">QUICK STATUS</div>
+                    <div id="process-info" style="font-size: 10px; color: #7b8b9e; text-align: center;">Chưa kích hoạt chức năng</div>
                 </div>
             </div>
 
             <div id="tab-chucnang" class="tab-content hidden">
                 <div class="neumorphic-card">
-                    <div class="section-title">MENU CHỨC NĂNG</div>
-                    <p style="font-size: 12px; color: #7b8b9e; text-align: center;">Đang cập nhật thêm tính năng...</p>
+                    <div class="section-title">COMBAT FEATURES</div>
+                    <div class="row">
+                        <span>Aimlock System</span>
+                        <label class="switch"><input type="checkbox" onchange="toggleHack('Aimlock', this)"><span class="slider"></span></label>
+                    </div>
+                    <div class="row">
+                        <span>No Recoil (Giảm giật)</span>
+                        <label class="switch"><input type="checkbox" onchange="toggleHack('No Recoil', this)"><span class="slider"></span></label>
+                    </div>
                 </div>
             </div>
-            
-            <div id="tab-aim" class="tab-content hidden"></div>
-            <div id="tab-khac" class="tab-content hidden"></div>
-            <div id="tab-logs" class="tab-content hidden"></div>
-            <div id="tab-developer" class="tab-content hidden"></div>
+
+            <div id="tab-logs" class="tab-content hidden">
+                <div class="neumorphic-card">
+                    <div class="section-title">THÔNG TIN KEY</div>
+                    <div class="row"><span>Key hiện tại:</span> <span class="val" id="display-key">---</span></div>
+                    <div class="row"><span>Hạn sử dụng:</span> <span class="val" id="display-expiry">Vĩnh viễn</span></div>
+                    <div class="row"><span>Loại Key:</span> <span class="val" id="display-type">Bình thường</span></div>
+                </div>
+            </div>
+
+            <div id="tab-developer" class="tab-content hidden">
+                <div class="neumorphic-card admin-card">
+                    <div class="section-title">DEVELOPER INFO</div>
+                    <div class="dev-info">
+                        <p><b>Admin:</b> Bofisbu3M</p>
+                        <p><b>Zalo:</b> 0933653553 (Nguyen Long)</p>
+                        <p><b>Tiktok:</b> bofisbu.hotrosupport</p>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <button class="btn-logout" onclick="logout()">ĐĂNG XUẤT</button>

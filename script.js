@@ -1,29 +1,116 @@
-const ADMIN_KEY = "bofisbuadminkey";
+const ADMIN_KEY = "adminappmenunguyenlong";
+const music = document.getElementById('bg-music');
 
-// Dữ liệu mô phỏng từ ảnh của bạn
+// Dữ liệu ứng dụng thực tế
 const mockApps = [
     { name: "Free Fire MAX", pkg: "com.dts.freefiremax", icon: "https://i.ibb.co/image-0.png" },
     { name: "Free Fire", pkg: "com.dts.freefireth", icon: "https://i.ibb.co/image-1.png" },
-    { name: "PUBG Mobile VN", pkg: "com.vng.pubgmobile", icon: "https://via.placeholder.com/45" }
+    { name: "PUBG Mobile", pkg: "com.vng.pubgmobile", icon: "https://via.placeholder.com/45" }
 ];
 
-let adminFiles = {
-    aimlock: { active: null, pending: null },
-    norecoil: { active: null, pending: null }
+let adminData = {
+    aimFile: null,
+    isMusicPlaying: false
 };
 
-window.onload = function() {
-    autoDetect();
-    const savedKey = localStorage.getItem('strongest_key');
-    if (savedKey) {
-        document.getElementById('license-key').value = savedKey;
-        checkLogin();
+// --- HIỆU ỨNG TUYẾT RƠI ---
+function createSnow() {
+    const container = document.getElementById('snow-container');
+    const snowCount = 30;
+    for (let i = 0; i < snowCount; i++) {
+        let flake = document.createElement('div');
+        flake.className = 'snowflake';
+        flake.innerHTML = '❄';
+        flake.style.left = Math.random() * 100 + 'vw';
+        flake.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        flake.style.opacity = Math.random();
+        flake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+        container.appendChild(flake);
     }
-};
+}
 
-function autoDetect() {
-    const ua = navigator.userAgent;
-    document.getElementById('os-info').innerText = /iPhone|iPad|iPod/i.test(ua) ? "iOS Device" : "Android Device";
+// --- LOGIN & MUSIC ---
+function checkLogin() {
+    const key = document.getElementById('license-key').value;
+    if (!key) return;
+    
+    // Tự động phát nhạc khi vào app
+    music.play().catch(() => console.log("Cần tương tác để phát nhạc"));
+    adminData.isMusicPlaying = true;
+
+    localStorage.setItem('strongest_session', key);
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('main-panel').classList.remove('hidden');
+
+    if (key === ADMIN_KEY) {
+        document.getElementById('dev-tab').classList.remove('hidden');
+        document.getElementById('key-type-badge').innerText = "OWNER";
+    }
+}
+
+function toggleMusic() {
+    if (adminData.isMusicPlaying) {
+        music.pause();
+        document.getElementById('music-toggle').innerText = "🔈";
+    } else {
+        music.play();
+        document.getElementById('music-toggle').innerText = "🔊";
+    }
+    adminData.isMusicPlaying = !adminData.isMusicPlaying;
+}
+
+// --- ADMIN: TẠO KEY (KEYGEN) ---
+function generateKey() {
+    const time = document.getElementById('key-time').value;
+    const randomStr = Math.random().toString(36).substring(2, 10).toUpperCase();
+    const newKey = `STR-${time}D-${randomStr}`;
+    document.getElementById('generated-key-box').value = newKey;
+    alert(`Đã tạo key thành công!\nHạn dùng: ${time === '999' ? 'Vĩnh viễn' : time + ' ngày'}`);
+}
+
+// --- QUẢN LÝ APP & FILE ---
+function requestNativeDeviceApps() {
+    const grid = document.getElementById('app-grid-container');
+    grid.innerHTML = '<p class="hint">Đang quét vạn vật...</p>';
+    
+    setTimeout(() => {
+        grid.innerHTML = '';
+        mockApps.forEach(app => {
+            const item = document.createElement('div');
+            item.className = 'app-item';
+            item.onclick = () => {
+                document.querySelectorAll('.app-item').forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+                document.getElementById('selected-target-pkg').value = app.pkg;
+                document.getElementById('display-target').innerText = app.name;
+            };
+            item.innerHTML = `<img src="${app.icon}" class="app-icon"><p class="app-name">${app.name}</p>`;
+            grid.appendChild(item);
+        });
+    }, 1000);
+}
+
+function prepareFile(type) {
+    document.getElementById('ok-aim').classList.remove('hidden');
+}
+
+function confirmFile(type) {
+    const f = document.getElementById('file-aim').files[0];
+    if (f) {
+        adminData.aimFile = f.name;
+        document.getElementById('active-files').innerHTML = `<p style="font-size:9px; color:green">● File đã nạp: ${f.name}</p>`;
+        document.getElementById('ok-aim').classList.add('hidden');
+        alert("Admin đã xác nhận file!");
+    }
+}
+
+// --- THỰC THI ---
+function toggleHack(name, cb) {
+    const pkg = document.getElementById('selected-target-pkg').value;
+    if (!pkg) { alert("Chưa chọn mục tiêu!"); cb.checked = false; return; }
+    if (cb.checked) {
+        alert(`Đang Inject ${name} vào ${pkg}...\nVật chất đang thay đổi!`);
+    }
 }
 
 function switchTab(el, id) {
@@ -33,94 +120,17 @@ function switchTab(el, id) {
     document.getElementById('tab-' + id).classList.remove('hidden');
 }
 
-function checkLogin() {
-    const key = document.getElementById('license-key').value;
-    if (!key) return;
-    localStorage.setItem('strongest_key', key);
-    document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('main-panel').classList.remove('hidden');
-    document.getElementById('display-key').innerText = key;
-
-    if (key === ADMIN_KEY) {
-        document.getElementById('dev-tab').classList.remove('hidden');
-        document.getElementById('key-type-badge').innerText = "OWNER / ADMIN";
-    }
+function logout() {
+    // Nhạc vẫn bật cho đến khi tắt hẳn app theo yêu cầu
+    localStorage.removeItem('strongest_session');
+    location.reload();
 }
 
-// --- QUẢN LÝ APP MỤC TIÊU ---
-function requestNativeDeviceApps() {
-    const container = document.getElementById('app-grid-container');
-    container.innerHTML = '<p class="placeholder-text">Đang quét máy...</p>';
-    
-    setTimeout(() => {
-        container.innerHTML = '';
-        mockApps.forEach(app => {
-            const card = document.createElement('div');
-            card.className = 'app-card';
-            card.onclick = () => {
-                document.querySelectorAll('.app-card').forEach(c => c.classList.remove('selected'));
-                card.classList.add('selected');
-                document.getElementById('selected-target-pkg').value = app.pkg;
-                document.getElementById('display-target').innerText = app.name;
-            };
-            card.innerHTML = `<img src="${app.icon}" class="app-card-icon"><p class="app-card-name">${app.name}</p>`;
-            container.appendChild(card);
-        });
-        alert("Đã tìm thấy " + mockApps.length + " ứng dụng Native!");
-    }, 1000);
+window.onload = () => {
+    createSnow();
+    autoDetect();
+};
+
+function autoDetect() {
+    document.getElementById('os-info').innerText = navigator.platform;
 }
-
-// --- QUẢN LÝ DẠNH MỤC FILE ---
-function prepareFile(type) {
-    const input = document.getElementById('file-' + type);
-    if (input.files.length > 0) {
-        adminFiles[type].pending = input.files[0].name;
-        document.getElementById('confirm-' + type).style.display = 'inline-block';
-    }
-}
-
-function confirmAndLoad(type) {
-    if (adminFiles[type].pending) {
-        adminFiles[type].active = adminFiles[type].pending;
-        adminFiles[type].pending = null;
-        document.getElementById('confirm-' + type).style.display = 'none';
-        renderFileList();
-        alert("Đã nạp file vào dạnh mục!");
-    }
-}
-
-function renderFileList() {
-    const list = document.getElementById('active-file-list');
-    list.innerHTML = '';
-    for (let key in adminFiles) {
-        if (adminFiles[key].active) {
-            list.innerHTML += `
-                <div class="file-item-edit">
-                    <span>● [${key.toUpperCase()}] ${adminFiles[key].active}</span>
-                    <span style="color:red; cursor:pointer" onclick="deleteFile('${key}')">XÓA</span>
-                </div>`;
-        }
-    }
-    if (!list.innerHTML) list.innerHTML = '<p class="placeholder-text">Chưa có file nạp...</p>';
-}
-
-function deleteFile(type) {
-    if (confirm("Xóa file khỏi dạnh mục?")) {
-        adminFiles[type].active = null;
-        renderFileList();
-    }
-}
-
-// --- THỰC THI ---
-function toggleHack(name, cb) {
-    const pkg = document.getElementById('selected-target-pkg').value;
-    const type = name.toLowerCase().includes('aim') ? 'aimlock' : 'norecoil';
-    const file = adminFiles[type].active;
-
-    if (!pkg) { alert("Chưa chọn App mục tiêu!"); cb.checked = false; return; }
-    if (cb.checked && !file) { alert("Admin chưa nạp file!"); cb.checked = false; return; }
-
-    alert(cb.checked ? `INJECT: ${file}\nTARGET: ${pkg}` : `RESTORE: ${pkg}`);
-}
-
-function logout() { localStorage.removeItem('strongest_key'); location.reload(); }

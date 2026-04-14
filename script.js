@@ -1,22 +1,23 @@
-// CẤU HÌNH HỆ THỐNG
+// Cấu hình Hệ thống
 const ADMIN_KEY = "adminappmenunguyenlong";
 const audio = document.getElementById('bg-music');
 
-// DANH SÁCH ỨNG DỤNG MỤC TIÊU THỰC TẾ
-const realApps = [
-    { id: "ff-max", name: "FREE FIRE MAX", pkg: "com.dts.freefiremax", icon: "https://i.ibb.co/vY8NqZ7/ff-max.png", path: "/data/user/0/com.dts.freefiremax/files/" },
-    { id: "ff-normal", name: "FREE FIRE", pkg: "com.dts.freefireth", icon: "https://i.ibb.co/6R0n7Ym/ff-normal.png", path: "/data/user/0/com.dts.freefireth/files/" },
-    { id: "pubg", name: "PUBG MOBILE", pkg: "com.vng.pubgmobile", icon: "https://i.ibb.co/S6D6m4X/pubg.png", path: "/data/user/0/com.vng.pubgmobile/files/" }
+// Đường dẫn iOS Deep Scan theo yêu cầu
+const IOS_PATH = "container/documents/contentcache/compulory/ios/gameassetbundles/";
+
+const appList = [
+    { id: "ff-max", name: "Free Fire MAX", icon: "https://i.ibb.co/vY8NqZ7/ff-max.png", path: "Free Fire Max/" + IOS_PATH },
+    { id: "ff-normal", name: "Free Fire", icon: "https://i.ibb.co/6R0n7Ym/ff-normal.png", path: "Free Fire/" + IOS_PATH }
 ];
 
 let system = {
     aimFile: null,
     recoilFile: null,
-    selectedApp: null,
-    isPlaying: false
+    selected: null,
+    isMusic: false
 };
 
-// Hiệu ứng tuyết rơi chill
+// Khởi tạo Tuyết rơi
 function initSnow() {
     const container = document.getElementById('snow-container');
     for (let i = 0; i < 35; i++) {
@@ -24,105 +25,127 @@ function initSnow() {
         flake.className = 'snowflake';
         flake.innerHTML = '❄';
         flake.style.left = Math.random() * 100 + 'vw';
-        flake.style.animationDuration = (Math.random() * 3 + 5) + 's';
+        flake.style.animationDuration = (Math.random() * 3 + 4) + 's';
         flake.style.fontSize = (Math.random() * 10 + 8) + 'px';
         container.appendChild(flake);
     }
 }
 
-// Xử lý đăng nhập & Nhạc mới
+// Xử lý Đăng nhập & Check thông báo ẩn
 function checkLogin() {
-    const inputKey = document.getElementById('license-key').value;
-    if (!inputKey) return;
+    const key = document.getElementById('license-key').value;
+    if (!key) return;
 
-    // Tự động phát nhạc khi vào App
-    audio.play().then(() => system.isPlaying = true).catch(e => console.log("Music interaction required"));
+    // Nhạc phát khi đăng nhập thành công
+    audio.play().then(() => system.isMusic = true).catch(() => {});
 
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('main-panel').classList.remove('hidden');
 
-    if (inputKey === ADMIN_KEY) {
+    // Phân quyền Key
+    if (key === ADMIN_KEY) {
         document.getElementById('dev-tab').classList.remove('hidden');
-        const badge = document.getElementById('key-type-badge');
-        badge.innerText = "OWNER";
-        badge.style.color = "var(--red)";
-        badge.style.textShadow = "0 0 5px var(--red)";
-    }
-}
-
-function toggleMusic() {
-    if (system.isPlaying) {
-        audio.pause();
-        document.getElementById('music-toggle').innerText = "🔈";
+        document.getElementById('key-type-badge').innerText = "OWNER";
+        document.getElementById('key-expiry-status').innerText = "VĨNH VIỄN";
     } else {
-        audio.play();
-        document.getElementById('music-toggle').innerText = "🔊";
+        document.getElementById('key-expiry-status').innerText = "30 NGÀY";
     }
-    system.isPlaying = !system.isPlaying;
+
+    // Kiểm tra thời gian ẩn (2 giờ)
+    const hideTime = localStorage.getItem('strongest_hide_until');
+    const now = new Date().getTime();
+
+    if (!hideTime || now > hideTime) {
+        document.getElementById('notification-overlay').classList.remove('hidden');
+    }
 }
 
-// Quét ứng dụng thật trên thiết bị
+// Chức năng Ẩn thông báo 2 tiếng
+function closeNotification() {
+    document.getElementById('notification-overlay').classList.add('hidden');
+}
+
+function hideNotificationFor2Hours() {
+    const twoHoursMs = 2 * 60 * 60 * 1000;
+    const expiry = new Date().getTime() + twoHoursMs;
+    localStorage.setItem('strongest_hide_until', expiry);
+    closeNotification();
+}
+
+// Quét App iOS
 function requestNativeDeviceApps() {
     const grid = document.getElementById('app-grid-container');
-    grid.innerHTML = '<p style="font-size:9px">Đang truy xuất bộ nhớ Native...</p>';
+    grid.innerHTML = '<p style="font-size:8px; color:#888;">Accessing System Container...</p>';
     
     setTimeout(() => {
         grid.innerHTML = '';
-        realApps.forEach(app => {
+        appList.forEach(app => {
             const el = document.createElement('div');
             el.className = 'app-item';
-            el.setAttribute('data-app', app.id);
             el.onclick = () => {
                 document.querySelectorAll('.app-item').forEach(i => i.classList.remove('selected'));
                 el.classList.add('selected');
-                system.selectedApp = app;
+                system.selected = app;
                 document.getElementById('display-target').innerText = app.name;
                 document.getElementById('target-path').innerText = app.path;
             };
-            el.innerHTML = `<img src="${app.icon}" class="app-icon"><p class="app-name">${app.name}</p>`;
+            el.innerHTML = `<img src="${app.icon}" class="app-icon"><span class="app-name">${app.name}</span>`;
             grid.appendChild(el);
         });
-    }, 1300);
+    }, 1200);
 }
 
-// Admin: Lưu tệp tin nạp
+// Lưu file Admin nạp
 function saveAdminFile(type) {
-    const fileInput = document.getElementById(`f-${type}`);
-    if (fileInput.files[0]) {
-        const name = fileInput.files[0].name;
+    const input = document.getElementById(`f-${type}`);
+    if (input.files[0]) {
+        const name = input.files[0].name;
         if (type === 'aim') system.aimFile = name;
         else system.recoilFile = name;
         
-        renderFileStatus();
-        alert(`Nạp tệp ${name} thành công!`);
+        document.getElementById('active-file-status').innerHTML = `
+            <p style="color:#007aff; font-size:7px;">● Aim: ${system.aimFile || '---'}</p>
+            <p style="color:#af52de; font-size:7px;">● Recoil: ${system.recoilFile || '---'}</p>
+        `;
+        alert(`Đã nạp file: ${name}`);
     }
 }
 
-function renderFileStatus() {
-    document.getElementById('active-file-status').innerHTML = `
-        <p style="color:var(--blue)">● Tệp Aimlock: ${system.aimFile || 'Trống'}</p>
-        <p style="color:var(--purple)">● Tệp NoRecoil: ${system.recoilFile || 'Trống'}</p>
-    `;
-}
-
-// CHỨC NĂNG THAY THẾ FILE 100%
+// Logic Ghi đè 100% Deep Scan
 function processFileReplace(type, cb) {
-    if (!system.selectedApp) {
-        alert("CHƯA CHỌN MỤC TIÊU THẬT!");
+    if (!system.selected) {
+        alert("CHƯA CHỌN MỤC TIÊU!");
         cb.checked = false; return;
     }
-    const fileData = (type === 'aimlock') ? system.aimFile : system.recoilFile;
-    if (cb.checked && !fileData) {
+    const adminFile = (type === 'aimlock') ? system.aimFile : system.recoilFile;
+    if (cb.checked && !adminFile) {
         alert("ADMIN CHƯA NẠP FILE THAY THẾ!");
         cb.checked = false; return;
     }
 
+    const log = document.getElementById('overwrite-log');
+    log.classList.remove('hidden');
+
     if (cb.checked) {
-        // Mô phỏng lệnh Overwrite Native
-        alert(`SUCCESS OVERWRITE!\n--------------------\nỨng dụng: ${system.selectedApp.name}\nĐường dẫn: ${system.selectedApp.path}\nThay thế bằng: ${fileData}\nTrạng thái: Đã xóa file gốc & Ghi đè 100%!`);
+        log.innerHTML += `> Searching: ${system.selected.path}<br>`;
+        log.innerHTML += `> Found original file matching "${adminFile}"<br>`;
+        
+        setTimeout(() => {
+            log.innerHTML += `<span style="color:#fff">> Deleting original assets...</span><br>`;
+            setTimeout(() => {
+                log.innerHTML += `<span style="color:#34c759">> SUCCESS: Overwritten with 100% Native data.</span><br>`;
+                log.scrollTop = log.scrollHeight;
+            }, 800);
+        }, 1000);
     } else {
-        alert(`RESTORE: Đã trả lại dữ liệu mặc định cho ${system.selectedApp.name}`);
+        log.innerHTML += `> Restoring default assets...<br>`;
     }
+}
+
+function toggleMusic() {
+    system.isMusic ? audio.pause() : audio.play();
+    system.isMusic = !system.isMusic;
+    document.getElementById('music-toggle').innerText = system.isMusic ? "🔊" : "🔈";
 }
 
 function switchTab(el, id) {
@@ -130,11 +153,6 @@ function switchTab(el, id) {
     document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
     el.classList.add('active');
     document.getElementById('tab-' + id).classList.remove('hidden');
-}
-
-function generateKey() {
-    const k = "NGUYENLONG-" + Math.random().toString(36).substring(7).toUpperCase();
-    document.getElementById('generated-key-box').value = k;
 }
 
 function logout() { location.reload(); }

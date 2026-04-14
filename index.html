@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aimlock Strongest System</title>
+    <title>Aimlock Strongest System System❄️</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -30,6 +30,7 @@
             <div class="nav-tabs">
                 <div class="tab active" onclick="switchTab(this, 'dashboard')">DASHBOARD</div>
                 <div class="tab" onclick="switchTab(this, 'chucnang')">CHỨC NĂNG</div>
+                <div class="tab" onclick="switchTab(this, 'logs')">LOGS</div>
                 <div id="dev-tab" class="tab hidden" onclick="switchTab(this, 'developer')" style="color:#ff4757">DEVELOPER</div>
             </div>
         </div>
@@ -38,25 +39,30 @@
             
             <div id="tab-dashboard" class="tab-content">
                 <div class="neumorphic-card">
-                    <div class="section-title">CẤU HÌNH THIẾT BỊ</div>
-                    <div class="row">
-                        <span style="font-size: 11px;">Chọn App từ máy:</span>
-                        <button class="btn-small" onclick="requestDeviceApps()">QUÉT THIẾT BỊ</button>
+                    <div class="section-title">HỆ THỐNG MỤC TIÊU</div>
+                    <div class="row" style="margin-bottom: 15px;">
+                        <span style="font-size: 11px;">Quét ứng dụng máy:</span>
+                        <button class="btn-scan" onclick="requestDeviceApps()">QUÉT THIẾT BỊ</button>
                     </div>
-                    <select id="user-app-select" class="input-field select-custom">
-                        <option value="">-- Click Quét Thiết Bị --</option>
-                    </select>
+                    
+                    <div id="app-list-container" class="app-list-grid">
+                        <p style="font-size: 10px; color: #7b8b9e; text-align: center; width: 100%;">Click Quét Thiết Bị để tải...</p>
+                    </div>
+                    
+                    <input type="hidden" id="selected-app-pkg" value="">
                 </div>
+                
                 <div class="neumorphic-card">
-                    <div class="section-title">THÔNG TIN HỆ THỐNG</div>
-                    <div class="row"><span>Device:</span> <span class="val" id="os-info">---</span></div>
+                    <div class="section-title">THÔNG TIN THIẾT BỊ</div>
+                    <div class="row"><span>Thiết bị:</span> <span class="val" id="os-info">---</span></div>
+                    <div class="row"><span>Hệ điều hành:</span> <span class="val" id="browser-info">---</span></div>
                     <div class="row"><span>Status:</span> <span class="val" style="color:#2ecc71;">READY</span></div>
                 </div>
             </div>
 
             <div id="tab-chucnang" class="tab-content hidden">
                 <div class="neumorphic-card">
-                    <div class="section-title">INJECTOR CONTROL</div>
+                    <div class="section-title">SYSTEM CONTROL</div>
                     <div class="row">
                         <span>Aimlock System</span>
                         <label class="switch"><input type="checkbox" onchange="toggleHack('Aimlock', this)"><span class="slider"></span></label>
@@ -68,12 +74,21 @@
                 </div>
             </div>
 
+            <div id="tab-logs" class="tab-content hidden">
+                <div class="neumorphic-card">
+                    <div class="section-title">KEY STATUS</div>
+                    <div class="row"><span>Mã Key:</span> <span class="val" id="display-key">---</span></div>
+                    <div class="row"><span>Loại Key:</span> <span class="val" style="color:#ff4757;">Premium Admin</span></div>
+                    <div class="row"><span>Hạn dùng:</span> <span class="val">Vĩnh Viễn</span></div>
+                </div>
+            </div>
+
             <div id="tab-developer" class="tab-content hidden">
                 <div id="admin-controls-area" class="neumorphic-card" style="border: 1px solid #ff4757;">
                     <div class="section-title" style="color: #ff4757;">ADMIN FILE MANAGER</div>
                     
                     <div class="admin-file-box">
-                        <p class="file-label">DATA AIMLOCK (.lua/.txt):</p>
+                        <p class="file-label">FILE AIMLOCK (.lua/.txt):</p>
                         <div class="row-flex">
                             <input type="file" id="input-aim" style="display:none" onchange="prepareFile('aimlock')">
                             <button class="btn-action" onclick="document.getElementById('input-aim').click()">CHỌN</button>
@@ -83,7 +98,7 @@
                     </div>
 
                     <div class="admin-file-box" style="margin-top:10px;">
-                        <p class="file-label">DATA NO RECOIL (.lua/.txt):</p>
+                        <p class="file-label">FILE NO RECOIL (.lua/.txt):</p>
                         <div class="row-flex">
                             <input type="file" id="input-recoil" style="display:none" onchange="prepareFile('norecoil')">
                             <button class="btn-action" onclick="document.getElementById('input-recoil').click()">CHỌN</button>
@@ -91,10 +106,16 @@
                         </div>
                         <p id="label-recoil" class="status-text">Chưa nạp</p>
                     </div>
+
+                    <p class="file-label" style="margin-top:15px;">TẠO KEY MỚI:</p>
+                    <div class="row">
+                        <input type="text" id="gen-key-display" class="input-field" style="width:65%; margin:0; font-size:10px;" readonly placeholder="Key sẽ tạo...">
+                        <button class="btn-action" style="flex:none; width:30%; padding:11px;" onclick="generateKey()">TẠO</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <button class="btn-logout" onclick="logout()">ĐĂNG XUẤT HỆ THỐNG</button>
+        <button class="btn-logout" onclick="logout()">ĐĂNG XUẤT</button>
     </div>
 
     <script src="script.js"></script>

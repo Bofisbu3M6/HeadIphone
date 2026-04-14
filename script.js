@@ -1,76 +1,99 @@
 const ADMIN_KEY = "0933653553adminappmenu";
 
-// NHẬN DẠNG THIẾT BỊ NGAY LẬP TỨC KHI VỪA TẢI
+// Tự động nhận diện khi trang tải xong
 window.onload = function() {
     autoDetectDevice();
     const savedKey = localStorage.getItem('strongest_key');
     if (savedKey) {
         document.getElementById('license-key').value = savedKey;
-        checkLogin();
+        // Nếu muốn tự động vào thẳng thì bỏ comment dòng dưới:
+        // checkLogin();
     }
 };
 
-function autoDetectDevice() {
-    const ua = navigator.userAgent;
-    let deviceName = "Unknown Device";
-    let osName = "Unknown OS";
+// HÀM CHUYỂN TAB (Dành cho thanh ngang)
+function switchTab(element, tabId) {
+    // 1. Xóa trạng thái active của tất cả các tab
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    // 2. Ẩn tất cả các nội dung tab
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
 
-    if (/iPhone/i.test(ua)) { deviceName = "iPhone"; osName = "iOS"; }
-    else if (/iPad/i.test(ua)) { deviceName = "iPad"; osName = "iOS"; }
-    else if (/Android/i.test(ua)) { deviceName = "Android Phone"; osName = "Android"; }
-    else if (/Windows/i.test(ua)) { deviceName = "PC / Desktop"; osName = "Windows"; }
-
-    // Gắn vào giao diện
-    if(document.getElementById('os-info')) {
-        document.getElementById('os-info').innerText = osName + " (" + deviceName + ")";
-        document.getElementById('browser-info').innerText = navigator.vendor || "Strongest Engine";
+    // 3. Thêm active vào tab vừa nhấn
+    element.classList.add('active');
+    // 4. Hiện nội dung của tab tương ứng
+    const targetContent = document.getElementById('tab-' + tabId);
+    if (targetContent) {
+        targetContent.classList.remove('hidden');
     }
 }
 
-// LOGIC KÍCH HOẠT VÀ CHẠY CODE FILE
-function toggleHack(name, checkbox) {
-    const targetApp = document.getElementById('app-target-input').value;
-    
-    // Lấy đoạn code script tương ứng từ Admin Panel
-    let scriptToRun = "";
-    if (name === "Aimlock") {
-        scriptToRun = document.getElementById('script-aimlock').value;
-    } else if (name === "No Recoil") {
-        scriptToRun = document.getElementById('script-norecoil').value;
-    }
-
-    if (checkbox.checked) {
-        console.log(`[INJECTING] ${name} to ${targetApp}`);
-        console.log(`[CODE] ${scriptToRun}`);
-        
-        // Hiển thị thông báo (thay thế cho quick status cũ)
-        alert(`Đang nạp Script ${name} vào ${targetApp}...\nCode: ${scriptToRun.substring(0, 20)}...`);
-    } else {
-        alert(`Đã ngắt kết nối Script ${name}`);
-    }
-}
-
+// HÀM ĐĂNG NHẬP
 function checkLogin() {
     const keyInput = document.getElementById('license-key').value;
     const adminArea = document.getElementById('admin-controls-area');
     
-    if (keyInput === "") return;
+    if (keyInput === "") {
+        alert("Vui lòng nhập Key!");
+        return;
+    }
 
     localStorage.setItem('strongest_key', keyInput);
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('main-panel').classList.remove('hidden');
-    autoDetectDevice(); // Chạy lại lần nữa để chắc chắn hiển thị
+    
+    // Cập nhật Key vào mục Logs
+    document.getElementById('display-key').innerText = keyInput;
 
+    // Kiểm tra quyền Admin
     if (keyInput === ADMIN_KEY) {
-        adminArea.classList.remove('hidden');
+        if(adminArea) adminArea.classList.remove('hidden');
+        document.getElementById('dev-tab').classList.remove('hidden');
         document.getElementById('key-type-badge').innerText = "OWNER / ADMIN";
         document.getElementById('key-type-badge').style.color = "#ff4757";
     }
 }
 
-// Giữ nguyên hàm tạo key FF-XXX
+// HÀM KÍCH HOẠT CHỨC NĂNG (Switch)
+function toggleHack(name, checkbox) {
+    const targetApp = document.getElementById('app-target-input').value || "com.dts.freefireth";
+    let scriptCode = "";
+
+    if (name === "Aimlock") {
+        scriptCode = document.getElementById('script-aimlock').value;
+    } else {
+        scriptCode = document.getElementById('script-norecoil')?.value || "Default Code";
+    }
+
+    if (checkbox.checked) {
+        alert(`Đang nạp Script ${name} vào ${targetApp}...\nCode: ${scriptCode.substring(0, 30)}...`);
+    }
+}
+
+// HÀM TẠO KEY
 function generateKey() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ123456789';
     const r = () => chars.charAt(Math.floor(Math.random() * chars.length));
-    document.getElementById('generated-key').value = `FF-${r()}${r()}${r()}-${r()}${r()}${r()}`;
+    const expiry = document.getElementById('key-expiry-select').value;
+    const key = `FF-${r()}${r()}${r()}-${r()}${r()}${r()}`;
+    
+    document.getElementById('generated-key').value = key;
+    alert(`Đã tạo thành công Key: ${key}\nHạn: ${expiry} ngày`);
+}
+
+// NHẬN DIỆN THIẾT BỊ
+function autoDetectDevice() {
+    const ua = navigator.userAgent;
+    let device = "iPhone / iOS";
+    if (/Android/i.test(ua)) device = "Android Device";
+    if (/Windows/i.test(ua)) device = "PC Windows";
+
+    const osElem = document.getElementById('os-info');
+    const brElem = document.getElementById('browser-info');
+    if(osElem) osElem.innerText = device;
+    if(brElem) brElem.innerText = "Strongest Engine v3.1";
+}
+
+function logout() {
+    localStorage.removeItem('strongest_key');
+    location.reload();
 }

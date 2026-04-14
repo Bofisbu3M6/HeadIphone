@@ -1,27 +1,24 @@
-:root { --bg: #e0e5ec; --shadow: #a3b1c6; --light: #ffffff; --primary: #4a8df8; --text: #44475a; }
+:root { --bg: #e0e5ec; --shadow: #a3b1c6; --light: #ffffff; --primary: #4a8df8; --red: #ff4757; }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-body { background: var(--bg); font-family: 'Montserrat', sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; color: var(--text); overflow-x: hidden; }
+body { background: var(--bg); font-family: 'Montserrat', sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; color: #444; }
 .hidden { display: none !important; }
 
-.title { font-family: 'Orbitron'; font-size: 18px; color: var(--primary); text-align: center; margin: 20px 0; letter-spacing: 1px; }
+.title { font-family: 'Orbitron'; font-size: 16px; color: var(--primary); text-align: center; margin: 15px 0; letter-spacing: 2px; text-shadow: 1px 1px 2px var(--shadow); }
 
 .neumorphic-card { background: var(--bg); border-radius: 20px; padding: 20px; box-shadow: 8px 8px 15px var(--shadow), -8px -8px 15px var(--light); margin-bottom: 20px; width: 100%; max-width: 400px; }
 
-.input-field { width: 100%; border: none; padding: 14px; border-radius: 12px; background: var(--bg); box-shadow: inset 5px 5px 10px var(--shadow), inset -5px -5px 10px var(--light); outline: none; margin-bottom: 12px; text-align: center; font-weight: 600; color: var(--text); }
-.select-custom { appearance: none; cursor: pointer; color: var(--primary); }
+.input-field { width: 100%; border: none; padding: 12px; border-radius: 12px; background: var(--bg); box-shadow: inset 5px 5px 10px var(--shadow), inset -5px -5px 10px var(--light); outline: none; margin-bottom: 12px; text-align: center; font-weight: 600; }
 
-.btn { width: 100%; padding: 15px; border: none; border-radius: 12px; background: var(--bg); color: var(--primary); font-weight: 800; cursor: pointer; box-shadow: 5px 5px 10px var(--shadow), -5px -5px 10px var(--light); transition: 0.2s; }
-.btn:active { box-shadow: inset 3px 3px 6px var(--shadow); transform: scale(0.98); }
+.btn { width: 100%; padding: 15px; border: none; border-radius: 12px; background: var(--bg); color: var(--primary); font-weight: 800; cursor: pointer; box-shadow: 5px 5px 10px var(--shadow), -5px -5px 10px var(--light); }
+.btn-small { padding: 8px 15px; border: none; border-radius: 8px; background: var(--bg); color: var(--primary); font-size: 10px; font-weight: 700; box-shadow: 3px 3px 6px var(--shadow), -3px -3px 6px var(--light); }
 
-.nav-container { width: 100%; max-width: 400px; overflow-x: auto; margin-bottom: 20px; }
-.nav-container::-webkit-scrollbar { display: none; }
-.nav-tabs { display: flex; gap: 10px; padding: 5px; }
-.tab { padding: 10px 18px; font-size: 10px; font-weight: 800; border-radius: 12px; box-shadow: 4px 4px 8px var(--shadow), -4px -4px 8px var(--light); white-space: nowrap; cursor: pointer; color: #7b8b9e; transition: 0.3s; }
+.nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; width: 100%; max-width: 400px; overflow-x: auto; padding: 5px; }
+.tab { padding: 10px 20px; font-size: 10px; font-weight: 800; border-radius: 10px; box-shadow: 4px 4px 8px var(--shadow), -4px -4px 8px var(--light); white-space: nowrap; cursor: pointer; color: #7b8b9e; }
 .tab.active { color: var(--primary); box-shadow: inset 3px 3px 6px var(--shadow); }
 
-.section-title { font-size: 11px; font-weight: 800; color: var(--primary); margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 8px; text-transform: uppercase; }
-.row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 10px; }
-.val { font-family: 'Orbitron'; color: var(--primary); font-size: 10px; }
+.section-title { font-size: 11px; font-weight: 800; color: var(--primary); margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 8px; }
+.row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.val { font-family: 'Orbitron'; font-size: 10px; color: var(--primary); }
 
 .switch { position: relative; width: 44px; height: 24px; }
 .switch input { opacity: 0; width: 0; height: 0; }
@@ -29,10 +26,11 @@ body { background: var(--bg); font-family: 'Montserrat', sans-serif; margin: 0; 
 .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background: #8c9cb0; border-radius: 50%; transition: .4s; }
 input:checked + .slider:before { transform: translateX(20px); background: var(--primary); }
 
-.admin-file-box { background: rgba(0,0,0,0.02); padding: 12px; border-radius: 15px; border: 1px dashed var(--shadow); }
-.badge { font-size: 9px; font-weight: 900; padding: 5px 12px; border-radius: 12px; box-shadow: 2px 2px 5px var(--shadow); }
-.green { color: #2ecc71; }
-.btn-logout { background: none; border: none; color: #ff4757; font-weight: bold; margin-top: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
-
-#main-panel { animation: fadeIn 0.4s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* Admin File Layout */
+.admin-file-box { background: rgba(0,0,0,0.02); padding: 12px; border-radius: 12px; border: 1px dashed var(--shadow); }
+.file-label { font-size: 9px; font-weight: bold; color: var(--primary); margin: 0 0 8px 0; }
+.row-flex { display: flex; gap: 8px; }
+.btn-action { flex: 2; padding: 10px; border-radius: 8px; border: none; background: var(--bg); box-shadow: 3px 3px 6px var(--shadow), -3px -3px 6px var(--light); font-size: 9px; font-weight: bold; }
+.btn-confirm { flex: 1; display: none; padding: 10px; border-radius: 8px; border: none; background: var(--bg); color: #2ecc71; box-shadow: 3px 3px 6px var(--shadow), -3px -3px 6px var(--light); font-size: 8px; font-weight: bold; }
+.status-text { font-size: 8px; text-align: center; margin-top: 6px; color: #7b8b9e; font-family: monospace; }
+.btn-logout { background: none; border: none; color: var(--red); font-weight: bold; margin-top: 10px; cursor: pointer; font-size: 11px; }

@@ -1,44 +1,55 @@
 const ADMIN_KEY = "adminappmenunguyenlong";
-const music = document.getElementById('bg-music');
+const audio = document.getElementById('bg-music');
 
-// Dữ liệu ứng dụng thực tế
-const mockApps = [
-    { name: "Free Fire MAX", pkg: "com.dts.freefiremax", icon: "https://i.ibb.co/image-0.png" },
-    { name: "Free Fire", pkg: "com.dts.freefireth", icon: "https://i.ibb.co/image-1.png" },
-    { name: "PUBG Mobile", pkg: "com.vng.pubgmobile", icon: "https://via.placeholder.com/45" }
+// 3 ỨNG DỤNG MỤC TIÊU THẬT
+const realApps = [
+    { name: "FREE FIRE MAX", pkg: "com.dts.freefiremax", icon: "https://i.ibb.co/vY8NqZ7/ff-max.png" },
+    { name: "FREE FIRE", pkg: "com.dts.freefireth", icon: "https://i.ibb.co/6R0n7Ym/ff-normal.png" },
+    { name: "PUBG MOBILE", pkg: "com.vng.pubgmobile", icon: "https://i.ibb.co/S6D6m4X/pubg.png" }
 ];
 
-let adminData = {
+let system = {
     aimFile: null,
-    isMusicPlaying: false
+    recoilFile: null,
+    musicPlaying: false,
+    selectedPkg: ""
 };
 
-// --- HIỆU ỨNG TUYẾT RƠI ---
-function createSnow() {
+// --- SNOW EFFECT ---
+function initSnow() {
     const container = document.getElementById('snow-container');
-    const snowCount = 30;
-    for (let i = 0; i < snowCount; i++) {
+    for (let i = 0; i < 35; i++) {
         let flake = document.createElement('div');
         flake.className = 'snowflake';
         flake.innerHTML = '❄';
         flake.style.left = Math.random() * 100 + 'vw';
-        flake.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        flake.style.animationDuration = (Math.random() * 3 + 5) + 's';
         flake.style.opacity = Math.random();
-        flake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+        flake.style.fontSize = (Math.random() * 10 + 8) + 'px';
         container.appendChild(flake);
     }
 }
 
-// --- LOGIN & MUSIC ---
+// --- MUSIC CONTROL ---
+function toggleMusic() {
+    if (system.musicPlaying) {
+        audio.pause();
+        document.getElementById('music-toggle').innerText = "🔈";
+    } else {
+        audio.play();
+        document.getElementById('music-toggle').innerText = "🔊";
+    }
+    system.musicPlaying = !system.musicPlaying;
+}
+
+// --- LOGIN ---
 function checkLogin() {
     const key = document.getElementById('license-key').value;
     if (!key) return;
-    
-    // Tự động phát nhạc khi vào app
-    music.play().catch(() => console.log("Cần tương tác để phát nhạc"));
-    adminData.isMusicPlaying = true;
 
-    localStorage.setItem('strongest_session', key);
+    // Phát nhạc tự động
+    audio.play().then(() => system.musicPlaying = true).catch(() => {});
+
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('main-panel').classList.remove('hidden');
 
@@ -48,69 +59,75 @@ function checkLogin() {
     }
 }
 
-function toggleMusic() {
-    if (adminData.isMusicPlaying) {
-        music.pause();
-        document.getElementById('music-toggle').innerText = "🔈";
-    } else {
-        music.play();
-        document.getElementById('music-toggle').innerText = "🔊";
-    }
-    adminData.isMusicPlaying = !adminData.isMusicPlaying;
-}
-
-// --- ADMIN: TẠO KEY (KEYGEN) ---
-function generateKey() {
-    const time = document.getElementById('key-time').value;
-    const randomStr = Math.random().toString(36).substring(2, 10).toUpperCase();
-    const newKey = `STR-${time}D-${randomStr}`;
-    document.getElementById('generated-key-box').value = newKey;
-    alert(`Đã tạo key thành công!\nHạn dùng: ${time === '999' ? 'Vĩnh viễn' : time + ' ngày'}`);
-}
-
-// --- QUẢN LÝ APP & FILE ---
+// --- APP SCANNER ---
 function requestNativeDeviceApps() {
     const grid = document.getElementById('app-grid-container');
-    grid.innerHTML = '<p class="hint">Đang quét vạn vật...</p>';
+    grid.innerHTML = '<p style="font-size:9px; color:#7b8b9e">Đang quét vạn vật...</p>';
     
     setTimeout(() => {
         grid.innerHTML = '';
-        mockApps.forEach(app => {
-            const item = document.createElement('div');
-            item.className = 'app-item';
-            item.onclick = () => {
+        realApps.forEach(app => {
+            const el = document.createElement('div');
+            el.className = 'app-item';
+            el.onclick = () => {
                 document.querySelectorAll('.app-item').forEach(i => i.classList.remove('selected'));
-                item.classList.add('selected');
-                document.getElementById('selected-target-pkg').value = app.pkg;
+                el.classList.add('selected');
+                system.selectedPkg = app.pkg;
                 document.getElementById('display-target').innerText = app.name;
             };
-            item.innerHTML = `<img src="${app.icon}" class="app-icon"><p class="app-name">${app.name}</p>`;
-            grid.appendChild(item);
+            el.innerHTML = `<img src="${app.icon}" class="app-icon"><p class="app-name">${app.name}</p>`;
+            grid.appendChild(el);
         });
-    }, 1000);
+    }, 1200);
 }
 
+// --- ADMIN FILE MGMT ---
 function prepareFile(type) {
-    document.getElementById('ok-aim').classList.remove('hidden');
+    document.getElementById(`ok-${type}`).classList.remove('hidden');
 }
 
 function confirmFile(type) {
-    const f = document.getElementById('file-aim').files[0];
-    if (f) {
-        adminData.aimFile = f.name;
-        document.getElementById('active-files').innerHTML = `<p style="font-size:9px; color:green">● File đã nạp: ${f.name}</p>`;
-        document.getElementById('ok-aim').classList.add('hidden');
-        alert("Admin đã xác nhận file!");
+    const fileInput = document.getElementById(`file-${type}`);
+    if (fileInput.files[0]) {
+        const name = fileInput.files[0].name;
+        if (type === 'aim') system.aimFile = name;
+        else system.recoilFile = name;
+        
+        renderFileStatus();
+        document.getElementById(`ok-${type}`).classList.add('hidden');
+        alert(`Đã nạp file ${name} thành công!`);
     }
 }
 
-// --- THỰC THI ---
+function renderFileStatus() {
+    const status = document.getElementById('active-files');
+    status.innerHTML = `
+        <p style="color:green">● Aimlock: ${system.aimFile || 'Trống'}</p>
+        <p style="color:green">● NoRecoil: ${system.recoilFile || 'Trống'}</p>
+    `;
+}
+
+// --- KEY GENERATOR ---
+function generateKey() {
+    const days = document.getElementById('key-time').value;
+    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const finalKey = `ST-${days}D-${code}`;
+    document.getElementById('generated-key-box').value = finalKey;
+    alert("Key mới đã được tạo!");
+}
+
+// --- FUNCTION CONTROL ---
 function toggleHack(name, cb) {
-    const pkg = document.getElementById('selected-target-pkg').value;
-    if (!pkg) { alert("Chưa chọn mục tiêu!"); cb.checked = false; return; }
-    if (cb.checked) {
-        alert(`Đang Inject ${name} vào ${pkg}...\nVật chất đang thay đổi!`);
+    if (!system.selectedPkg) {
+        alert("Vui lòng chọn Ứng dụng mục tiêu!");
+        cb.checked = false; return;
     }
+    const file = (name === 'Aimlock') ? system.aimFile : system.recoilFile;
+    if (cb.checked && !file) {
+        alert(`Admin chưa nạp file cho ${name}!`);
+        cb.checked = false; return;
+    }
+    alert(cb.checked ? `INJECT: ${file}\nTARGET: ${system.selectedPkg}` : `RESORE: ${system.selectedPkg}`);
 }
 
 function switchTab(el, id) {
@@ -120,17 +137,9 @@ function switchTab(el, id) {
     document.getElementById('tab-' + id).classList.remove('hidden');
 }
 
-function logout() {
-    // Nhạc vẫn bật cho đến khi tắt hẳn app theo yêu cầu
-    localStorage.removeItem('strongest_session');
-    location.reload();
-}
+function logout() { location.reload(); }
 
 window.onload = () => {
-    createSnow();
-    autoDetect();
-};
-
-function autoDetect() {
+    initSnow();
     document.getElementById('os-info').innerText = navigator.platform;
-}
+};

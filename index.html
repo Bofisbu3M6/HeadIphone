@@ -82,22 +82,28 @@
         </div>
     </div>
 
-    <div id="admin-controls-area" class="neumorphic-card hidden" style="border: 1px solid #ff4757;">
-        <div class="section-title" style="color: #ff4757;">ADMIN MASTER CONTROL</div>
-        
-        <div class="row">
-            <span style="font-size: 10px;">Target App:</span>
-            <input type="text" id="app-target-input" class="input-field" 
-                   style="margin:0; width: 60%; font-size: 10px; height: 30px;" 
-                   value="com.dts.freefireth">
-        </div>
+    <<div id="admin-controls-area" class="neumorphic-card hidden" style="border: 1px solid #ff4757;">
+    <div class="section-title" style="color: #ff4757;">ADMIN SCRIPT CONTROL</div>
+    
+    <div class="row">
+        <span>Target App:</span>
+        <input type="text" id="app-target-input" class="input-field" style="margin:0; width: 60%; font-size: 10px; height: 30px;" value="com.dts.freefireth">
+    </div>
 
-        <div style="margin-top: 15px;">
-            <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">GENERATE KEY (FF-XXX-XXX)</p>
-            <div class="row">
-                <input type="text" id="generated-key" class="input-field" style="margin: 0; width: 65%; font-size: 10px;" readonly>
-                <button class="btn" style="width: 30%; padding: 8px; font-size: 9px;" onclick="generateKey()">TẠO</button>
-            </div>
+    <div style="margin-top: 10px;">
+        <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">SCRIPT AIMLOCK:</p>
+        <textarea id="script-aimlock" class="input-field" style="height: 60px; font-size: 9px; text-align: left; font-family: monospace;" placeholder="Dán code aimlock vào đây..."></textarea>
+    </div>
+
+    <div style="margin-top: 10px;">
+        <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">SCRIPT NO RECOIL:</p>
+        <textarea id="script-norecoil" class="input-field" style="height: 60px; font-size: 9px; text-align: left; font-family: monospace;" placeholder="Dán code no recoil vào đây..."></textarea>
+    </div>
+
+    <div style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px;">
+        <div class="row">
+            <input type="text" id="generated-key" class="input-field" style="margin: 0; width: 65%; font-size: 10px;" readonly>
+            <button class="btn" style="width: 30%; padding: 8px; font-size: 9px;" onclick="generateKey()">TẠO KEY</button>
         </div>
     </div>
 </div>

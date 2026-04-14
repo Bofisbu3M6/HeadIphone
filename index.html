@@ -83,17 +83,17 @@
                     <div class="file-upload-group">
                         <span class="file-label color-blue">FILE AIMLOCK:</span>
                         <div class="file-actions">
-                            <input type="file" id="f-aim" hidden onchange="showConfirm('aim')">
+                            <input type="file" id="f-aim" hidden>
                             <button class="btn-sub" onclick="document.getElementById('f-aim').click()">CHỌN</button>
-                            <button id="ok-aim" class="btn-ok" onclick="saveAdminFile('aim')">OK</button>
+                            <button class="btn-ok" onclick="saveAdminFile('aim')">OK</button>
                         </div>
                     </div>
                     <div class="file-upload-group" style="margin-top: 15px;">
                         <span class="file-label color-purple">FILE NO RECOIL:</span>
                         <div class="file-actions">
-                            <input type="file" id="f-recoil" hidden onchange="showConfirm('recoil')">
+                            <input type="file" id="f-recoil" hidden>
                             <button class="btn-sub" onclick="document.getElementById('f-recoil').click()">CHỌN</button>
-                            <button id="ok-recoil" class="btn-ok" onclick="saveAdminFile('recoil')">OK</button>
+                            <button class="btn-ok" onclick="saveAdminFile('recoil')">OK</button>
                         </div>
                     </div>
                     <div id="active-file-status" class="status-summary"></div>
@@ -110,9 +110,8 @@
                 <span>HỆ THỐNG STRONGEST</span>
             </div>
             <div class="alert-body">
-                <p>Kích hoạt hệ thống thành công!</p>
+                <p>Kích hoạt thành công!</p>
                 <h2 id="key-expiry-status" class="blue-text">VĨNH VIỄN</h2>
-                <p class="small-note">Thiết bị đã được phê duyệt.</p>
             </div>
             <div class="alert-footer">
                 <button class="btn-alert-close" onclick="closeNotification()">OK</button>

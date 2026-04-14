@@ -1,49 +1,54 @@
-// Key Admin của bạn
-const MY_ADMIN_KEY = "0933653553adminappmenu";
+const ADMIN_KEY = "0933653553adminappmenu";
+
+window.onload = function() {
+    const savedKey = localStorage.getItem('strongest_key');
+    if (savedKey) {
+        document.getElementById('license-key').value = savedKey;
+        checkLogin();
+    }
+};
 
 function checkLogin() {
     const keyInput = document.getElementById('license-key').value;
-    const loginScreen = document.getElementById('login-screen');
-    const mainPanel = document.getElementById('main-panel');
-    const keyTypeBadge = document.getElementById('key-type');
+    const remember = document.getElementById('remember-key').checked;
     
-    // Các phần tử chỉ dành cho Admin
-    const adminTab = document.getElementById('admin-only-tab');
-    const adminSettings = document.getElementById('admin-settings');
+    if (keyInput === "") return;
 
-    if (keyInput === "") {
-        alert("Vui lòng nhập Key!");
-        return;
+    if (remember) {
+        localStorage.setItem('strongest_key', keyInput);
     }
 
-    loginScreen.classList.add('hidden');
-    mainPanel.classList.remove('hidden');
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('main-panel').classList.remove('hidden');
 
-    // Nếu là Admin
-    if (keyInput === MY_ADMIN_KEY) {
-        keyTypeBadge.innerText = "ADMIN ACCESS";
-        keyTypeBadge.style.color = "#ff4757";
-        // Hiện menu bí mật
-        adminTab.classList.remove('hidden');
-        adminSettings.classList.remove('hidden');
-        console.log("Welcome Admin!");
-    } else {
-        keyTypeBadge.innerText = "MEMBER";
+    // Nếu là Admin thì mở tab Developer
+    if (keyInput === ADMIN_KEY) {
+        document.getElementById('dev-tab').classList.remove('hidden');
+        document.getElementById('key-type').innerText = "ADMIN ACCESS";
+        document.getElementById('key-type').style.color = "#ff4757";
     }
 }
 
-// Logic gạt nút thay đổi tiêu đề (Chỉ hoạt động khi Admin gạt)
+function switchTab(element, tabId) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    element.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+    document.getElementById('tab-' + tabId).classList.remove('hidden');
+}
+
+// Logic gạt nút để thay đổi trạng thái (Nếu cần thay đổi màu sắc mạnh hơn)
 document.getElementById('master-toggle').addEventListener('change', function() {
     const appTitle = document.getElementById('app-title');
-    const webTitle = document.getElementById('web-title');
-
     if (this.checked) {
-        appTitle.innerText = "Aimlock Strongest iPhone❄️";
         appTitle.style.color = "#2067e1";
-        webTitle.innerText = "Aimlock Strongest iPhone❄️";
+        appTitle.style.textShadow = "0 0 20px rgba(32, 103, 225, 0.6)";
     } else {
-        appTitle.innerText = "Aimlock Strongest iPhone❄️";
         appTitle.style.color = "#4a8df8";
-        webTitle.innerText = "Aimlock Strongest iPhone❄️";
+        appTitle.style.textShadow = "0 0 10px rgba(74, 141, 248, 0.3)";
     }
 });
+
+function logout() {
+    localStorage.removeItem('strongest_key');
+    location.reload();
+}

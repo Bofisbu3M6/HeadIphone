@@ -1,96 +1,82 @@
-const ADMIN_KEY = "0933653553adminappmenu";
+const ADMIN_KEY = "bofisbuadminapp";
+let activeFiles = { aimlock: null, norecoil: null };
 
-// Tự động nhận diện khi trang tải xong
+// Tự động quét khi load
 window.onload = function() {
     autoDetectDevice();
     const savedKey = localStorage.getItem('strongest_key');
     if (savedKey) {
         document.getElementById('license-key').value = savedKey;
-        // Nếu muốn tự động vào thẳng thì bỏ comment dòng dưới:
-        // checkLogin();
+        checkLogin();
     }
 };
 
-// HÀM CHUYỂN TAB (Dành cho thanh ngang)
 function switchTab(element, tabId) {
-    // 1. Xóa trạng thái active của tất cả các tab
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    // 2. Ẩn tất cả các nội dung tab
     document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-
-    // 3. Thêm active vào tab vừa nhấn
     element.classList.add('active');
-    // 4. Hiện nội dung của tab tương ứng
-    const targetContent = document.getElementById('tab-' + tabId);
-    if (targetContent) {
-        targetContent.classList.remove('hidden');
-    }
+    document.getElementById('tab-' + tabId).classList.remove('hidden');
 }
 
-// HÀM ĐĂNG NHẬP
 function checkLogin() {
     const keyInput = document.getElementById('license-key').value;
-    const adminArea = document.getElementById('admin-controls-area');
-    
-    if (keyInput === "") {
-        alert("Vui lòng nhập Key!");
-        return;
-    }
+    if (keyInput === "") return;
 
     localStorage.setItem('strongest_key', keyInput);
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('main-panel').classList.remove('hidden');
-    
-    // Cập nhật Key vào mục Logs
     document.getElementById('display-key').innerText = keyInput;
 
-    // Kiểm tra quyền Admin
     if (keyInput === ADMIN_KEY) {
-        if(adminArea) adminArea.classList.remove('hidden');
+        document.getElementById('admin-controls-area').classList.remove('hidden');
         document.getElementById('dev-tab').classList.remove('hidden');
         document.getElementById('key-type-badge').innerText = "OWNER / ADMIN";
-        document.getElementById('key-type-badge').style.color = "#ff4757";
+        document.getElementById('display-key-type').innerText = "Premium Admin";
     }
 }
 
-// HÀM KÍCH HOẠT CHỨC NĂNG (Switch)
-function toggleHack(name, checkbox) {
-    const targetApp = document.getElementById('app-target-input').value || "com.dts.freefireth";
-    let scriptCode = "";
-
-    if (name === "Aimlock") {
-        scriptCode = document.getElementById('script-aimlock').value;
-    } else {
-        scriptCode = document.getElementById('script-norecoil')?.value || "Default Code";
+function handleFileSelect(type) {
+    const fileInput = document.getElementById('input-file-' + type);
+    const status = document.getElementById('status-' + type);
+    if (fileInput.files.length > 0) {
+        activeFiles[type] = fileInput.files[0].name;
+        status.innerText = "● Đã nạp: " + activeFiles[type];
+        status.style.color = "#2ecc71";
     }
+}
+
+function toggleHack(name, checkbox) {
+    const targetApp = document.getElementById('app-target-input').value;
+    const typeKey = name === "Aimlock" ? "aimlock" : "norecoil";
+    const fileName = activeFiles[typeKey];
 
     if (checkbox.checked) {
-        alert(`Đang nạp Script ${name} vào ${targetApp}...\nCode: ${scriptCode.substring(0, 30)}...`);
+        if (!fileName) {
+            alert(`Lỗi: Admin chưa nạp file cho ${name}!`);
+            checkbox.checked = false;
+            return;
+        }
+        alert(`INJECTING SUCCESS!\nFile: ${fileName}\nTarget: ${targetApp}`);
     }
 }
 
-// HÀM TẠO KEY
 function generateKey() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ123456789';
     const r = () => chars.charAt(Math.floor(Math.random() * chars.length));
     const expiry = document.getElementById('key-expiry-select').value;
     const key = `FF-${r()}${r()}${r()}-${r()}${r()}${r()}`;
-    
     document.getElementById('generated-key').value = key;
-    alert(`Đã tạo thành công Key: ${key}\nHạn: ${expiry} ngày`);
+    alert(`Đã tạo Key: ${key}\nHạn: ${expiry}`);
 }
 
-// NHẬN DIỆN THIẾT BỊ
 function autoDetectDevice() {
     const ua = navigator.userAgent;
-    let device = "iPhone / iOS";
-    if (/Android/i.test(ua)) device = "Android Device";
-    if (/Windows/i.test(ua)) device = "PC Windows";
-
-    const osElem = document.getElementById('os-info');
-    const brElem = document.getElementById('browser-info');
-    if(osElem) osElem.innerText = device;
-    if(brElem) brElem.innerText = "Strongest Engine v3.1";
+    let device = "PC / Desktop";
+    if (/iPhone|iPad|iPod/i.test(ua)) device = "iPhone / iOS";
+    else if (/Android/i.test(ua)) device = "Android Device";
+    
+    document.getElementById('os-info').innerText = device;
+    document.getElementById('browser-info').innerText = navigator.vendor || "Strongest Engine";
 }
 
 function logout() {

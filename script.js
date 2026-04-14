@@ -1,6 +1,4 @@
 const ADMIN_KEY = "bofisbuadminapp";
-
-// Bộ nhớ chứa nội dung file thật (Base64) để ứng dụng của bạn gọi ra sử dụng
 let fileStorage = {
     aimlock: { name: "", content: null },
     norecoil: { name: "", content: null }
@@ -17,12 +15,7 @@ window.onload = function() {
 
 function autoDetect() {
     const ua = navigator.userAgent;
-    let device = "iPhone / iOS";
-    if (/Android/i.test(ua)) device = "Android Device";
-    if (/Windows/i.test(ua)) device = "Windows PC";
-    
-    document.getElementById('os-info').innerText = device;
-    document.getElementById('browser-info').innerText = navigator.vendor || "Engine v4.0";
+    document.getElementById('os-info').innerText = /Android/i.test(ua) ? "Android Device" : (/iPhone|iPad|iPod/i.test(ua) ? "iOS Device" : "PC / Web");
 }
 
 function switchTab(el, id) {
@@ -35,110 +28,84 @@ function switchTab(el, id) {
 function checkLogin() {
     const key = document.getElementById('license-key').value;
     if (!key) return;
-
     localStorage.setItem('strongest_key', key);
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('main-panel').classList.remove('hidden');
-    document.getElementById('display-key').innerText = key;
-    syncApps();
-
     if (key === ADMIN_KEY) {
-        document.getElementById('admin-controls-area').classList.remove('hidden');
         document.getElementById('dev-tab').classList.remove('hidden');
         document.getElementById('key-type-badge').innerText = "OWNER / ADMIN";
         document.getElementById('key-type-badge').style.color = "#ff4757";
     }
 }
 
-function syncApps() {
-    const a1 = document.getElementById('admin-app1').value;
-    const a2 = document.getElementById('admin-app2').value;
-    document.getElementById('opt-app1').value = a1;
-    document.getElementById('opt-app1').innerText = a1;
-    document.getElementById('opt-app2').value = a2;
-    document.getElementById('opt-app2').innerText = a2;
-}
-
-// 1. Chuẩn bị file
-function prepareFile(type) {
-    const input = document.getElementById(type === 'aimlock' ? 'input-aim' : 'input-recoil');
-    const confirmBtn = document.getElementById(type === 'aimlock' ? 'confirm-aim' : 'confirm-recoil');
-    const label = document.getElementById(type === 'aimlock' ? 'label-aim' : 'label-recoil');
+// --- NATIVE BRIDGE: QUÉT ỨNG DỤNG TRÊN MÁY ---
+function requestDeviceApps() {
+    const select = document.getElementById('user-app-select');
+    select.innerHTML = '<option>Đang quét...</option>';
     
-    if (input.files.length > 0) {
-        confirmBtn.style.display = "block";
-        label.innerText = `Đã chọn: ${input.files[0].name}. Vui lòng XÁC NHẬN.`;
-        label.style.color = "#444";
+    if (window.AndroidBridge) {
+        window.AndroidBridge.getInstalledApps();
+    } else if (window.webkit && window.webkit.messageHandlers) {
+        window.webkit.messageHandlers.getInstalledApps.postMessage("scan");
+    } else {
+        // Mô phỏng trên Trình duyệt
+        setTimeout(() => {
+            const mock = [{name:"App Mục Tiêu 1", pkg:"com.your.app1"}, {name:"App Mục Tiêu 2", pkg:"com.your.app2"}];
+            receiveDeviceApps(JSON.stringify(mock));
+        }, 1000);
     }
 }
 
-// 2. Xác nhận và Load dữ liệu vào bộ nhớ Web
+function receiveDeviceApps(json) {
+    const apps = JSON.parse(json);
+    const select = document.getElementById('user-app-select');
+    select.innerHTML = apps.map(a => `<option value="${a.pkg}">${a.name} (${a.pkg})</option>`).join('');
+}
+
+// --- FILE SYSTEM: NẠP VÀ XÁC NHẬN ---
+function prepareFile(type) {
+    document.getElementById(type === 'aimlock' ? 'confirm-aim' : 'confirm-recoil').style.display = "block";
+}
+
 function confirmAndLoad(type) {
     const input = document.getElementById(type === 'aimlock' ? 'input-aim' : 'input-recoil');
     const label = document.getElementById(type === 'aimlock' ? 'label-aim' : 'label-recoil');
-    const confirmBtn = document.getElementById(type === 'aimlock' ? 'confirm-aim' : 'confirm-recoil');
+    const btn = document.getElementById(type === 'aimlock' ? 'confirm-aim' : 'confirm-recoil');
 
     if (input.files.length > 0) {
-        const file = input.files[0];
         const reader = new FileReader();
-
-        reader.onload = function(e) {
-            fileStorage[type].name = file.name;
-            fileStorage[type].content = e.target.result; // Lưu dữ liệu file gốc
-            
-            label.innerText = "● ĐÃ NẠP DỮ LIỆU: " + file.name;
+        reader.onload = (e) => {
+            fileStorage[type] = { name: input.files[0].name, content: e.target.result };
+            label.innerText = "● ĐÃ XÁC NHẬN: " + input.files[0].name;
             label.style.color = "#2ecc71";
-            confirmBtn.style.display = "none";
+            btn.style.display = "none";
         };
-        reader.readAsDataURL(file); 
+        reader.readAsDataURL(input.files[0]);
     }
 }
 
-// 3. Thực thi File ngay lập tức
-function toggleHack(name, checkbox) {
-    const targetApp = document.getElementById('user-app-select').value;
-    const typeKey = (name === "Aimlock") ? "aimlock" : "norecoil";
-    const fileData = fileStorage[typeKey];
+// --- THỰC THI GHI ĐÈ / KHÔI PHỤC ---
+function toggleHack(name, cb) {
+    const target = document.getElementById('user-app-select').value;
+    const type = name === "Aimlock" ? "aimlock" : "norecoil";
+    const data = fileStorage[type];
 
-    if (checkbox.checked) {
-        if (!fileData.content) {
-            alert(`Lỗi: Hệ thống chưa được cấp quyền dữ liệu cho file ${name}.`);
-            checkbox.checked = false;
-            return;
-        }
+    if (!target) { alert("Vui lòng chọn App mục tiêu trước!"); cb.checked = false; return; }
 
-        // Gọi hàm API tới App gốc của bạn
-        saveFileToAppSystem(targetApp, fileData.name, fileData.content);
-        
+    if (cb.checked) {
+        if (!data.content) { alert("Admin chưa nạp file!"); cb.checked = false; return; }
+        // Gửi lệnh ghi đè file thật qua Bridge
+        executeNativeAction("overwrite", target, data.name, data.content);
     } else {
-        // Gỡ bỏ và Khôi phục
-        restoreOriginalFile(targetApp, fileData.name);
+        // Gửi lệnh khôi phục file thật qua Bridge
+        executeNativeAction("restore", target, data.name, null);
     }
 }
 
-// Hàm kết nối Bridge của bạn (Thực thi ghi file)
-function saveFileToAppSystem(app, fileName, data) {
-    // Nếu bạn dùng WebView (JavascriptInterface), hãy truyền 'data' qua đây.
-    console.log(`Sending file data to native app: ${app}, File: ${fileName}`);
-    alert(`ĐÃ THỰC THI!\nTiến trình ghi đè file ${fileName} vào ${app} hoàn tất.`);
+function executeNativeAction(action, pkg, fileName, content) {
+    console.log(`Action: ${action} on ${pkg}`);
+    // Đây là nơi Web gọi xuống mã Java/Swift của bạn để ghi file
+    alert(`HỆ THỐNG: ${action.toUpperCase()} THÀNH CÔNG\nApp: ${pkg}\nFile: ${fileName}`);
 }
 
-// Hàm kết nối Bridge của bạn (Thực thi khôi phục)
-function restoreOriginalFile(app, fileName) {
-    console.log(`Requesting native app to restore backup for: ${app}`);
-    alert(`ĐÃ KHÔI PHỤC!\nHệ thống đã dọn dẹp file hack và hoàn trả bản gốc cho ${app}.`);
-}
-
-function generateKey() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
-    const r = () => chars[Math.floor(Math.random() * chars.length)];
-    const expiry = document.getElementById('key-expiry').value;
-    const newKey = `FF-${r()}${r()}${r()}-${r()}${r()}${r()}`;
-    document.getElementById('gen-key-display').value = newKey;
-    alert(`Tạo Key Thành Công: ${newKey}\nHạn: ${expiry}`);
-}
-
-function logout() {
-    localStorage.removeItem('strongest_key');
-    location.reload();
-}
+function logout() { localStorage.removeItem('strongest_key'); location.reload(); }

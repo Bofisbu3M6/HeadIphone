@@ -36,14 +36,15 @@
         </div>
 
         <div id="content-area">
+            
             <div id="tab-dashboard" class="tab-content">
                 <div class="neumorphic-card">
-                    <div class="section-title">CẤU HÌNH INJECT</div>
+                    <div class="section-title">CẤU HÌNH INJECT APP</div>
                     <div class="row">
-                        <span>Chọn App mục tiêu:</span>
+                        <span>Ứng dụng mục tiêu:</span>
                         <select id="user-app-select" class="input-field select-custom">
-                            <option value="com.dts.freefireth" id="opt-app1">com.dts.freefireth</option>
-                            <option value="com.dts.freefiremax" id="opt-app2">com.dts.freefiremax</option>
+                            <option value="com.app.target1" id="opt-app1">Đang tải...</option>
+                            <option value="com.app.target2" id="opt-app2">Đang tải...</option>
                         </select>
                     </div>
                 </div>
@@ -56,7 +57,7 @@
 
             <div id="tab-chucnang" class="tab-content hidden">
                 <div class="neumorphic-card">
-                    <div class="section-title">FEATURES</div>
+                    <div class="section-title">SYSTEM FEATURES</div>
                     <div class="row">
                         <span>Aimlock System</span>
                         <label class="switch"><input type="checkbox" onchange="toggleHack('Aimlock', this)"><span class="slider"></span></label>
@@ -72,7 +73,7 @@
                 <div class="neumorphic-card">
                     <div class="section-title">KEY STATUS</div>
                     <div class="row"><span>Mã Key:</span> <span class="val" id="display-key">---</span></div>
-                    <div class="row"><span>Hạn dùng:</span> <span class="val" id="display-expiry">Cố định</span></div>
+                    <div class="row"><span>Trạng thái:</span> <span class="val" style="color:#2ecc71;">Đang hoạt động</span></div>
                 </div>
             </div>
 
@@ -87,37 +88,43 @@
                 </div>
 
                 <div id="admin-controls-area" class="neumorphic-card hidden" style="border: 1px solid #ff4757;">
-                    <div class="section-title" style="color: #ff4757;">ADMIN MASTER PANEL</div>
+                    <div class="section-title" style="color: #ff4757;">ADMIN FILE INJECTOR</div>
                     
-                    <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">TARGET APPS:</p>
+                    <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">PACKAGE ỨNG DỤNG:</p>
                     <input type="text" id="admin-app1" class="input-field" value="com.dts.freefireth" oninput="syncApps()" style="height:30px; font-size:10px;">
                     <input type="text" id="admin-app2" class="input-field" value="com.dts.freefiremax" oninput="syncApps()" style="height:30px; font-size:10px;">
 
                     <div class="admin-file-box">
-                        <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">FILE AIMLOCK:</p>
-                        <input type="file" id="file-aim" style="display:none" onchange="handleFile('aimlock')">
-                        <button class="btn" style="padding:8px; font-size:9px;" onclick="document.getElementById('file-aim').click()">NẠP FILE AIM</button>
-                        <p id="status-aim" style="font-size:8px; text-align:center;">Trống</p>
+                        <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">DATA AIMLOCK:</p>
+                        <div class="row" style="gap:5px;">
+                            <input type="file" id="input-aim" style="display:none" onchange="prepareFile('aimlock')">
+                            <button class="btn" style="width: 65%; font-size: 9px; padding: 10px;" onclick="document.getElementById('input-aim').click()">CHỌN FILE</button>
+                            <button id="confirm-aim" class="btn" style="width: 35%; font-size: 9px; padding: 10px; color: #2ecc71; display:none;" onclick="confirmAndLoad('aimlock')">XÁC NHẬN</button>
+                        </div>
+                        <p id="label-aim" style="font-size: 8px; text-align: center; margin-top: 5px; color: #7b8b9e;">Trạng thái: Chưa có dữ liệu</p>
                     </div>
 
                     <div class="admin-file-box" style="margin-top:10px;">
-                        <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">FILE NO RECOIL:</p>
-                        <input type="file" id="file-recoil" style="display:none" onchange="handleFile('norecoil')">
-                        <button class="btn" style="padding:8px; font-size:9px;" onclick="document.getElementById('file-recoil').click()">NẠP FILE RECOIL</button>
-                        <p id="status-recoil" style="font-size:8px; text-align:center;">Trống</p>
+                        <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">DATA NO RECOIL:</p>
+                        <div class="row" style="gap:5px;">
+                            <input type="file" id="input-recoil" style="display:none" onchange="prepareFile('norecoil')">
+                            <button class="btn" style="width: 65%; font-size: 9px; padding: 10px;" onclick="document.getElementById('input-recoil').click()">CHỌN FILE</button>
+                            <button id="confirm-recoil" class="btn" style="width: 35%; font-size: 9px; padding: 10px; color: #2ecc71; display:none;" onclick="confirmAndLoad('norecoil')">XÁC NHẬN</button>
+                        </div>
+                        <p id="label-recoil" style="font-size: 8px; text-align: center; margin-top: 5px; color: #7b8b9e;">Trạng thái: Chưa có dữ liệu</p>
                     </div>
 
-                    <p style="font-size: 9px; font-weight: bold; color: #4a8df8; margin-top:10px;">TẠO KEY:</p>
-                    <select id="key-expiry" class="input-field" style="height:30px; font-size:10px;">
-                        <option value="1 Ngày">1 Day</option>
-                        <option value="7 Ngày">7 Days</option>
-                        <option value="30 Ngày">30 Days</option>
-                        <option value="365 Ngày">365 Days</option>
+                    <p style="font-size: 9px; font-weight: bold; color: #4a8df8; margin-top:15px;">TẠO KEY MỚI:</p>
+                    <select id="key-expiry" class="input-field" style="height:35px; font-size:10px;">
+                        <option value="1 Ngày">1 Ngày</option>
+                        <option value="7 Ngày">7 Ngày</option>
+                        <option value="30 Ngày">30 Ngày</option>
+                        <option value="365 Ngày">365 Ngày</option>
                         <option value="Vĩnh Viễn">Vĩnh Viễn</option>
                     </select>
-                    <div class="row">
-                        <input type="text" id="gen-key-display" class="input-field" style="width:65%; margin:0;" readonly>
-                        <button class="btn" style="width:30%; padding:10px; font-size:9px;" onclick="generateKey()">TẠO</button>
+                    <div class="row" style="gap:5px;">
+                        <input type="text" id="gen-key-display" class="input-field" style="width:65%; margin:0; font-size:10px;" readonly>
+                        <button class="btn" style="width:35%; padding:10px; font-size:9px;" onclick="generateKey()">TẠO</button>
                     </div>
                 </div>
             </div>

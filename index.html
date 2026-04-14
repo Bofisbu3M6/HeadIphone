@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title id="web-title">Aimlock Strongest iPhone❄️</title>
+    <title>Aimlock Strongest iPhone❄️</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -39,14 +39,15 @@
             <div id="tab-dashboard" class="tab-content">
                 <div class="neumorphic-card">
                     <div class="section-title">THÔNG TIN THIẾT BỊ</div>
-                    <div class="row"><span>Hệ điều hành:</span> <span class="val" id="os-info">Đang quét...</span></div>
+                    <div class="row"><span>Thiết bị:</span> <span class="val" id="os-info">Đang nhận diện...</span></div>
                     <div class="row"><span>Trình duyệt:</span> <span class="val" id="browser-info">Đang quét...</span></div>
+                    <div class="row"><span>Trạng thái:</span> <span class="val" style="color:#2ecc71">ĐÃ KẾT NỐI</span></div>
                 </div>
             </div>
 
             <div id="tab-chucnang" class="tab-content hidden">
                 <div class="neumorphic-card">
-                    <div class="section-title">FEATURES CONTROL</div>
+                    <div class="section-title">COMBAT FEATURES</div>
                     <div class="row">
                         <span>Aimlock System</span>
                         <label class="switch"><input type="checkbox" onchange="toggleHack('Aimlock', this)"><span class="slider"></span></label>
@@ -60,15 +61,16 @@
 
             <div id="tab-logs" class="tab-content hidden">
                 <div class="neumorphic-card">
-                    <div class="section-title">KEY STATUS</div>
-                    <div class="row"><span>Key:</span> <span class="val" id="display-key">---</span></div>
-                    <div class="row"><span>Hạn dùng:</span> <span class="val">Vĩnh viễn</span></div>
+                    <div class="section-title">QUẢN LÝ KEY</div>
+                    <div class="row"><span>Mã Key:</span> <span class="val" id="display-key">---</span></div>
+                    <div class="row"><span>Loại:</span> <span class="val" id="display-key-type">Normal</span></div>
+                    <div class="row"><span>Hạn dùng:</span> <span class="val" id="display-expiry">Cố định</span></div>
                 </div>
             </div>
 
             <div id="tab-developer" class="tab-content hidden">
                 <div class="neumorphic-card">
-                    <div class="section-title">ADMIN INFO</div>
+                    <div class="section-title">DEVELOPER INFO</div>
                     <div class="dev-info" style="font-size: 11px;">
                         <p><b>Admin:</b> Bofisbu3M</p>
                         <p><b>Zalo:</b> 0933653553 (Nguyen Long)</p>
@@ -78,31 +80,41 @@
 
                 <div id="admin-controls-area" class="neumorphic-card hidden" style="border: 1px solid #ff4757;">
                     <div class="section-title" style="color: #ff4757;">ADMIN MASTER CONTROL</div>
+                    
                     <div class="row">
                         <span>Target App:</span>
                         <input type="text" id="app-target-input" class="input-field" style="margin:0; width: 60%; font-size: 10px; height: 30px;" value="com.dts.freefireth">
                     </div>
-                    
-                    <p style="font-size: 9px; font-weight: bold; color: #4a8df8; margin-top:10px;">SCRIPT AIMLOCK:</p>
-                    <textarea id="script-aimlock" class="input-field" style="height: 50px; text-align: left; font-size: 9px;" placeholder="Dán code vào..."></textarea>
-                    
-                    <p style="font-size: 9px; font-weight: bold; color: #4a8df8; margin-top:10px;">HẠN DÙNG KEY:</p>
-                    <select id="key-expiry-select" class="input-field" style="height: 35px; margin-bottom: 10px;">
-                        <option value="1">1 Ngày</option>
-                        <option value="7">7 Ngày</option>
-                        <option value="30">30 Ngày</option>
-                        <option value="365">365 Ngày</option>
-                        <option value="9999">Vĩnh Viễn</option>
-                    </select>
 
-                    <div class="row">
-                        <input type="text" id="generated-key" class="input-field" style="margin: 0; width: 65%; font-size: 10px;" readonly>
-                        <button class="btn" style="width: 30%; padding: 10px; font-size: 9px;" onclick="generateKey()">TẠO KEY</button>
+                    <div class="admin-file-box" style="margin-top:15px; background: rgba(0,0,0,0.03); padding:10px; border-radius:10px;">
+                        <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">DATA AIMLOCK:</p>
+                        <input type="file" id="input-file-aimlock" style="display: none;" onchange="handleFileSelect('aimlock')">
+                        <button class="btn" style="padding: 8px; font-size: 9px;" onclick="document.getElementById('input-file-aimlock').click()">NẠP FILE AIMLOCK</button>
+                        <p id="status-aimlock" style="font-size: 8px; text-align:center; margin-top:5px;">Chưa có file.</p>
+                    </div>
+
+                    <div class="admin-file-box" style="margin-top:10px; background: rgba(0,0,0,0.03); padding:10px; border-radius:10px;">
+                        <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">DATA NO RECOIL:</p>
+                        <input type="file" id="input-file-norecoil" style="display: none;" onchange="handleFileSelect('norecoil')">
+                        <button class="btn" style="padding: 8px; font-size: 9px;" onclick="document.getElementById('input-file-norecoil').click()">NẠP FILE NO RECOIL</button>
+                        <p id="status-norecoil" style="font-size: 8px; text-align:center; margin-top:5px;">Chưa có file.</p>
+                    </div>
+
+                    <div style="margin-top:15px; border-top: 1px dashed #ccc; padding-top:10px;">
+                        <select id="key-expiry-select" class="input-field" style="height:35px; font-size:10px;">
+                            <option value="1">1 Ngày</option>
+                            <option value="7">7 Ngày</option>
+                            <option value="30">30 Ngày</option>
+                            <option value="Vĩnh Viễn">Vĩnh Viễn</option>
+                        </select>
+                        <div class="row">
+                            <input type="text" id="generated-key" class="input-field" style="margin: 0; width: 65%; font-size: 10px;" readonly>
+                            <button class="btn" style="width: 30%; padding: 10px; font-size: 9px;" onclick="generateKey()">TẠO KEY</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
         <button class="btn-logout" onclick="logout()">ĐĂNG XUẤT</button>
     </div>
 

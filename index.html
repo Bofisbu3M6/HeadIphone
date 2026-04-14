@@ -3,110 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Strongest Native System</title>
+    <title>Strongest Engine ❄️ Materialistic World</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
-    <div id="login-screen">
-        <h1 class="app-logo-text">STRONGEST ENGINE❄️</h1>
-        <div class="neumorphic-card">
+    <div id="snow-container"></div>
+
+    <div id="login-screen" class="glass-container">
+        <h1 class="logo-title">STRONGEST ❄️</h1>
+        <p class="slogan">Vạn vật thay đổi - Vật chất lên ngôi</p>
+        <div class="neumorphic-card main-card">
             <input type="password" id="license-key" class="input-field" placeholder="NHẬP LICENSE KEY...">
-            <button class="btn" onclick="checkLogin()">KÍCH HOẠT HỆ THỐNG</button>
+            <button class="btn btn-primary" onclick="checkLogin()">KÍCH HOẠT HỆ THỐNG</button>
         </div>
     </div>
 
     <div id="main-panel" class="hidden">
         <div class="header">
-            <h1 class="app-logo-text" style="font-size: 1.1rem;">STRONGEST ENGINE❄️</h1>
-            <div class="status-row">
-                <div class="badge green">● SERVER ONLINE</div>
-                <div id="key-type-badge" class="badge">MEMBER</div>
+            <h1 class="logo-title small">STRONGEST ENGINE</h1>
+            <div class="status-group">
+                <div class="badge neon-green">● SYSTEM READY</div>
+                <div id="key-type-badge" class="badge">USER</div>
+                <button id="music-toggle" class="btn-icon" onclick="toggleMusic()">🔊</button>
             </div>
         </div>
 
         <div class="nav-container">
             <div class="nav-tabs">
-                <div class="tab active" onclick="switchTab(this, 'dashboard')">DASHBOARD</div>
+                <div class="tab active" onclick="switchTab(this, 'dashboard')">TRANG CHỦ</div>
                 <div class="tab" onclick="switchTab(this, 'chucnang')">CHỨC NĂNG</div>
-                <div class="tab" onclick="switchTab(this, 'logs')">LOGS</div>
-                <div id="dev-tab" class="tab hidden" onclick="switchTab(this, 'developer')" style="color:#ff4757">DEVELOPER</div>
+                <div id="dev-tab" class="tab hidden admin-tab" onclick="switchTab(this, 'developer')">ADMIN PANEL</div>
             </div>
         </div>
 
         <div id="content-area">
             <div id="tab-dashboard" class="tab-content">
-                <div class="neumorphic-card">
-                    <div class="section-title">HỆ THỐNG MỤC TIÊU (NATIVE)</div>
-                    <div class="row" style="margin-bottom: 15px;">
-                        <span>Ứng dụng thực tế:</span>
-                        <button class="btn-small" onclick="requestNativeDeviceApps()">QUÉT THIẾT BỊ</button>
+                <div class="neumorphic-card detail-box">
+                    <div class="section-header">
+                        <span class="icon">📱</span>
+                        <span class="title">MỤC TIÊU HỆ THỐNG</span>
                     </div>
-                    
+                    <button class="btn btn-scan" onclick="requestNativeDeviceApps()">QUÉT THIẾT BỊ</button>
                     <div id="app-grid-container" class="app-grid">
-                        <p class="placeholder-text">Vui lòng nhấn Quét Thiết Bị...</p>
+                        <p class="hint">Vui lòng quét ứng dụng...</p>
                     </div>
                     <input type="hidden" id="selected-target-pkg" value="">
                 </div>
-                
-                <div class="neumorphic-card">
-                    <div class="section-title">THÔNG TIN THIẾT BỊ</div>
-                    <div class="row"><span>Thiết bị:</span> <span class="val" id="os-info">Đang quét...</span></div>
-                    <div class="row"><span>Mục tiêu:</span> <span class="val" id="display-target" style="font-size: 8px;">Chưa chọn</span></div>
+
+                <div class="neumorphic-card info-box">
+                    <div class="row"><span>DEVICE:</span> <span class="val" id="os-info">Android</span></div>
+                    <div class="row"><span>TARGET:</span> <span class="val neon-blue" id="display-target">None</span></div>
                 </div>
             </div>
 
             <div id="tab-chucnang" class="tab-content hidden">
                 <div class="neumorphic-card">
-                    <div class="section-title">SYSTEM CONTROL</div>
+                    <div class="section-header"><span class="title">INJECT CONTROL</span></div>
                     <div class="row">
-                        <span>Aimlock Native</span>
+                        <span>AIMLOCK NATIVE</span>
                         <label class="switch"><input type="checkbox" onchange="toggleHack('Aimlock', this)"><span class="slider"></span></label>
                     </div>
                     <div class="row">
-                        <span>No Recoil Native</span>
-                        <label class="switch"><input type="checkbox" onchange="toggleHack('No Recoil', this)"><span class="slider"></span></label>
+                        <span>NO RECOIL REAL</span>
+                        <label class="switch"><input type="checkbox" onchange="toggleHack('NoRecoil', this)"><span class="slider"></span></label>
                     </div>
-                </div>
-            </div>
-
-            <div id="tab-logs" class="tab-content hidden">
-                <div class="neumorphic-card">
-                    <div class="section-title">KEY STATUS</div>
-                    <div class="row"><span>Mã Key:</span> <span class="val" id="display-key">---</span></div>
-                    <div class="row"><span>Hạn dùng:</span> <span class="val">Vĩnh Viễn</span></div>
                 </div>
             </div>
 
             <div id="tab-developer" class="tab-content hidden">
-                <div class="neumorphic-card admin-border">
-                    <div class="section-title" style="color: #ff4757;">ADMIN FILE MANAGER</div>
-                    
-                    <div class="row">
-                        <p class="small-label">File Aimlock:</p>
-                        <input type="file" id="file-aimlock" hidden onchange="prepareFile('aimlock')">
-                        <button class="btn-action" onclick="document.getElementById('file-aimlock').click()">CHỌN</button>
-                        <button id="confirm-aimlock" class="btn-confirm" onclick="confirmAndLoad('aimlock')">OK</button>
+                <div class="neumorphic-card admin-card">
+                    <div class="section-header"><span class="title">KEYGEN SYSTEM</span></div>
+                    <div class="admin-row">
+                        <select id="key-time" class="input-field small">
+                            <option value="1">1 NGÀY</option>
+                            <option value="7">7 NGÀY</option>
+                            <option value="30">30 NGÀY</option>
+                            <option value="999">VĨNH VIỄN</option>
+                        </select>
+                        <button class="btn btn-action" onclick="generateKey()">TẠO KEY</button>
                     </div>
-                    <div class="row">
-                        <p class="small-label">File No Recoil:</p>
-                        <input type="file" id="file-norecoil" hidden onchange="prepareFile('norecoil')">
-                        <button class="btn-action" onclick="document.getElementById('file-norecoil').click()">CHỌN</button>
-                        <button id="confirm-norecoil" class="btn-confirm" onclick="confirmAndLoad('norecoil')">OK</button>
-                    </div>
+                    <input type="text" id="generated-key-box" class="input-field" readonly placeholder="Key sẽ hiện ở đây...">
+                </div>
 
-                    <div class="admin-category">
-                        <p class="category-title">DẠNH MỤC FILE HOẠT ĐỘNG:</p>
-                        <div id="active-file-list" class="file-list-box">
-                            <p class="placeholder-text">Chưa có file nạp...</p>
-                        </div>
+                <div class="neumorphic-card admin-card">
+                    <div class="section-header"><span class="title">FILE MANAGER</span></div>
+                    <div class="admin-row">
+                        <input type="file" id="file-aim" hidden onchange="prepareFile('aim')">
+                        <button class="btn btn-sub" onclick="document.getElementById('file-aim').click()">NẠP AIM</button>
+                        <button id="ok-aim" class="btn-ok hidden" onclick="confirmFile('aim')">OK</button>
                     </div>
+                    <div id="active-files" class="file-list"></div>
                 </div>
             </div>
         </div>
         
-        <button class="btn-logout" onclick="logout()">ĐĂNG XUẤT</button>
+        <button class="logout-link" onclick="logout()">THOÁT HỆ THỐNG</button>
     </div>
 
     <script src="script.js"></script>

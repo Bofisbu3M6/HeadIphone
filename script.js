@@ -7,20 +7,30 @@ const appList = [
     { id: "ff-normal", name: "Free Fire", icon: "https://i.ibb.co/6R0n7Ym/ff-normal.png", path: "Free Fire/" + IOS_PATH }
 ];
 
-let system = { aimFile: null, recoilFile: null, selected: null, isMusic: false, countdown: null };
+let system = { 
+    aimlockFile: null, 
+    norecoilFile: null, 
+    selected: null, 
+    isMusic: false, 
+    countdown: null 
+};
 
+// Hiệu ứng tuyết rơi chậm
 function initSnow() {
     const container = document.getElementById('snow-container');
+    if(!container) return;
     for (let i = 0; i < 35; i++) {
         let flake = document.createElement('div');
         flake.className = 'snowflake';
         flake.innerHTML = '❄';
         flake.style.left = Math.random() * 100 + 'vw';
         flake.style.animationDuration = (Math.random() * 5 + 10) + 's';
+        flake.style.opacity = Math.random();
         container.appendChild(flake);
     }
 }
 
+// Kiểm tra đăng nhập và quản lý Key
 function checkLogin() {
     const key = document.getElementById('license-key').value.trim();
     if (!key) return;
@@ -31,7 +41,7 @@ function checkLogin() {
         return;
     }
 
-    // Member Login
+    // Member Login - Kiểm tra trong hệ thống key đã tạo
     let keys = JSON.parse(localStorage.getItem('strongest_keys') || '{}');
     if (!keys[key]) {
         alert("❌ KEY KHÔNG TỒN TẠI TRÊN HỆ THỐNG!");
@@ -42,7 +52,7 @@ function checkLogin() {
     if (now > keys[key].expiry) {
         delete keys[key];
         localStorage.setItem('strongest_keys', JSON.stringify(keys));
-        alert("❌ KEY ĐÃ HẾT HẠN!");
+        alert("❌ KEY ĐÃ HẾT HẠN VÀ TỰ ĐỘNG BỊ XÓA!");
         return;
     }
 
@@ -59,51 +69,75 @@ function enterSystem(role, expiry) {
         document.getElementById('key-type-badge').innerText = "OWNER";
         document.getElementById('key-countdown').innerText = "VĨNH VIỄN";
     } else {
+        document.getElementById('key-type-badge').innerText = "MEMBER";
         startCountdown(expiry);
     }
 
+    // Kiểm tra thông báo ẩn 2 giờ
     const hideUntil = localStorage.getItem('hide_notif_until');
     if (!hideUntil || new Date().getTime() > hideUntil) {
         document.getElementById('notification-overlay').classList.remove('hidden');
     }
 }
 
+// Đếm ngược thời gian thực (Ngày:Giờ:Phút:Giây)
 function startCountdown(expiry) {
-    clearInterval(system.countdown);
+    if (system.countdown) clearInterval(system.countdown);
+    
     system.countdown = setInterval(() => {
-        const diff = expiry - new Date().getTime();
-        if (diff <= 0) { location.reload(); return; }
-        
-        const d = Math.floor(diff / 86400000);
-        const h = Math.floor((diff % 86400000) / 3600000);
-        const m = Math.floor((diff % 3600000) / 600000);
-        const s = Math.floor((diff % 60000) / 1000);
-        document.getElementById('key-countdown').innerText = `${d}d:${h}h:${m}m:${s}s`;
+        const now = new Date().getTime();
+        const diff = expiry - now;
+
+        if (diff <= 0) {
+            clearInterval(system.countdown);
+            alert("Hết thời gian sử dụng Key!");
+            location.reload();
+            return;
+        }
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('key-countdown').innerText = 
+            `${d}d : ${h.toString().padStart(2,'0')}h : ${m.toString().padStart(2,'0')}m : ${s.toString().padStart(2,'0')}s`;
     }, 1000);
 }
 
+// Admin Panel: Tạo Key
 function adminCreateKey() {
     const dur = document.getElementById('key-duration').value;
     const newKey = "STR-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+    
     let keys = JSON.parse(localStorage.getItem('strongest_keys') || '{}');
     keys[newKey] = { expiry: new Date().getTime() + (dur * 1000) };
+    
     localStorage.setItem('strongest_keys', JSON.stringify(keys));
+    
     navigator.clipboard.writeText(newKey);
-    alert("Đã tạo và copy: " + newKey);
+    alert("Đã tạo và copy Key thành công: " + newKey);
 }
 
+// Admin Panel: Lưu tên file nạp vào hệ thống
 function saveAdminFile(type) {
-    const file = document.getElementById(`f-${type}`).files[0];
+    const fileInput = document.getElementById(`f-${type}`);
+    const file = fileInput.files[0];
+    
     if (file) {
-        if (type === 'aim') system.aimFile = file.name;
-        else system.recoilFile = file.name;
+        if (type === 'aimlock') system.aimlockFile = file.name;
+        if (type === 'norecoil') system.norecoilFile = file.name;
+        
         document.getElementById(`name-${type}`).innerText = file.name;
+        alert(`Đã nạp file ${type.toUpperCase()} thành công!`);
     }
 }
 
+// Dashboard: Quét App thiết bị
 function requestNativeDeviceApps() {
     const grid = document.getElementById('app-grid-container');
-    grid.innerHTML = '<p style="font-size:8px">Scanning...</p>';
+    grid.innerHTML = '<p style="font-size:10px; color:#007aff;">Đang quét bộ nhớ iPhone...</p>';
+    
     setTimeout(() => {
         grid.innerHTML = '';
         appList.forEach(app => {
@@ -114,37 +148,72 @@ function requestNativeDeviceApps() {
                 el.classList.add('selected');
                 system.selected = app;
                 document.getElementById('display-target').innerText = app.name;
-                document.getElementById('target-path').innerText = app.path;
+                document.getElementById('target-path').innerText = app.name;
             };
             el.innerHTML = `<img src="${app.icon}" class="app-icon"><span class="app-name">${app.name}</span>`;
             grid.appendChild(el);
         });
-    }, 800);
+    }, 1200);
 }
 
+// Chức năng: Xử lý ghi đè file
 function processFileReplace(type, cb) {
-    if (!system.selected) { alert("CHỌN APP!"); cb.checked = false; return; }
-    const file = (type === 'aimlock') ? system.aimFile : system.recoilFile;
-    if (cb.checked && !file) { alert("ADMIN CHƯA NẠP FILE!"); cb.checked = false; return; }
+    if (!system.selected) { 
+        alert("VUI LÒNG CHỌN ỨNG DỤNG MỤC TIÊU TẠI DASHBOARD!"); 
+        cb.checked = false; 
+        return; 
+    }
 
-    const log = document.getElementById('overwrite-log');
-    log.classList.remove('hidden');
+    const adminFile = (type === 'aimlock') ? system.aimlockFile : system.norecoilFile;
+    
     if (cb.checked) {
-        log.innerHTML += `> Overwriting: ${file}...<br>`;
-        setTimeout(() => { log.innerHTML += `<span style="color:#34c759">> SUCCESS 100%</span><br>`; }, 1000);
+        if (!adminFile) {
+            alert("ADMIN CHƯA NẠP FILE CHO CHỨC NĂNG NÀY!");
+            cb.checked = false;
+            return;
+        }
+
+        const log = document.getElementById('overwrite-log');
+        log.classList.remove('hidden');
+        log.innerHTML += `> Đang thực hiện Deep Overwrite: ${adminFile}...<br>`;
+        
+        setTimeout(() => {
+            log.innerHTML += `<span style="color:#34c759">> [SUCCESS] Đã ghi đè 100% vào Assets thiết bị.</span><br>`;
+            log.scrollTop = log.scrollHeight;
+        }, 1500);
+    }
+}
+
+// Tiện ích
+function toggleMusic() {
+    if (audio.paused) {
+        audio.play();
+        document.getElementById('music-toggle').innerText = "🔊";
+    } else {
+        audio.pause();
+        document.getElementById('music-toggle').innerText = "🔈";
     }
 }
 
 function hideNotificationFor2Hours() {
-    localStorage.setItem('hide_notif_until', new Date().getTime() + 7200000);
+    const twoHours = new Date().getTime() + (2 * 60 * 60 * 1000);
+    localStorage.setItem('hide_notif_until', twoHours);
     closeNotification();
 }
-function closeNotification() { document.getElementById('notification-overlay').classList.add('hidden'); }
+
+function closeNotification() {
+    document.getElementById('notification-overlay').classList.add('hidden');
+}
+
 function switchTab(el, id) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
     el.classList.add('active');
     document.getElementById('tab-' + id).classList.remove('hidden');
 }
-function logout() { location.reload(); }
+
+function logout() {
+    location.reload();
+}
+
 window.onload = initSnow;

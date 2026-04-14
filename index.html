@@ -9,12 +9,12 @@
 </head>
 <body>
     <audio id="bg-music" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="https://files.catbox.moe/o9v0d0.mp3" type="audio/mpeg">
     </audio>
 
     <div id="snow-container"></div>
 
-    <div id="login-screen" class="glass-container">
+    <div id="login-screen">
         <h1 class="logo-title">STRONGEST ❄️</h1>
         <p class="slogan">Vạn vật thay đổi - Vật chất lên ngôi</p>
         <div class="neumorphic-card main-card">
@@ -45,19 +45,18 @@
             <div id="tab-dashboard" class="tab-content">
                 <div class="neumorphic-card detail-box">
                     <div class="section-header">
-                        <span class="icon">📱</span>
-                        <span class="title">MỤC TIÊU HỆ THỐNG</span>
+                        <span class="title">MỤC TIÊU THỰC TẾ (NATIVE)</span>
                     </div>
-                    <button class="btn btn-scan" onclick="requestNativeDeviceApps()">QUÉT THIẾT BỊ</button>
+                    <button class="btn btn-scan" onclick="requestNativeDeviceApps()">QUÉT THIẾT BỊ THẬT</button>
                     <div id="app-grid-container" class="app-grid">
-                        <p class="hint">Vui lòng quét ứng dụng...</p>
+                        <p class="hint">Chưa quét thiết bị...</p>
                     </div>
                     <input type="hidden" id="selected-target-pkg" value="">
                 </div>
 
                 <div class="neumorphic-card info-box">
-                    <div class="row"><span>DEVICE:</span> <span class="val" id="os-info">Android</span></div>
-                    <div class="row"><span>TARGET:</span> <span class="val neon-blue" id="display-target">None</span></div>
+                    <div class="row"><span>DEVICE:</span> <span class="val" id="os-info">Detecting...</span></div>
+                    <div class="row"><span>TARGET:</span> <span class="val neon-blue" id="display-target">Chưa chọn</span></div>
                 </div>
             </div>
 
@@ -87,17 +86,31 @@
                         </select>
                         <button class="btn btn-action" onclick="generateKey()">TẠO KEY</button>
                     </div>
-                    <input type="text" id="generated-key-box" class="input-field" readonly placeholder="Key sẽ hiện ở đây...">
+                    <input type="text" id="generated-key-box" class="input-field" readonly placeholder="Key gen...">
                 </div>
 
                 <div class="neumorphic-card admin-card">
-                    <div class="section-header"><span class="title">FILE MANAGER</span></div>
-                    <div class="admin-row">
-                        <input type="file" id="file-aim" hidden onchange="prepareFile('aim')">
-                        <button class="btn btn-sub" onclick="document.getElementById('file-aim').click()">NẠP AIM</button>
-                        <button id="ok-aim" class="btn-ok hidden" onclick="confirmFile('aim')">OK</button>
+                    <div class="section-header"><span class="title">FILE MANAGER (NATIVE)</span></div>
+                    
+                    <div class="file-box">
+                        <p class="small-label">File Aimlock:</p>
+                        <div class="admin-row">
+                            <input type="file" id="file-aim" hidden onchange="prepareFile('aim')">
+                            <button class="btn-sub" onclick="document.getElementById('file-aim').click()">CHỌN FILE</button>
+                            <button id="ok-aim" class="btn-ok hidden" onclick="confirmFile('aim')">XÁC NHẬN</button>
+                        </div>
                     </div>
-                    <div id="active-files" class="file-list"></div>
+
+                    <div class="file-box" style="margin-top: 15px;">
+                        <p class="small-label">File No Recoil:</p>
+                        <div class="admin-row">
+                            <input type="file" id="file-recoil" hidden onchange="prepareFile('recoil')">
+                            <button class="btn-sub" onclick="document.getElementById('file-recoil').click()">CHỌN FILE</button>
+                            <button id="ok-recoil" class="btn-ok hidden" onclick="confirmFile('recoil')">XÁC NHẬN</button>
+                        </div>
+                    </div>
+
+                    <div id="active-files" class="file-status-list"></div>
                 </div>
             </div>
         </div>

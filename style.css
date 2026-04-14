@@ -1,17 +1,6 @@
-:root {
-    --bg: #dfe6ef;
-    --shadow: #c2ccdf;
-    --light: #ffffff;
-    --primary: #4a8df8;
-}
-
+:root { --bg: #dfe6ef; --shadow: #c2ccdf; --light: #ffffff; --primary: #4a8df8; }
 body { background: var(--bg); font-family: 'Montserrat', sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
 .hidden { display: none !important; }
-
-.title { 
-    font-family: 'Orbitron'; font-size: 22px; color: var(--primary); 
-    text-align: center; margin-bottom: 20px; text-shadow: 0 0 10px rgba(74, 141, 248, 0.3);
-}
 
 .neumorphic-card {
     background: var(--bg); border-radius: 20px; padding: 20px;
@@ -19,10 +8,13 @@ body { background: var(--bg); font-family: 'Montserrat', sans-serif; margin: 0; 
     margin-bottom: 15px; width: 100%; max-width: 400px; box-sizing: border-box;
 }
 
+.title { font-family: 'Orbitron'; font-size: 18px; color: var(--primary); text-align: center; margin-bottom: 20px; }
+.section-title { font-size: 11px; font-weight: 800; color: var(--primary); margin-bottom: 15px; border-left: 3px solid var(--primary); padding-left: 8px; }
+
 .input-field {
     width: 100%; border: none; padding: 15px; border-radius: 12px; background: var(--bg);
     box-shadow: inset 5px 5px 10px var(--shadow), inset -5px -5px 10px var(--light);
-    outline: none; margin-bottom: 15px; box-sizing: border-box; text-align: center; color: #555;
+    outline: none; margin-bottom: 15px; box-sizing: border-box; text-align: center;
 }
 
 .btn {
@@ -30,9 +22,6 @@ body { background: var(--bg); font-family: 'Montserrat', sans-serif; margin: 0; 
     color: var(--primary); font-weight: 800; box-shadow: 5px 5px 10px var(--shadow), -5px -5px 10px var(--light);
 }
 
-.btn-logout { background: none; border: none; color: #ff4757; font-weight: bold; margin-top: 10px; cursor: pointer; font-size: 11px; }
-
-/* Navbar */
 .nav-container { width: 100%; max-width: 420px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 5px; }
 .nav-tabs { display: flex; gap: 10px; }
 .tab { 
@@ -40,17 +29,14 @@ body { background: var(--bg); font-family: 'Montserrat', sans-serif; margin: 0; 
     box-shadow: 4px 4px 8px var(--shadow), -4px -4px 8px var(--light); 
     white-space: nowrap; cursor: pointer; color: #7b8b9e;
 }
-.tab.active { color: var(--primary); box-shadow: inset 3px 3px 6px var(--shadow), inset -3px -3px 6px var(--light); }
-
-.section-title { font-size: 11px; font-weight: 800; color: #4a8df8; margin-bottom: 15px; border-left: 3px solid var(--primary); padding-left: 8px; }
-.status-row { display: flex; justify-content: center; gap: 8px; margin-top: 5px; margin-bottom: 15px; }
-.badge { font-size: 8px; font-weight: 900; padding: 4px 10px; border-radius: 10px; box-shadow: 2px 2px 5px var(--shadow); color: #8c9cb0; }
-.green { color: #2ecc71; }
+.tab.active { color: var(--primary); box-shadow: inset 3px 3px 6px var(--shadow); }
 
 .row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: #7b8b9e; margin-bottom: 12px; }
-.val { font-family: 'Orbitron'; color: var(--primary); font-size: 11px; }
+.val { font-family: 'Orbitron'; color: var(--primary); font-size: 10px; }
 
-/* Switch */
+.dev-info p { margin: 10px 0; font-size: 12px; color: #555; border-bottom: 1px solid #c2ccdf; padding-bottom: 5px; }
+.admin-card { border: 1px solid #ff4757; }
+
 .switch { position: relative; width: 40px; height: 20px; }
 .switch input { opacity: 0; }
 .slider {
@@ -62,4 +48,7 @@ body { background: var(--bg); font-family: 'Montserrat', sans-serif; margin: 0; 
     position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
     background: #8c9cb0; transition: .4s; border-radius: 50%;
 }
-input:checked + .slider:before { transform: translateX(20px); background: var(--primary); }
+input:checked + .slider:before { transform: translateX(20px); background: #2ecc71; }
+.badge { font-size: 8px; font-weight: 900; padding: 4px 10px; border-radius: 10px; box-shadow: 2px 2px 5px var(--shadow); }
+.green { color: #2ecc71; }
+.btn-logout { background: none; border: none; color: #ff4757; font-weight: bold; margin-top: 10px; }

@@ -7,56 +7,37 @@ const appList = [
     { id: "ff-normal", name: "Free Fire", icon: "https://i.ibb.co/6R0n7Ym/ff-normal.png", path: "Free Fire/" + IOS_PATH }
 ];
 
-// system sẽ lấy dữ liệu từ localStorage để dùng chung cho tất cả user
 let system = { 
-    aimlockFile: localStorage.getItem('shared_aimlock_name') || null, 
-    norecoilFile: localStorage.getItem('shared_norecoil_name') || null, 
     selected: null, 
-    isMusic: false, 
     countdown: null 
 };
 
-// Hiệu ứng tuyết rơi chậm
+// Hiệu ứng tuyết rơi
 function initSnow() {
     const container = document.getElementById('snow-container');
-    if(!container) return;
-    for (let i = 0; i < 35; i++) {
+    for (let i = 0; i < 30; i++) {
         let flake = document.createElement('div');
         flake.className = 'snowflake';
         flake.innerHTML = '❄';
         flake.style.left = Math.random() * 100 + 'vw';
         flake.style.animationDuration = (Math.random() * 5 + 10) + 's';
-        flake.style.opacity = Math.random();
         container.appendChild(flake);
     }
-    // Hiển thị tên file đã nạp sẵn nếu có (cho Admin thấy)
-    if(system.aimlockFile) document.getElementById('name-aimlock').innerText = system.aimlockFile;
-    if(system.norecoilFile) document.getElementById('name-norecoil').innerText = system.norecoilFile;
+    // Hiển thị tên file admin đã nạp nếu có
+    document.getElementById('name-aimlock').innerText = localStorage.getItem('shared_aimlock_name') || "Trống";
+    document.getElementById('name-norecoil').innerText = localStorage.getItem('shared_norecoil_name') || "Trống";
 }
 
-// Kiểm tra đăng nhập
+// Đăng nhập
 function checkLogin() {
     const key = document.getElementById('license-key').value.trim();
-    if (!key) return;
-
-    if (key === ADMIN_KEY) {
-        enterSystem("OWNER");
-        return;
-    }
+    if (key === ADMIN_KEY) return enterSystem("OWNER");
 
     let keys = JSON.parse(localStorage.getItem('strongest_keys') || '{}');
-    if (!keys[key]) {
-        alert("❌ KEY KHÔNG TỒN TẠI TRÊN HỆ THỐNG!");
-        return;
-    }
+    if (!keys[key]) return alert("KEY KHÔNG TỒN TẠI!");
 
     const now = new Date().getTime();
-    if (now > keys[key].expiry) {
-        delete keys[key];
-        localStorage.setItem('strongest_keys', JSON.stringify(keys));
-        alert("❌ KEY ĐÃ HẾT HẠN VÀ TỰ ĐỘNG BỊ XÓA!");
-        return;
-    }
+    if (now > keys[key].expiry) return alert("KEY HẾT HẠN!");
 
     enterSystem("MEMBER", keys[key].expiry);
 }
@@ -71,7 +52,6 @@ function enterSystem(role, expiry) {
         document.getElementById('key-type-badge').innerText = "OWNER";
         document.getElementById('key-countdown').innerText = "VĨNH VIỄN";
     } else {
-        document.getElementById('key-type-badge').innerText = "MEMBER";
         startCountdown(expiry);
     }
 
@@ -81,59 +61,33 @@ function enterSystem(role, expiry) {
     }
 }
 
-// Đếm ngược thời gian Key
 function startCountdown(expiry) {
     if (system.countdown) clearInterval(system.countdown);
     system.countdown = setInterval(() => {
-        const now = new Date().getTime();
-        const diff = expiry - now;
-        if (diff <= 0) {
-            clearInterval(system.countdown);
-            alert("Hết thời gian sử dụng Key!");
-            location.reload();
-            return;
-        }
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((diff % (1000 * 60)) / 1000);
+        const diff = expiry - new Date().getTime();
+        if (diff <= 0) location.reload();
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
         document.getElementById('key-countdown').innerText = `${d}d:${h}h:${m}m:${s}s`;
     }, 1000);
 }
 
-// Admin Tạo Key
-function adminCreateKey() {
-    const dur = document.getElementById('key-duration').value;
-    const newKey = "STR-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-    let keys = JSON.parse(localStorage.getItem('strongest_keys') || '{}');
-    keys[newKey] = { expiry: new Date().getTime() + (dur * 1000) };
-    localStorage.setItem('strongest_keys', JSON.stringify(keys));
-    navigator.clipboard.writeText(newKey);
-    alert("Đã tạo và copy Key: " + newKey);
-}
-
-// CHỨC NĂNG QUAN TRỌNG: Nạp file dùng chung cho toàn bộ hệ thống
+// Admin: Lưu file dùng chung cho tất cả user
 function saveAdminFile(type) {
-    const fileInput = document.getElementById(`f-${type}`);
-    const file = fileInput.files[0];
-    
+    const file = document.getElementById(`f-${type}`).files[0];
     if (file) {
-        // Lưu tên file vào bộ nhớ dùng chung
         localStorage.setItem(`shared_${type}_name`, file.name);
-        
-        // Cập nhật trạng thái hệ thống ngay lập tức
-        if (type === 'aimlock') system.aimlockFile = file.name;
-        if (type === 'norecoil') system.norecoilFile = file.name;
-        
         document.getElementById(`name-${type}`).innerText = file.name;
-        alert(`ADMIN: Đã cập nhật file ${type.toUpperCase()} dùng chung cho tất cả người dùng!`);
+        alert("Đã cập nhật file dùng chung cho: " + type.toUpperCase());
     }
 }
 
 // Dashboard: Quét App
 function requestNativeDeviceApps() {
     const grid = document.getElementById('app-grid-container');
-    grid.innerHTML = '<p style="font-size:10px; color:#007aff;">Đang quét iPhone...</p>';
+    grid.innerHTML = '<p style="font-size:8px">Scanning Apps...</p>';
     setTimeout(() => {
         grid.innerHTML = '';
         appList.forEach(app => {
@@ -149,53 +103,53 @@ function requestNativeDeviceApps() {
             el.innerHTML = `<img src="${app.icon}" class="app-icon"><span class="app-name">${app.name}</span>`;
             grid.appendChild(el);
         });
-    }, 1200);
+    }, 1000);
 }
 
-// Người dùng kích hoạt file (Dùng chung file từ Admin)
+// Chức năng: Xử lý file (Dùng chung và Path cho ESign)
 function processFileReplace(type, cb) {
-    if (!system.selected) { 
-        alert("CHỌN APP TRƯỚC!"); 
-        cb.checked = false; 
-        return; 
-    }
+    if (!system.selected) { alert("HÃY CHỌN APP MỤC TIÊU!"); cb.checked = false; return; }
 
-    // Luôn lấy file mới nhất từ localStorage (dùng chung)
-    const sharedFileName = localStorage.getItem(`shared_${type}_name`);
-    
+    const sharedFile = localStorage.getItem(`shared_${type}_name`);
     if (cb.checked) {
-        if (!sharedFileName) {
-            alert("HỆ THỐNG: Hiện chưa có file dùng chung. Vui lòng đợi Admin nạp file!");
-            cb.checked = false;
-            return;
-        }
+        if (!sharedFile) { alert("ADMIN CHƯA NẠP FILE!"); cb.checked = false; return; }
 
         const log = document.getElementById('overwrite-log');
         log.classList.remove('hidden');
-        log.innerHTML += `> Đang tải file dùng chung: ${sharedFileName}...<br>`;
+        log.innerHTML += `> Chế độ: Dùng chung hệ thống...<br>`;
+        log.innerHTML += `> File Mod: ${sharedFile}<br>`;
+        log.innerHTML += `> Path: ${system.selected.path}<br>`;
         
-        setTimeout(() => {
-            log.innerHTML += `<span style="color:#34c759">> [SUCCESS] Đã ghi đè file dùng chung thành công!</span><br>`;
-            log.scrollTop = log.scrollHeight;
-        }, 1500);
+        // Cung cấp công cụ cho ESign
+        log.innerHTML += `
+            <div style="margin-top:8px; display:flex; gap:5px;">
+                <button onclick="copyPath('${system.selected.path}')" style="background:#007aff; border:none; color:#fff; padding:5px; border-radius:5px; font-size:9px; cursor:pointer;">COPY PATH</button>
+                <button onclick="alert('Đã sẵn sàng! Hãy mở ESign dán file này vào đường dẫn vừa copy.')" style="background:#34c759; border:none; color:#fff; padding:5px; border-radius:5px; font-size:9px; cursor:pointer;">DÁN TRONG ESIGN</button>
+            </div><br>
+        `;
+        log.scrollTop = log.scrollHeight;
     }
 }
 
-function toggleMusic() {
-    if (audio.paused) { audio.play(); document.getElementById('music-toggle').innerText = "🔊"; }
-    else { audio.pause(); document.getElementById('music-toggle').innerText = "🔈"; }
+// Tiện ích
+function copyPath(p) { navigator.clipboard.writeText(p); alert("Đã copy Path! Dùng Path này trong ESign để thay thế file."); }
+function adminCreateKey() {
+    const dur = document.getElementById('key-duration').value;
+    const key = "STR-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+    let keys = JSON.parse(localStorage.getItem('strongest_keys') || '{}');
+    keys[key] = { expiry: new Date().getTime() + (dur * 1000) };
+    localStorage.setItem('strongest_keys', JSON.stringify(keys));
+    navigator.clipboard.writeText(key);
+    alert("Đã tạo Key: " + key);
 }
-
-function hideNotificationFor2Hours() {
-    localStorage.setItem('hide_notif_until', new Date().getTime() + 7200000);
-    closeNotification();
-}
-function closeNotification() { document.getElementById('notification-overlay').classList.add('hidden'); }
 function switchTab(el, id) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
     el.classList.add('active');
     document.getElementById('tab-' + id).classList.remove('hidden');
 }
+function toggleMusic() { audio.paused ? audio.play() : audio.pause(); }
+function hideNotificationFor2Hours() { localStorage.setItem('hide_notif_until', new Date().getTime() + 7200000); closeNotification(); }
+function closeNotification() { document.getElementById('notification-overlay').classList.add('hidden'); }
 function logout() { location.reload(); }
 window.onload = initSnow;

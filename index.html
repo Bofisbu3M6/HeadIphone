@@ -63,11 +63,11 @@
                     <h3 class="section-title color-purple">Kích Hoạt Chức Năng</h3>
                     <div class="control-row">
                         <div class="control-label"><span class="main-lbl">AIMLOCK</span><small>Deep Overwrite Assets</small></div>
-                        <label class="ios-switch s-blue"><input type="checkbox" onchange="processFileReplace('aimlock', this)"><span class="ios-slider"></span></label>
+                        <label class="ios-switch s-blue"><input type="checkbox" id="check-aimlock" onchange="processFileReplace('aimlock', this)"><span class="ios-slider"></span></label>
                     </div>
                     <div class="control-row">
                         <div class="control-label"><span class="main-lbl">NO RECOIL</span><small>Deep Overwrite Assets</small></div>
-                        <label class="ios-switch s-purple"><input type="checkbox" onchange="processFileReplace('norecoil', this)"><span class="ios-slider"></span></label>
+                        <label class="ios-switch s-purple"><input type="checkbox" id="check-norecoil" onchange="processFileReplace('norecoil', this)"><span class="ios-slider"></span></label>
                     </div>
                 </div>
                 <div id="overwrite-log" class="terminal-log hidden border-purple"></div>
@@ -75,8 +75,9 @@
 
             <div id="tab-developer" class="tab-content hidden">
                 <div class="metal-card border-red">
-                    <h3 class="section-title color-red">TẠO KEY</h3>
+                    <h3 class="section-title color-red">TẠO KEY MỚI</h3>
                     <select id="key-duration" class="metal-input">
+                        <option value="60">1 PHÚT (TEST)</option>
                         <option value="86400">1 NGÀY</option>
                         <option value="604800">7 NGÀY</option>
                         <option value="2592000">30 NGÀY</option>

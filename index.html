@@ -38,16 +38,25 @@
         <div id="content-area">
             <div id="tab-dashboard" class="tab-content">
                 <div class="neumorphic-card">
+                    <div class="section-title">CẤU HÌNH INJECT</div>
+                    <div class="row">
+                        <span>Chọn App mục tiêu:</span>
+                        <select id="user-app-select" class="input-field select-custom">
+                            <option value="com.dts.freefireth" id="opt-app1">com.dts.freefireth</option>
+                            <option value="com.dts.freefiremax" id="opt-app2">com.dts.freefiremax</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="neumorphic-card">
                     <div class="section-title">THÔNG TIN THIẾT BỊ</div>
                     <div class="row"><span>Thiết bị:</span> <span class="val" id="os-info">Đang nhận diện...</span></div>
-                    <div class="row"><span>Trình duyệt:</span> <span class="val" id="browser-info">Đang quét...</span></div>
-                    <div class="row"><span>Trạng thái:</span> <span class="val" style="color:#2ecc71">ĐÃ KẾT NỐI</span></div>
+                    <div class="row"><span>Hệ thống:</span> <span class="val" id="browser-info">Đang quét...</span></div>
                 </div>
             </div>
 
             <div id="tab-chucnang" class="tab-content hidden">
                 <div class="neumorphic-card">
-                    <div class="section-title">COMBAT FEATURES</div>
+                    <div class="section-title">FEATURES</div>
                     <div class="row">
                         <span>Aimlock System</span>
                         <label class="switch"><input type="checkbox" onchange="toggleHack('Aimlock', this)"><span class="slider"></span></label>
@@ -61,9 +70,8 @@
 
             <div id="tab-logs" class="tab-content hidden">
                 <div class="neumorphic-card">
-                    <div class="section-title">QUẢN LÝ KEY</div>
+                    <div class="section-title">KEY STATUS</div>
                     <div class="row"><span>Mã Key:</span> <span class="val" id="display-key">---</span></div>
-                    <div class="row"><span>Loại:</span> <span class="val" id="display-key-type">Normal</span></div>
                     <div class="row"><span>Hạn dùng:</span> <span class="val" id="display-expiry">Cố định</span></div>
                 </div>
             </div>
@@ -79,38 +87,37 @@
                 </div>
 
                 <div id="admin-controls-area" class="neumorphic-card hidden" style="border: 1px solid #ff4757;">
-                    <div class="section-title" style="color: #ff4757;">ADMIN MASTER CONTROL</div>
+                    <div class="section-title" style="color: #ff4757;">ADMIN MASTER PANEL</div>
                     
+                    <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">TARGET APPS:</p>
+                    <input type="text" id="admin-app1" class="input-field" value="com.dts.freefireth" oninput="syncApps()" style="height:30px; font-size:10px;">
+                    <input type="text" id="admin-app2" class="input-field" value="com.dts.freefiremax" oninput="syncApps()" style="height:30px; font-size:10px;">
+
+                    <div class="admin-file-box">
+                        <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">FILE AIMLOCK:</p>
+                        <input type="file" id="file-aim" style="display:none" onchange="handleFile('aimlock')">
+                        <button class="btn" style="padding:8px; font-size:9px;" onclick="document.getElementById('file-aim').click()">NẠP FILE AIM</button>
+                        <p id="status-aim" style="font-size:8px; text-align:center;">Trống</p>
+                    </div>
+
+                    <div class="admin-file-box" style="margin-top:10px;">
+                        <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">FILE NO RECOIL:</p>
+                        <input type="file" id="file-recoil" style="display:none" onchange="handleFile('norecoil')">
+                        <button class="btn" style="padding:8px; font-size:9px;" onclick="document.getElementById('file-recoil').click()">NẠP FILE RECOIL</button>
+                        <p id="status-recoil" style="font-size:8px; text-align:center;">Trống</p>
+                    </div>
+
+                    <p style="font-size: 9px; font-weight: bold; color: #4a8df8; margin-top:10px;">TẠO KEY:</p>
+                    <select id="key-expiry" class="input-field" style="height:30px; font-size:10px;">
+                        <option value="1 Ngày">1 Day</option>
+                        <option value="7 Ngày">7 Days</option>
+                        <option value="30 Ngày">30 Days</option>
+                        <option value="365 Ngày">365 Days</option>
+                        <option value="Vĩnh Viễn">Vĩnh Viễn</option>
+                    </select>
                     <div class="row">
-                        <span>Target App:</span>
-                        <input type="text" id="app-target-input" class="input-field" style="margin:0; width: 60%; font-size: 10px; height: 30px;" value="com.dts.freefireth">
-                    </div>
-
-                    <div class="admin-file-box" style="margin-top:15px; background: rgba(0,0,0,0.03); padding:10px; border-radius:10px;">
-                        <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">DATA AIMLOCK:</p>
-                        <input type="file" id="input-file-aimlock" style="display: none;" onchange="handleFileSelect('aimlock')">
-                        <button class="btn" style="padding: 8px; font-size: 9px;" onclick="document.getElementById('input-file-aimlock').click()">NẠP FILE AIMLOCK</button>
-                        <p id="status-aimlock" style="font-size: 8px; text-align:center; margin-top:5px;">Chưa có file.</p>
-                    </div>
-
-                    <div class="admin-file-box" style="margin-top:10px; background: rgba(0,0,0,0.03); padding:10px; border-radius:10px;">
-                        <p style="font-size: 9px; font-weight: bold; color: #4a8df8;">DATA NO RECOIL:</p>
-                        <input type="file" id="input-file-norecoil" style="display: none;" onchange="handleFileSelect('norecoil')">
-                        <button class="btn" style="padding: 8px; font-size: 9px;" onclick="document.getElementById('input-file-norecoil').click()">NẠP FILE NO RECOIL</button>
-                        <p id="status-norecoil" style="font-size: 8px; text-align:center; margin-top:5px;">Chưa có file.</p>
-                    </div>
-
-                    <div style="margin-top:15px; border-top: 1px dashed #ccc; padding-top:10px;">
-                        <select id="key-expiry-select" class="input-field" style="height:35px; font-size:10px;">
-                            <option value="1">1 Ngày</option>
-                            <option value="7">7 Ngày</option>
-                            <option value="30">30 Ngày</option>
-                            <option value="Vĩnh Viễn">Vĩnh Viễn</option>
-                        </select>
-                        <div class="row">
-                            <input type="text" id="generated-key" class="input-field" style="margin: 0; width: 65%; font-size: 10px;" readonly>
-                            <button class="btn" style="width: 30%; padding: 10px; font-size: 9px;" onclick="generateKey()">TẠO KEY</button>
-                        </div>
+                        <input type="text" id="gen-key-display" class="input-field" style="width:65%; margin:0;" readonly>
+                        <button class="btn" style="width:30%; padding:10px; font-size:9px;" onclick="generateKey()">TẠO</button>
                     </div>
                 </div>
             </div>

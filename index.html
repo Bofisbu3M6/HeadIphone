@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HEAD Iphone - Login System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* CSS GIỮ NGUYÊN GIAO DIỆN NEUMORPHISM ĐẸP NHƯ CŨ */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(180deg, #e6ecf3 0%, #cfdaeb 100%);
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-top: 10vh; color: #7b8b9e;
+        }
+        .header-container { text-align: center; margin-bottom: 30px; }
+        .title { font-family: 'Orbitron', sans-serif; font-size: 38px; color: #4a8df8; letter-spacing: 2px; margin-bottom: 15px; text-shadow: 0px 4px 25px rgba(74, 141, 248, 0.4); }
+        .subtitle { font-size: 11px; font-weight: 500; letter-spacing: 3.5px; text-transform: uppercase; color: #92a1b5; }
+        .card { background: #dfe6ef; width: 88%; max-width: 420px; border-radius: 25px; padding: 35px 30px; margin-bottom: 20px; box-shadow: 15px 15px 30px #c2ccdf, -15px -15px 30px #ffffff; transition: all 0.3s ease; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: #8c9cb0; margin-bottom: 10px; display: block; margin-left: 5px; text-transform: uppercase; }
+        .neumorphic-input { width: 100%; border: none; outline: none; background: #dfe6ef; padding: 15px 20px; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 500; color: #556070; box-shadow: inset 6px 6px 12px #c2ccdf, inset -6px -6px 12px #ffffff; transition: all 0.2s ease; }
+        .neumorphic-input::placeholder { color: #a0aec0; letter-spacing: 1px; }
+        .checkbox-group { display: flex; align-items: center; margin-bottom: 25px; margin-left: 5px; }
+        .checkbox-container { display: inline-flex; align-items: center; cursor: pointer; font-size: 12px; font-weight: 500; color: #8c9cb0; user-select: none; }
+        .checkbox-container input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+        .checkmark { height: 18px; width: 18px; background-color: #dfe6ef; border-radius: 5px; margin-right: 12px; box-shadow: inset 3px 3px 6px #c2ccdf, inset -3px -3px 6px #ffffff; position: relative; }
+        .checkbox-container input:checked ~ .checkmark:after { display: block; }
+        .checkmark:after { content: ""; position: absolute; display: none; left: 6px; top: 2px; width: 4px; height: 9px; border: solid #4a8df8; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+        .action-btn { width: 100%; border: none; outline: none; background: #dfe6ef; color: #4a8df8; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 1.5px; padding: 16px; border-radius: 12px; cursor: pointer; text-transform: uppercase; box-shadow: 6px 6px 12px #c2ccdf, -6px -6px 12px #ffffff; transition: all 0.2s ease; margin-bottom: 10px;}
+        .action-btn:active { box-shadow: inset 4px 4px 8px #c2ccdf, inset -4px -4px 8px #ffffff; }
+        
+        /* CÁC THÀNH PHẦN MỚI THÊM VÀO */
+        .hidden { display: none !important; }
+        #messageBox { margin-top: 15px; font-size: 13px; font-weight: 600; text-align: center; min-height: 20px;}
+        .error-text { color: #ff5e5e; }
+        .success-text { color: #4CAF50; }
+        .admin-title { color: #ff9800; text-align: center; margin-bottom: 20px; font-weight: 700; }
+        .key-list { max-height: 150px; overflow-y: auto; margin-top: 15px; font-size: 11px; background: #dfe6ef; box-shadow: inset 4px 4px 8px #c2ccdf, inset -4px -4px 8px #ffffff; padding: 10px; border-radius: 10px;}
+        .key-item { display: flex; justify-content: space-between; border-bottom: 1px solid #c2ccdf; padding: 5px 0; }
+        .key-item:last-child { border-bottom: none; }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <h1 class="title">HEAD Iphone</h1>
+        <div class="subtitle" id="mainSubtitle">NHẬP KEY ĐỂ TRUY CẬP HỆ THỐNG</div>
+    </div>
+
+    <div class="card" id="loginScreen">
+        <div class="input-group">
+            <label class="input-label">LICENSE KEY</label>
+            <input type="text" id="loginKeyInput" class="neumorphic-input" placeholder="VD: FF-A1B2-C3D4-E5F6">
+        </div>
+        <div class="checkbox-group">
+            <label class="checkbox-container">
+                <input type="checkbox" id="rememberMe">
+                <span class="checkmark"></span>
+                Nhớ Key Đăng Nhập
+            </label>
+        </div>
+        <button class="action-btn" onclick="handleLogin()">ĐĂNG NHẬP</button>
+        <div id="loginMessage" id="messageBox"></div>
+    </div>
+
+    <div class="card hidden" id="successScreen">
+        <h2 style="color: #4CAF50; text-align: center; margin-bottom: 20px;">ĐĂNG NHẬP THÀNH CÔNG!</h2>
+        <p style="text-align: center; font-size: 14px; margin-bottom: 20px;">Chào mừng bạn đến với hệ thống.</p>
+        <button class="action-btn" onclick="logout()">ĐĂNG XUẤT</button>
+    </div>
+
+    <div class="card hidden" id="adminScreen">
+        <h2 class="admin-title">🛠 ADMIN PANEL</h2>
+        
+        <div class="input-group">
+            <label class="input-label">TẠO KEY MỚI (Tùy chỉnh hoặc để tự random)</label>
+            <input type="text" id="newKeyInput" class="neumorphic-input" placeholder="Nhập Key hoặc để trống...">
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">NGÀY HẾT HẠN</label>
+            <input type="date" id="expiryDateInput" class="neumorphic-input">
+        </div>
+
+        <button class="action-btn" onclick="generateKey()" style="color: #ff9800;">TẠO & LƯU KEY</button>
+        <button class="action-btn" onclick="logout()" style="color: #7b8b9e; font-size: 12px; padding: 10px;">ĐĂNG XUẤT ADMIN</button>
+        
+        <div id="adminMessage" id="messageBox"></div>
+
+        <div class="input-label" style="margin-top: 20px;">DANH SÁCH KEY ĐÃ TẠO:</div>
+        <div class="key-list" id="keyListDisplay">
+            </div>
+    </div>
+
+    <script>
+        // 1. CẤU HÌNH CƠ BẢN
+        const ADMIN_KEY = "FF-ADMIN-0933653553";
+        
+        // Hàm khởi tạo "Database" vào LocalStorage nếu chưa có
+        function initDatabase() {
+            if (!localStorage.getItem('sysKeys')) {
+                const initialKeys = {
+                    // Cấu trúc: "TênKey": "Ngày hết hạn (Timestamp)"
+                    "FF-ABC-ABC-123": new Date("2026-12-31").getTime() // Key ví dụ bạn yêu cầu
+                };
+                localStorage.setItem('sysKeys', JSON.stringify(initialKeys));
+            }
+        }
+        initDatabase();
+
+        // 2. CÁC HÀM XỬ LÝ GIAO DIỆN
+        function showMessage(elementId, msg, isError = true) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = msg;
+            el.className = isError ? "error-text" : "success-text";
+            setTimeout(() => { el.innerHTML = ""; }, 3000); // Ẩn thông báo sau 3s
+        }
+
+        function switchScreen(screenId) {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('successScreen').classList.add('hidden');
+            document.getElementById('adminScreen').classList.add('hidden');
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        // Tự động điền key nếu đã bấm "Nhớ Key"
+        window.onload = function() {
+            const savedKey = localStorage.getItem('savedKey');
+            if (savedKey) {
+                document.getElementById('loginKeyInput').value = savedKey;
+                document.getElementById('rememberMe').checked = true;
+            }
+        }
+
+        // 3. XỬ LÝ ĐĂNG NHẬP
+        function handleLogin() {
+            const inputKey = document.getElementById('loginKeyInput').value.trim();
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            if (!inputKey) {
+                return showMessage('loginMessage', 'Vui lòng nhập License Key!');
+            }
+
+            // Xử lý lưu Key nếu chọn "Nhớ Key"
+            if (rememberMe) {
+                localStorage.setItem('savedKey', inputKey);
+            } else {
+                localStorage.removeItem('savedKey');
+            }
+
+            // Check Admin
+            if (inputKey === ADMIN_KEY) {
+                switchScreen('adminScreen');
+                updateKeyList(); // Cập nhật danh sách key cho admin xem
+                return;
+            }
+
+            // Check User Key
+            const db = JSON.parse(localStorage.getItem('sysKeys'));
+            if (db.hasOwnProperty(inputKey)) {
+                const expiryTime = db[inputKey];
+                const currentTime = new Date().getTime();
+
+                if (currentTime > expiryTime) {
+                    showMessage('loginMessage', 'Key này đã hết hạn sử dụng!');
+                } else {
+                    switchScreen('successScreen');
+                }
+            } else {
+                showMessage('loginMessage', 'Key không tồn tại hoặc sai định dạng!');
+            }
+        }
+
+        function logout() {
+            document.getElementById('loginKeyInput').value = "";
+            switchScreen('loginScreen');
+        }
+
+        // 4. XỬ LÝ CHỨC NĂNG ADMIN
+        function generateKey() {
+            let customKey = document.getElementById('newKeyInput').value.trim().toUpperCase();
+            const expiryDateStr = document.getElementById('expiryDateInput').value;
+
+            if (!expiryDateStr) {
+                return showMessage('adminMessage', 'Vui lòng chọn ngày hết hạn!');
+            }
+
+            const expiryTime = new Date(expiryDateStr).getTime();
+            if (expiryTime <= new Date().getTime()) {
+                 return showMessage('adminMessage', 'Ngày hết hạn phải ở tương lai!');
+            }
+
+            // Nếu admin không nhập key tùy chỉnh, tạo ngẫu nhiên
+            if (!customKey) {
+                const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
+                customKey = `FF-${randomPart}`;
+            }
+
+            // Đảm bảo không đặt trùng tên với Key Admin
+            if (customKey === ADMIN_KEY) {
+                return showMessage('adminMessage', 'Không thể dùng tên của Key Admin!');
+            }
+
+            // Lưu vào LocalStorage
+            const db = JSON.parse(localStorage.getItem('sysKeys'));
+            
+            if (db.hasOwnProperty(customKey)) {
+                return showMessage('adminMessage', 'Key này đã tồn tại, hãy chọn tên khác!');
+            }
+
+            db[customKey] = expiryTime;
+            localStorage.setItem('sysKeys', JSON.stringify(db));
+
+            showMessage('adminMessage', `Tạo thành công: ${customKey}`, false);
+            document.getElementById('newKeyInput').value = '';
+            updateKeyList();
+        }
+
+        // Cập nhật danh sách key hiển thị cho Admin
+        function updateKeyList() {
+            const db = JSON.parse(localStorage.getItem('sysKeys'));
+            const listEl = document.getElementById('keyListDisplay');
+            listEl.innerHTML = "";
+
+            if(Object.keys(db).length === 0) {
+                listEl.innerHTML = "Chưa có key nào.";
+                return;
+            }
+
+            for (const [keyName, expiryTime] of Object.entries(db)) {
+                const dateObj = new Date(expiryTime);
+                const dateString = `${dateObj.getDate()}/${dateObj.getMonth()+1}/${dateObj.getFullYear()}`;
+                
+                // Đánh dấu đỏ nếu đã hết hạn
+                const isExpired = new Date().getTime() > expiryTime;
+                const statusColor = isExpired ? "color: #ff5e5e;" : "color: #4CAF50;";
+
+                listEl.innerHTML += `
+                    <div class="key-item">
+                        <strong>${keyName}</strong> 
+                        <span style="${statusColor}">HSD: ${dateString}</span>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

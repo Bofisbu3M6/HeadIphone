@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Strongest Engine ❄️ Materialistic</title>
+    <title>Support File Strongest ❄️</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <audio id="bg-music" loop>
@@ -15,102 +15,110 @@
     <div id="snow-container"></div>
 
     <div id="login-screen">
-        <h1 class="logo-title">STRONGEST ❄️</h1>
+        <div class="apple-logo-container">
+            <img src="https://i.ibb.co/L8v8vXN/apple-logo.png" alt="Apple Logo" class="main-logo">
+        </div>
+        <h1 class="brand-title">Support File Strongest ❄️</h1>
         <p class="slogan">VẠN VẬT THAY ĐỔI - VẬT CHẤT LÊN NGÔI</p>
-        <div class="neumorphic-card main-card">
-            <input type="password" id="license-key" class="input-field" placeholder="NHẬP LICENSE KEY...">
-            <button class="btn btn-primary" onclick="checkLogin()">KÍCH HOẠT HỆ THỐNG</button>
+        
+        <div class="metal-card login-box">
+            <input type="password" id="license-key" class="metal-input" placeholder="NHẬP LICENSE KEY...">
+            <button class="btn-metal primary" onclick="checkLogin()">KÍCH HOẠT HỆ THỐNG</button>
         </div>
     </div>
 
     <div id="main-panel" class="hidden">
-        <div class="header">
-            <h1 class="logo-title small">STRONGEST ENGINE</h1>
-            <div class="status-group">
-                <div class="badge neon-green">● ONLINE</div>
-                <div id="key-type-badge" class="badge neon-gold">MEMBER</div>
-                <button id="music-toggle" class="btn-icon" onclick="toggleMusic()">🔊</button>
+        <div class="glass-header">
+            <span class="header-title">STRONGEST ❄️</span>
+            <div class="header-status">
+                <span id="key-type-badge" class="badge">MEMBER</span>
+                <button id="music-toggle" onclick="toggleMusic()">🔊</button>
             </div>
         </div>
 
-        <div class="nav-container">
-            <div class="nav-tabs">
-                <div class="tab active" data-color="blue" onclick="switchTab(this, 'dashboard')">TRANG CHỦ</div>
-                <div class="tab" data-color="purple" onclick="switchTab(this, 'chucnang')">CHỨC NĂNG</div>
-                <div id="dev-tab" class="tab hidden admin-tab" data-color="red" onclick="switchTab(this, 'developer')">ADMIN PANEL</div>
-            </div>
+        <div class="nav-tabs">
+            <div class="tab active" data-color="blue" onclick="switchTab(this, 'dashboard')">MỤC TIÊU</div>
+            <div class="tab" data-color="purple" onclick="switchTab(this, 'chucnang')">GHI ĐÈ</div>
+            <div id="dev-tab" class="tab hidden" data-color="red" onclick="switchTab(this, 'developer')">QUẢN TRỊ</div>
         </div>
 
         <div id="content-area">
             <div id="tab-dashboard" class="tab-content">
-                <div class="neumorphic-card border-blue">
-                    <div class="section-header"><span class="title color-blue">MỤC TIÊU NATIVE REAL</span></div>
-                    <button class="btn-scan-color blue-shadow" onclick="requestNativeDeviceApps()">QUÉT ỨNG DỤNG THẬT</button>
-                    <div id="app-grid-container" class="app-grid">
-                        <p class="hint">Nhấn quét để tìm mục tiêu...</p>
-                    </div>
+                <div class="metal-card border-blue">
+                    <h3 class="section-title color-blue">DEVICE SCANNER (iOS)</h3>
+                    <button class="btn-action blue-bg" onclick="requestNativeDeviceApps()">QUÉT ỨNG DỤNG THIẾT BỊ</button>
+                    <div id="app-grid-container" class="app-grid"></div>
                 </div>
 
-                <div class="neumorphic-card info-box border-blue">
-                    <div class="row"><span>TARGET:</span> <span class="val neon-blue" id="display-target">CHƯA CHỌN</span></div>
-                    <div class="row"><span>DATA PATH:</span> <span class="val" id="target-path" style="font-size: 7px; color: #888;">/data/user/0/...</span></div>
+                <div class="metal-card info-box border-blue">
+                    <div class="info-row"><span>ỨNG DỤNG:</span> <span id="display-target" class="val blue-text">CHƯA CHỌN</span></div>
+                    <div class="info-row"><span>PATH:</span> <span id="target-path" class="val-path">N/A</span></div>
                 </div>
             </div>
 
             <div id="tab-chucnang" class="tab-content hidden">
-                <div class="neumorphic-card border-purple">
-                    <div class="section-header"><span class="title color-purple">HỆ THỐNG GHI ĐÈ 100%</span></div>
-                    <p class="warning-text">Cảnh báo: Tệp gốc sẽ bị thay thế vĩnh viễn.</p>
-                    <div class="row">
-                        <span class="lbl">AIMLOCK (REPLACE FILE)</span>
-                        <label class="switch s-blue"><input type="checkbox" onchange="processFileReplace('aimlock', this)"><span class="slider"></span></label>
+                <div class="metal-card border-purple">
+                    <h3 class="section-title color-purple">HỆ THỐNG THAY THẾ 100%</h3>
+                    <div class="control-row">
+                        <div class="control-label">
+                            <span class="main-lbl">AIMLOCK</span>
+                            <small>Deep Overwrite ios/gameassetbundles</small>
+                        </div>
+                        <label class="ios-switch s-blue"><input type="checkbox" onchange="processFileReplace('aimlock', this)"><span class="ios-slider"></span></label>
                     </div>
-                    <div class="row">
-                        <span class="lbl">NO RECOIL (REPLACE FILE)</span>
-                        <label class="switch s-purple"><input type="checkbox" onchange="processFileReplace('norecoil', this)"><span class="slider"></span></label>
+                    <div class="control-row">
+                        <div class="control-label">
+                            <span class="main-lbl">NO RECOIL</span>
+                            <small>Match filename from Admin Panel</small>
+                        </div>
+                        <label class="ios-switch s-purple"><input type="checkbox" onchange="processFileReplace('norecoil', this)"><span class="ios-slider"></span></label>
                     </div>
                 </div>
+                <div id="overwrite-log" class="terminal-log hidden border-purple"></div>
             </div>
 
             <div id="tab-developer" class="tab-content hidden">
-                <div class="neumorphic-card border-red">
-                    <div class="section-header"><span class="title color-red">TẠO KEY (KEYGEN)</span></div>
-                    <div class="admin-row">
-                        <select id="key-time" class="input-field small">
-                            <option value="1">1 NGÀY</option>
-                            <option value="7">7 NGÀY</option>
-                            <option value="30">30 NGÀY</option>
-                            <option value="999">VĨNH VIỄN</option>
-                        </select>
-                        <button class="btn-sub red-shadow" onclick="generateKey()">TẠO</button>
-                    </div>
-                    <input type="text" id="generated-key-box" class="input-field" style="margin-top:10px" readonly>
-                </div>
-
-                <div class="neumorphic-card border-red">
-                    <div class="section-header"><span class="title color-red">QUẢN LÝ TỆP TIN THAY THẾ</span></div>
-                    <div class="file-box">
-                        <span class="small-label color-blue">FILE AIMLOCK NATIVE:</span>
-                        <div class="admin-row">
+                <div class="metal-card border-red">
+                    <h3 class="section-title color-red">QUẢN LÝ FILE NẠP</h3>
+                    <div class="file-upload-group">
+                        <span class="file-label color-blue">FILE AIMLOCK:</span>
+                        <div class="file-actions">
                             <input type="file" id="f-aim" hidden onchange="showConfirm('aim')">
-                            <button class="btn-sub" onclick="document.getElementById('f-aim').click()">CHỌN FILE</button>
-                            <button id="ok-aim" class="btn-ok" onclick="saveAdminFile('aim')">XÁC NHẬN</button>
+                            <button class="btn-sub" onclick="document.getElementById('f-aim').click()">CHỌN</button>
+                            <button id="ok-aim" class="btn-ok" onclick="saveAdminFile('aim')">OK</button>
                         </div>
                     </div>
-                    <div class="file-box" style="margin-top: 15px;">
-                        <span class="small-label color-purple">FILE NO RECOIL NATIVE:</span>
-                        <div class="admin-row">
+                    <div class="file-upload-group" style="margin-top: 15px;">
+                        <span class="file-label color-purple">FILE NO RECOIL:</span>
+                        <div class="file-actions">
                             <input type="file" id="f-recoil" hidden onchange="showConfirm('recoil')">
-                            <button class="btn-sub" onclick="document.getElementById('f-recoil').click()">CHỌN FILE</button>
-                            <button id="ok-recoil" class="btn-ok" onclick="saveAdminFile('recoil')">XÁC NHẬN</button>
+                            <button class="btn-sub" onclick="document.getElementById('f-recoil').click()">CHỌN</button>
+                            <button id="ok-recoil" class="btn-ok" onclick="saveAdminFile('recoil')">OK</button>
                         </div>
                     </div>
-                    <div id="active-file-status" class="status-list"></div>
+                    <div id="active-file-status" class="status-summary"></div>
                 </div>
+                <button class="btn-logout" onclick="logout()">THOÁT</button>
             </div>
         </div>
-        
-        <button class="logout-link" onclick="logout()">THOÁT ỨNG DỤNG</button>
+    </div>
+
+    <div id="notification-overlay" class="hidden glass-overlay">
+        <div class="metal-card alert-box">
+            <div class="alert-header">
+                <img src="https://i.ibb.co/L8v8vXN/apple-logo.png" width="18" alt="Apple">
+                <span>HỆ THỐNG STRONGEST</span>
+            </div>
+            <div class="alert-body">
+                <p>Kích hoạt hệ thống thành công!</p>
+                <h2 id="key-expiry-status" class="blue-text">VĨNH VIỄN</h2>
+                <p class="small-note">Thiết bị đã được phê duyệt.</p>
+            </div>
+            <div class="alert-footer">
+                <button class="btn-alert-close" onclick="closeNotification()">OK</button>
+                <button class="btn-alert-hide" onclick="hideNotificationFor2Hours()">ẨN TRONG 2 GIỜ</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

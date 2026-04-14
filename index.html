@@ -28,17 +28,17 @@
             </svg>
         </div>
         <h1 class="brand-title">Support File Strongest ❄️</h1>
-        <p class="slogan">UY TÍN ĐẶT LÊN HÀNG ĐẦU - CHẤT LƯỢNG SỐ 1 VIỆT NAM</p>
+        <p class="slogan">UY TÍN ĐẶT LÊN HÀNG ĐẦU - CHẤT LƯỢNG GIÁ RẺ SỐ 1 VIỆT NAM</p>
         
         <div class="metal-card login-box">
-            <input type="password" id="license-key" class="metal-input" placeholder="NHẬP LICENSE KEY...">
-            <button class="btn-metal primary" onclick="checkLogin()">KÍCH HOẠT HỆ THỐNG</button>
+            <input type="text" id="license-key" class="metal-input" placeholder="NHẬP KEY...">
+            <button class="btn-metal primary" onclick="checkLogin()">KÍCH HOẠT KEY</button>
         </div>
     </div>
 
     <div id="main-panel" class="hidden">
         <div class="glass-header">
-            <span class="header-title">AIMLOCK STRONGEST IPHONE ❄️</span>
+            <span class="header-title">AIMLOCK STRONGEST IPHONE❄️</span>
             <div class="header-status">
                 <span id="key-type-badge" class="badge">MEMBER</span>
                 <button id="music-toggle" onclick="toggleMusic()">🔊</button>
@@ -46,8 +46,8 @@
         </div>
 
         <div class="nav-tabs">
-            <div class="tab active" data-color="blue" onclick="switchTab(this, 'dashboard')">MỤC TIÊU</div>
-            <div class="tab" data-color="purple" onclick="switchTab(this, 'chucnang')">CHẠY CODE CHO ỨNG DỤNG</div>
+            <div class="tab active" data-color="blue" onclick="switchTab(this, 'dashboard')">DASHBOARD</div>
+            <div class="tab" data-color="purple" onclick="switchTab(this, 'chucnang')">CHỨC NĂNG</div>
             <div id="dev-tab" class="tab hidden" data-color="red" onclick="switchTab(this, 'developer')">QUẢN TRỊ</div>
         </div>
 
@@ -58,43 +58,29 @@
                     <button class="btn-action blue-bg" onclick="requestNativeDeviceApps()">QUÉT ỨNG DỤNG THIẾT BỊ</button>
                     <div id="app-grid-container" class="app-grid"></div>
                 </div>
-                <div class="metal-card info-box border-blue">
-                    <div class="info-row"><span>ỨNG DỤNG:</span> <span id="display-target" class="val blue-text">CHƯA CHỌN</span></div>
-                    <div class="info-row"><span>PATH:</span> <span id="target-path" class="val-path">N/A</span></div>
-                </div>
             </div>
 
             <div id="tab-chucnang" class="tab-content hidden">
                 <div class="metal-card border-purple">
-                    <h3 class="section-title color-purple">HỆ THỐNG THAY THẾ 100%</h3>
+                    <h3 class="section-title color-purple">Kích Hoạt Chức Năng</h3>
                     <div class="control-row">
-                        <div class="control-label"><span class="main-lbl">AIMLOCK</span><small>Deep Overwrite ios/gameassetbundles</small></div>
+                        <div class="control-label"><span class="main-lbl">AIMLOCK</span><small>Overwrite iOS Files</small></div>
                         <label class="ios-switch s-blue"><input type="checkbox" onchange="processFileReplace('aimlock', this)"><span class="ios-slider"></span></label>
                     </div>
-                    <div class="control-row">
-                        <div class="control-label"><span class="main-lbl">NO RECOIL</span><small>Deep Overwrite ios/gameassetbundles</small></div>
-                        <label class="ios-switch s-purple"><input type="checkbox" onchange="processFileReplace('norecoil', this)"><span class="ios-slider"></span></label>
-                    </div>
                 </div>
-                <div id="overwrite-log" class="terminal-log hidden border-purple"></div>
             </div>
 
             <div id="tab-developer" class="tab-content hidden">
                 <div class="metal-card border-red">
-                    <h3 class="section-title color-red">ADMIN CONTROL</h3>
-                    <div class="file-upload-group">
-                        <span class="file-label">FILE AIMLOCK:</span>
-                        <input type="file" id="f-aim" hidden>
-                        <button class="btn-sub" onclick="document.getElementById('f-aim').click()">CHỌN</button>
-                        <button class="btn-ok" onclick="saveAdminFile('aim')">NẠP</button>
-                    </div>
-                    <div class="file-upload-group" style="margin-top:10px">
-                        <span class="file-label">FILE NORECOIL:</span>
-                        <input type="file" id="f-recoil" hidden>
-                        <button class="btn-sub" onclick="document.getElementById('f-recoil').click()">CHỌN</button>
-                        <button class="btn-ok" onclick="saveAdminFile('recoil')">NẠP</button>
-                    </div>
-                    <div id="active-file-status" class="status-summary"></div>
+                    <h3 class="section-title color-red">TẠO KEY MỚI</h3>
+                    <select id="key-duration" class="metal-input" style="margin-bottom:10px">
+                        <option value="86400">1 NGÀY</option>
+                        <option value="604800">7 NGÀY</option>
+                        <option value="2592000">30 NGÀY</option>
+                        <option value="999999999">VĨNH VIỄN</option>
+                    </select>
+                    <button class="btn-metal" style="background:#ff3b30; color:#fff" onclick="adminCreateKey()">TẠO & COPY KEY</button>
+                    <div id="admin-log" style="font-size:10px; margin-top:10px; color:#8e8e93"></div>
                 </div>
                 <button class="btn-logout" onclick="logout()">THOÁT</button>
             </div>
@@ -103,10 +89,11 @@
 
     <div id="notification-overlay" class="hidden glass-overlay">
         <div class="metal-card alert-box">
-            <div class="alert-header"><span>HỆ THỐNG AIMLOCK STRONGEST IPHONE</span></div>
+            <div class="alert-header"><span>HỆ THỐNG AIMLOCK STRONGEST IPHONE❄️</span></div>
             <div class="alert-body">
                 <p>Kích hoạt thành công!</p>
-                <h2 id="key-expiry-status" class="blue-text">VĨNH VIỄN</h2>
+                <p class="small-note">Thời hạn còn lại:</p>
+                <h2 id="key-countdown" class="blue-text">00:00:00:00</h2>
             </div>
             <div class="alert-footer">
                 <button class="btn-alert-close" onclick="closeNotification()">OK</button>

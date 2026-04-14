@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aimlock Strongest System System❄️</title>
+    <title>Strongest Native System</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="login-screen">
-        <h1 class="title">STRONGEST ENGINE❄️</h1>
+        <h1 class="app-logo-text">STRONGEST ENGINE❄️</h1>
         <div class="neumorphic-card">
             <input type="password" id="license-key" class="input-field" placeholder="NHẬP LICENSE KEY...">
             <button class="btn" onclick="checkLogin()">KÍCH HOẠT HỆ THỐNG</button>
@@ -19,7 +19,7 @@
 
     <div id="main-panel" class="hidden">
         <div class="header">
-            <h1 id="app-title">STRONGEST ENGINE❄️</h1>
+            <h1 class="app-logo-text" style="font-size: 1.1rem;">STRONGEST ENGINE❄️</h1>
             <div class="status-row">
                 <div class="badge green">● SERVER ONLINE</div>
                 <div id="key-type-badge" class="badge">MEMBER</div>
@@ -36,27 +36,24 @@
         </div>
 
         <div id="content-area">
-            
             <div id="tab-dashboard" class="tab-content">
                 <div class="neumorphic-card">
-                    <div class="section-title">HỆ THỐNG MỤC TIÊU</div>
+                    <div class="section-title">HỆ THỐNG MỤC TIÊU (NATIVE)</div>
                     <div class="row" style="margin-bottom: 15px;">
-                        <span style="font-size: 11px;">Quét ứng dụng máy:</span>
-                        <button class="btn-scan" onclick="requestDeviceApps()">QUÉT THIẾT BỊ</button>
+                        <span>Ứng dụng thực tế:</span>
+                        <button class="btn-small" onclick="requestNativeDeviceApps()">QUÉT THIẾT BỊ</button>
                     </div>
                     
-                    <div id="app-list-container" class="app-list-grid">
-                        <p style="font-size: 10px; color: #7b8b9e; text-align: center; width: 100%;">Click Quét Thiết Bị để tải...</p>
+                    <div id="app-grid-container" class="app-grid">
+                        <p class="placeholder-text">Vui lòng nhấn Quét Thiết Bị...</p>
                     </div>
-                    
-                    <input type="hidden" id="selected-app-pkg" value="">
+                    <input type="hidden" id="selected-target-pkg" value="">
                 </div>
                 
                 <div class="neumorphic-card">
                     <div class="section-title">THÔNG TIN THIẾT BỊ</div>
-                    <div class="row"><span>Thiết bị:</span> <span class="val" id="os-info">---</span></div>
-                    <div class="row"><span>Hệ điều hành:</span> <span class="val" id="browser-info">---</span></div>
-                    <div class="row"><span>Status:</span> <span class="val" style="color:#2ecc71;">READY</span></div>
+                    <div class="row"><span>Thiết bị:</span> <span class="val" id="os-info">Đang quét...</span></div>
+                    <div class="row"><span>Mục tiêu:</span> <span class="val" id="display-target" style="font-size: 8px;">Chưa chọn</span></div>
                 </div>
             </div>
 
@@ -64,11 +61,11 @@
                 <div class="neumorphic-card">
                     <div class="section-title">SYSTEM CONTROL</div>
                     <div class="row">
-                        <span>Aimlock System</span>
+                        <span>Aimlock Native</span>
                         <label class="switch"><input type="checkbox" onchange="toggleHack('Aimlock', this)"><span class="slider"></span></label>
                     </div>
                     <div class="row">
-                        <span>No Recoil System</span>
+                        <span>No Recoil Native</span>
                         <label class="switch"><input type="checkbox" onchange="toggleHack('No Recoil', this)"><span class="slider"></span></label>
                     </div>
                 </div>
@@ -78,43 +75,37 @@
                 <div class="neumorphic-card">
                     <div class="section-title">KEY STATUS</div>
                     <div class="row"><span>Mã Key:</span> <span class="val" id="display-key">---</span></div>
-                    <div class="row"><span>Loại Key:</span> <span class="val" style="color:#ff4757;">Premium Admin</span></div>
                     <div class="row"><span>Hạn dùng:</span> <span class="val">Vĩnh Viễn</span></div>
                 </div>
             </div>
 
             <div id="tab-developer" class="tab-content hidden">
-                <div id="admin-controls-area" class="neumorphic-card" style="border: 1px solid #ff4757;">
+                <div class="neumorphic-card admin-border">
                     <div class="section-title" style="color: #ff4757;">ADMIN FILE MANAGER</div>
                     
-                    <div class="admin-file-box">
-                        <p class="file-label">FILE AIMLOCK (.lua/.txt):</p>
-                        <div class="row-flex">
-                            <input type="file" id="input-aim" style="display:none" onchange="prepareFile('aimlock')">
-                            <button class="btn-action" onclick="document.getElementById('input-aim').click()">CHỌN</button>
-                            <button id="confirm-aim" class="btn-confirm" onclick="confirmAndLoad('aimlock')">XÁC NHẬN</button>
-                        </div>
-                        <p id="label-aim" class="status-text">Chưa nạp</p>
-                    </div>
-
-                    <div class="admin-file-box" style="margin-top:10px;">
-                        <p class="file-label">FILE NO RECOIL (.lua/.txt):</p>
-                        <div class="row-flex">
-                            <input type="file" id="input-recoil" style="display:none" onchange="prepareFile('norecoil')">
-                            <button class="btn-action" onclick="document.getElementById('input-recoil').click()">CHỌN</button>
-                            <button id="confirm-recoil" class="btn-confirm" onclick="confirmAndLoad('norecoil')">XÁC NHẬN</button>
-                        </div>
-                        <p id="label-recoil" class="status-text">Chưa nạp</p>
-                    </div>
-
-                    <p class="file-label" style="margin-top:15px;">TẠO KEY MỚI:</p>
                     <div class="row">
-                        <input type="text" id="gen-key-display" class="input-field" style="width:65%; margin:0; font-size:10px;" readonly placeholder="Key sẽ tạo...">
-                        <button class="btn-action" style="flex:none; width:30%; padding:11px;" onclick="generateKey()">TẠO</button>
+                        <p class="small-label">File Aimlock:</p>
+                        <input type="file" id="file-aimlock" hidden onchange="prepareFile('aimlock')">
+                        <button class="btn-action" onclick="document.getElementById('file-aimlock').click()">CHỌN</button>
+                        <button id="confirm-aimlock" class="btn-confirm" onclick="confirmAndLoad('aimlock')">OK</button>
+                    </div>
+                    <div class="row">
+                        <p class="small-label">File No Recoil:</p>
+                        <input type="file" id="file-norecoil" hidden onchange="prepareFile('norecoil')">
+                        <button class="btn-action" onclick="document.getElementById('file-norecoil').click()">CHỌN</button>
+                        <button id="confirm-norecoil" class="btn-confirm" onclick="confirmAndLoad('norecoil')">OK</button>
+                    </div>
+
+                    <div class="admin-category">
+                        <p class="category-title">DẠNH MỤC FILE HOẠT ĐỘNG:</p>
+                        <div id="active-file-list" class="file-list-box">
+                            <p class="placeholder-text">Chưa có file nạp...</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        
         <button class="btn-logout" onclick="logout()">ĐĂNG XUẤT</button>
     </div>
 

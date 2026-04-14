@@ -3,336 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HEAD Iphone Panel v3.1</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title id="web-title">HEAD Iphone Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #dfe6ef;
             --shadow: #c2ccdf;
             --light: #ffffff;
             --primary: #4a8df8;
-            --text: #7b8b9e;
-            --accent: #2ecc71;
+            --admin-glow: #00f2ff;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
-        body { background: var(--bg); color: var(--text); padding: 15px; overflow-x: hidden; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background: var(--bg); 
+            font-family: 'Montserrat', sans-serif; 
+            margin: 0; padding: 20px; 
+            display: flex; flex-direction: column; align-items: center;
+        }
 
-        /* Header & Tabs */
-        .header { text-align: center; margin-bottom: 20px; }
-        #app-title { font-family: 'Orbitron'; font-size: 24px; color: var(--primary); margin-bottom: 5px; transition: 0.3s; }
-        .version { font-size: 10px; letter-spacing: 2px; font-weight: bold; }
+        /* LOGIN SCREEN */
+        #login-screen { width: 100%; max-width: 400px; text-align: center; margin-top: 10vh; }
+        
+        /* MAIN PANEL (Hidden by default) */
+        #main-panel { display: none; width: 100%; max-width: 450px; }
 
-        .nav-tabs {
-            display: flex;
-            justify-content: space-between;
+        .neumorphic-card {
             background: var(--bg);
-            padding: 8px;
-            border-radius: 15px;
-            box-shadow: 5px 5px 10px var(--shadow), -5px -5px 10px var(--light);
-            margin-bottom: 20px;
-            overflow-x: auto;
-        }
-        .tab-item {
-            padding: 10px 15px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: 0.2s;
-            white-space: nowrap;
-        }
-        .tab-item.active {
-            box-shadow: inset 4px 4px 8px var(--shadow), inset -4px -4px 8px var(--light);
-            color: var(--primary);
-        }
-
-        /* Status Info Bar */
-        .status-bar {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-bottom: 15px;
-            font-size: 9px;
-            font-weight: bold;
-        }
-        .status-pill {
-            padding: 4px 10px;
-            border-radius: 20px;
-            box-shadow: 3px 3px 6px var(--shadow), -3px -3px 6px var(--light);
-        }
-        .status-pill.green { color: #2ecc71; }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .stat-card {
-            padding: 15px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 6px 6px 12px var(--shadow), -6px -6px 12px var(--light);
-        }
-        .stat-value { font-family: 'Orbitron'; font-size: 18px; color: var(--primary); display: block; }
-        .stat-label { font-size: 9px; text-transform: uppercase; font-weight: bold; margin-top: 5px; }
-
-        /* Panel Section */
-        .panel-section {
-            background: var(--bg);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 8px 8px 16px var(--shadow), -8px -8px 16px var(--light);
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 12px 12px 24px var(--shadow), -12px -12px 24px var(--light);
             margin-bottom: 25px;
         }
-        .section-title {
-            font-size: 12px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            text-transform: uppercase;
-        }
-        .section-title::before {
-            content: '';
-            width: 4px;
-            height: 15px;
-            background: var(--primary);
-            margin-right: 10px;
-            border-radius: 2px;
+
+        .title { 
+            font-family: 'Orbitron'; font-size: 28px; color: var(--primary); 
+            text-shadow: 0 0 15px rgba(74, 141, 248, 0.4); margin-bottom: 10px;
+            transition: 0.3s ease;
         }
 
-        /* Controls */
-        .control-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            font-size: 12px;
-            font-weight: 600;
+        .input-field {
+            width: 100%; border: none; padding: 15px; border-radius: 12px;
+            background: var(--bg); color: #555; font-weight: 600;
+            box-shadow: inset 6px 6px 12px var(--shadow), inset -6px -6px 12px var(--light);
+            outline: none; margin: 20px 0;
         }
 
-        /* Switch Neumorphism */
-        .switch {
-            position: relative;
-            width: 42px;
-            height: 22px;
+        .btn {
+            width: 100%; padding: 15px; border: none; border-radius: 12px;
+            background: var(--bg); color: var(--primary); font-weight: 800;
+            box-shadow: 6px 6px 12px var(--shadow), -6px -6px 12px var(--light);
+            cursor: pointer; text-transform: uppercase;
         }
+
+        .btn:active { box-shadow: inset 4px 4px 8px var(--shadow), inset -4px -4px 8px var(--light); }
+
+        /* TABS */
+        .tabs { display: flex; overflow-x: auto; gap: 10px; margin-bottom: 20px; padding: 5px; }
+        .tab { 
+            padding: 10px 20px; border-radius: 12px; font-size: 11px; font-weight: 700;
+            box-shadow: 4px 4px 8px var(--shadow), -4px -4px 8px var(--light);
+            cursor: pointer; white-space: nowrap;
+        }
+        .tab.active { color: var(--primary); box-shadow: inset 3px 3px 6px var(--shadow), inset -3px -3px 6px var(--light); }
+
+        /* STATUS BADGES */
+        .status-row { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 15px; }
+        .badge { 
+            font-size: 9px; font-weight: 800; padding: 5px 10px; border-radius: 20px;
+            box-shadow: 3px 3px 6px var(--shadow), -3px -3px 6px var(--light);
+        }
+        .green { color: #2ecc71; } .blue { color: var(--primary); }
+
+        /* CONTROL ELEMENTS */
+        .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; font-weight: 600; }
+        
+        .switch { position: relative; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--bg);
-            transition: .4s;
-            border-radius: 34px;
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg); transition: .4s; border-radius: 34px;
             box-shadow: inset 3px 3px 6px var(--shadow), inset -3px -3px 6px var(--light);
         }
         .slider:before {
-            position: absolute;
-            content: "";
-            height: 14px; width: 14px;
-            left: 4px; bottom: 4px;
-            background-color: var(--text);
-            transition: .4s;
-            border-radius: 50%;
+            position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px;
+            background: #8c9cb0; transition: .4s; border-radius: 50%;
         }
-        input:checked + .slider { background-color: var(--bg); }
-        input:checked + .slider:before { transform: translateX(20px); background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(20px); background: var(--primary); }
 
-        /* Range Slider */
-        .range-container { margin: 10px 0 20px 0; }
-        input[type=range] {
-            width: 100%;
-            -webkit-appearance: none;
-            background: transparent;
+        /* ADMIN SECTION */
+        .admin-only { border: 2px solid var(--primary); position: relative; overflow: hidden; }
+        .admin-badge { 
+            position: absolute; top: 0; right: 0; background: var(--primary); 
+            color: white; font-size: 8px; padding: 2px 10px; border-bottom-left-radius: 10px;
         }
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%;
-            height: 8px;
-            background: var(--bg);
-            border-radius: 10px;
-            box-shadow: inset 2px 2px 5px var(--shadow), inset -2px -2px 5px var(--light);
-        }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 18px;
-            width: 18px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-            margin-top: -5px;
-            box-shadow: 2px 2px 5px var(--shadow);
-        }
-
-        /* Quick Toggles Grid */
-        .quick-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        .btn-toggle {
-            padding: 12px;
-            border-radius: 12px;
-            border: none;
-            background: var(--bg);
-            box-shadow: 4px 4px 8px var(--shadow), -4px -4px 8px var(--light);
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--text);
-            cursor: pointer;
-            text-align: center;
-        }
-        .btn-toggle.active {
-            box-shadow: inset 3px 3px 6px var(--shadow), inset -3px -3px 6px var(--light);
-            color: var(--primary);
-        }
-
-        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1 id="app-title">HEAD Iphone</h1>
-        <div class="version">CENTER PANEL v3.1</div>
-    </div>
-
-    <div class="status-bar">
-        <div class="status-pill green">● SERVER ONLINE</div>
-        <div class="status-pill green">✔ KEY VALID</div>
-        <div class="status-pill">PING: 28ms</div>
-    </div>
-
-    <div class="nav-tabs">
-        <div class="tab-item active" onclick="showTab('dashboard')">Dashboard</div>
-        <div class="tab-item" onclick="showTab('chucnang')">Chức năng</div>
-        <div class="tab-item">Aim / ESP</div>
-        <div class="tab-item">Khác</div>
-    </div>
-
-    <div id="tab-dashboard">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <span class="stat-value">4,292</span>
-                <span class="stat-label">Kills Today</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-value">98.1%</span>
-                <span class="stat-label">Win Rate</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-value">7d 4h</span>
-                <span class="stat-label">Thời hạn Key</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-value">KD 24.1</span>
-                <span class="stat-label">K/D Ratio</span>
-            </div>
-        </div>
-
-        <div class="panel-section">
-            <div class="section-title">Trạng thái hệ thống</div>
-            <div class="control-row">
-                <span>Master Switch</span>
-                <label class="switch">
-                    <input type="checkbox" id="master-toggle">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="control-row">
-                <span>Anti-Detect</span>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-
-        <div class="panel-section">
-            <div class="section-title">Quick Toggle</div>
-            <div class="quick-grid">
-                <button class="btn-toggle">ESP Box</button>
-                <button class="btn-toggle">No Recoil</button>
-                <button class="btn-toggle">Speed Hack</button>
-                <button class="btn-toggle">Wallhack</button>
-            </div>
+    <div id="login-screen">
+        <h1 class="title">HEAD Iphone</h1>
+        <p style="font-size: 10px; letter-spacing: 2px; color: #92a1b5;">HỆ THỐNG XÁC THỰC</p>
+        <div class="neumorphic-card" style="margin-top: 30px;">
+            <input type="text" id="license-key" class="input-field" placeholder="NHẬP LICENSE KEY...">
+            <button class="btn" onclick="checkLogin()">ĐĂNG NHẬP</button>
+            <p style="font-size: 9px; margin-top: 15px; color: #92a1b5;">Gợi ý: Nhập <b>ADMIN-9999</b> để dùng quyền Admin</p>
         </div>
     </div>
 
-    <div id="tab-chucnang" class="hidden">
-        <div class="panel-section">
-            <div class="section-title">Movement</div>
-            <div class="range-container">
-                <div class="control-row">
-                    <span>Speed Hack (x1.5)</span>
-                    <span id="speed-val">1.5x</span>
-                </div>
-                <input type="range" min="1" max="5" step="0.1" value="1.5">
-            </div>
-            <div class="control-row">
-                <span>Fly Hack</span>
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                </label>
-            </div>
+    <div id="main-panel">
+        <div class="header" style="text-align: center;">
+            <h1 id="app-title" class="title">HEAD Iphone</h1>
+            <div id="user-tag" style="font-size: 10px; font-weight: 800; color: #92a1b5; margin-bottom: 20px;">PHIÊN BẢN V3.1</div>
         </div>
 
-        <div class="panel-section">
-            <div class="section-title">Combat</div>
-            <div class="control-row">
-                <span>Magic Bullet</span>
+        <div class="status-row">
+            <div class="badge green">● SERVER LIVE</div>
+            <div id="key-type" class="badge blue">USER KEY</div>
+            <div class="badge">24ms</div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active">DASHBOARD</div>
+            <div class="tab">CHỨC NĂNG</div>
+            <div class="tab">AIM / ESP</div>
+            <div id="admin-tab" class="tab" style="display:none; color: #e74c3c;">ADMIN LOGS</div>
+        </div>
+
+        <div class="neumorphic-card admin-only" id="master-card">
+            <div class="admin-badge" id="lock-label">LOCKED</div>
+            <div class="row">
+                <span>Master Switch (Admin Only)</span>
                 <label class="switch">
-                    <input type="checkbox">
+                    <input type="checkbox" id="master-toggle" disabled>
                     <span class="slider"></span>
                 </label>
             </div>
-            <div class="control-row">
-                <span>Auto Headshot</span>
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                </label>
-            </div>
+            <p style="font-size: 9px; color: #92a1b5;">Cần đặc quyền Admin để kích hoạt trạng thái Strongert.</p>
+        </div>
+
+        <div class="neumorphic-card">
+            <div class="row"><span>Kills Today</span> <span style="font-family: 'Orbitron'; color: var(--primary);">4,291</span></div>
+            <div class="row"><span>Win Rate</span> <span style="font-family: 'Orbitron'; color: var(--primary);">98.7%</span></div>
         </div>
     </div>
 
     <script>
+        const loginScreen = document.getElementById('login-screen');
+        const mainPanel = document.getElementById('main-panel');
         const appTitle = document.getElementById('app-title');
+        const webTitle = document.getElementById('web-title');
         const masterToggle = document.getElementById('master-toggle');
+        const lockLabel = document.getElementById('lock-label');
+        const keyTypeBadge = document.getElementById('key-type');
+        const adminTab = document.getElementById('admin-tab');
 
-        // Logic gạt nút đổi tên 
+        function checkLogin() {
+            const key = document.getElementById('license-key').value;
+            
+            if (key === "") {
+                alert("Vui lòng nhập Key!");
+                return;
+            }
+
+            loginScreen.style.display = 'none';
+            mainPanel.style.display = 'block';
+
+            // KIỂM TRA ĐẶC QUYỀN ADMIN
+            if (key === "ADMIN-9999") {
+                masterToggle.disabled = false;
+                lockLabel.innerText = "UNLOCKED";
+                lockLabel.style.background = "#2ecc71";
+                keyTypeBadge.innerText = "ADMIN ACCESS";
+                keyTypeBadge.style.color = "#e74c3c";
+                adminTab.style.display = "block";
+                document.getElementById('user-tag').innerText = "ADMINISTRATOR MODE";
+            }
+        }
+
+        // LOGIC GẠT NÚT ĐỔI TÊN
         masterToggle.addEventListener('change', function() {
             if (this.checked) {
                 appTitle.innerText = "Aimlock Strongert iPhone❄️";
-                document.title = "Aimlock Strongert iPhone❄️";
-                appTitle.style.color = "#3498db";
+                appTitle.style.color = "#2067e1";
+                webTitle.innerText = "Aimlock Strongert iPhone❄️";
             } else {
                 appTitle.innerText = "HEAD Iphone";
-                document.title = "HEAD Iphone Panel v3.1";
                 appTitle.style.color = "#4a8df8";
+                webTitle.innerText = "HEAD Iphone Panel";
             }
-        });
-
-        // Chuyển Tab
-        function showTab(tabName) {
-            document.getElementById('tab-dashboard').classList.add('hidden');
-            document.getElementById('tab-chucnang').classList.add('hidden');
-            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-
-            document.getElementById('tab-' + tabName).classList.remove('hidden');
-            event.currentTarget.classList.add('active');
-        }
-
-        // Quick Toggle Active Effect
-        document.querySelectorAll('.btn-toggle').forEach(btn => {
-            btn.addEventListener('click', function() {
-                this.classList.toggle('active');
-            });
         });
     </script>
 </body>

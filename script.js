@@ -1,18 +1,18 @@
 /* ============================================================
    STRONGEST SUPPORT SYSTEM - FULL SCRIPT 2024
-   Hệ thống quản lý Mod Menu qua Web + ESign (No PC)
+   Hệ thống quản lý Mod Menu qua Web (Bypass Manual Steps)
    ============================================================ */
 
 // 1. CẤU HÌNH HỆ THỐNG
 const ADMIN_KEY = "adminappmenunguyenlong"; // Key vào trang quản trị
 const audio = document.getElementById('bg-music');
 
-// Đường dẫn mặc định cho Game (Có thể thay đổi tùy bản cập nhật)
+// Đường dẫn Game (Giữ lại để hệ thống không lỗi logic chọn game)
 const IOS_PATH = "container/documents/contentcache/compulory/ios/gameassetbundles/";
 
 const appList = [
-    { id: "ff-max", name: "Free Fire MAX", icon: "https://i.ibb.co/vY8NqZ7/ff-max.png", path: "Free Fire Max/" + IOS_PATH },
-    { id: "ff-normal", name: "Free Fire", icon: "https://i.ibb.co/6R0n7Ym/ff-normal.png", path: "Free Fire/" + IOS_PATH }
+    { id: "ff-max", name: "Free Fire MAX", icon: "https://i.ibb.co/vY8NqZ7/ff-max.png", path: "Free Fire Max/" + IOS_PATH, scheme: "freefiremax://" },
+    { id: "ff-normal", name: "Free Fire", icon: "https://i.ibb.co/6R0n7Ym/ff-normal.png", path: "Free Fire/" + IOS_PATH, scheme: "freefire://" }
 ];
 
 let system = { 
@@ -24,11 +24,10 @@ let system = {
 // 2. KHỞI TẠO KHI MỞ TRANG
 window.onload = function() {
     initSnow();
-    checkExistingSession(); // Kiểm tra nếu đã đăng nhập trước đó
-    updateAdminFileInfo(); // Cập nhật tên file admin đã nạp
+    checkExistingSession(); 
+    updateAdminFileInfo(); 
 };
 
-// Hiệu ứng tuyết rơi chậm
 function initSnow() {
     const container = document.getElementById('snow-container');
     if (!container) return;
@@ -43,7 +42,7 @@ function initSnow() {
     }
 }
 
-// 3. HỆ THỐNG ĐĂNG NHẬP & KEY
+// 3. HỆ THỐNG ĐĂNG NHẬP
 function checkLogin() {
     const key = document.getElementById('license-key').value.trim();
     if (!key) return alert("VUI LÒNG NHẬP KEY!");
@@ -54,17 +53,17 @@ function checkLogin() {
     }
 
     let keys = JSON.parse(localStorage.getItem('strongest_keys') || '{}');
-    if (!keys[key]) return alert("KEY KHÔNG HỢP LỆ HOẶC ĐÃ BỊ XÓA!");
+    if (!keys[key]) return alert("KEY KHÔNG HỢP LỆ!");
 
     const now = new Date().getTime();
-    if (now > keys[key].expiry) return alert("KEY CỦA BẠN ĐÃ HẾT HẠN!");
+    if (now > keys[key].expiry) return alert("KEY ĐÃ HẾT HẠN!");
 
     enterSystem("MEMBER", keys[key].expiry);
 }
 
 function enterSystem(role, expiry) {
     system.role = role;
-    audio.play().catch(() => {});
+    if (audio) audio.play().catch(() => {});
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('main-panel').classList.remove('hidden');
 
@@ -80,7 +79,6 @@ function enterSystem(role, expiry) {
         startCountdown(expiry);
     }
     
-    // Lưu session để không phải đăng nhập lại khi F5
     localStorage.setItem('session_role', role);
     if(expiry) localStorage.setItem('session_expiry', expiry);
 }
@@ -89,18 +87,15 @@ function startCountdown(expiry) {
     if (system.countdown) clearInterval(system.countdown);
     system.countdown = setInterval(() => {
         const diff = expiry - new Date().getTime();
-        if (diff <= 0) {
-            alert("Hết thời hạn sử dụng!");
-            logout();
-        }
-        const h = Math.floor((diff / 3600000));
+        if (diff <= 0) { logout(); }
+        const h = Math.floor(diff / 3600000);
         const m = Math.floor((diff % 3600000) / 60000);
         const s = Math.floor((diff % 60000) / 1000);
         document.getElementById('key-countdown').innerText = `${h}h : ${m}m : ${s}s`;
     }, 1000);
 }
 
-// 4. CHỨC NĂNG QUẢN TRỊ (ADMIN)
+// 4. CHỨC NĂNG QUẢN TRỊ
 function saveAdminFile(type) {
     const fileInput = document.getElementById(`f-${type}`);
     const file = fileInput.files[0];
@@ -112,8 +107,7 @@ function saveAdminFile(type) {
 }
 
 function updateAdminFileInfo() {
-    const types = ['aimlock', 'norecoil'];
-    types.forEach(t => {
+    ['aimlock', 'norecoil'].forEach(t => {
         const name = localStorage.getItem(`shared_${t}_name`) || "Trống";
         const el = document.getElementById(`name-${t}`);
         if(el) el.innerText = name;
@@ -126,16 +120,14 @@ function adminCreateKey() {
     let keys = JSON.parse(localStorage.getItem('strongest_keys') || '{}');
     keys[key] = { expiry: new Date().getTime() + (dur * 1000) };
     localStorage.setItem('strongest_keys', JSON.stringify(keys));
-    
-    // Copy key ngay lập tức
     navigator.clipboard.writeText(key);
     alert("ĐÃ TẠO & COPY KEY: " + key);
 }
 
-// 5. CHỨC NĂNG NGƯỜI DÙNG (ESIGN LOGIC)
+// 5. CHỨC NĂNG NGƯỜI DÙNG (CHỈNH SỬA NÚT MỞ GAME)
 function requestNativeDeviceApps() {
     const grid = document.getElementById('app-grid-container');
-    grid.innerHTML = '<p style="font-size:10px; color:#8e8e93;">Đang quét bộ nhớ Game...</p>';
+    grid.innerHTML = '<p style="font-size:10px; color:#8e8e93;">Đang quét Game...</p>';
     
     setTimeout(() => {
         grid.innerHTML = '';
@@ -147,17 +139,17 @@ function requestNativeDeviceApps() {
                 el.classList.add('selected');
                 system.selected = app;
                 document.getElementById('display-target').innerText = app.name;
-                document.getElementById('target-path').innerText = app.path;
+                document.getElementById('target-path').innerText = "Sẵn sàng kích hoạt";
             };
             el.innerHTML = `<img src="${app.icon}" class="app-icon"><span class="app-name">${app.name}</span>`;
             grid.appendChild(el);
         });
-    }, 800);
+    }, 500);
 }
 
 function processFileReplace(type, cb) {
     if (!system.selected) {
-        alert("⚠️ VUI LÒNG CHỌN GAME Ở TAB DASHBOARD TRƯỚC!");
+        alert("⚠️ VUI LÒNG CHỌN GAME Ở DASHBOARD TRƯỚC!");
         cb.checked = false;
         return;
     }
@@ -167,24 +159,20 @@ function processFileReplace(type, cb) {
 
     if (cb.checked) {
         if (!sharedFileName) {
-            alert("ADMIN CHƯA CẬP NHẬT FILE NÀY!");
+            alert("FILE CHƯA ĐƯỢC ADMIN CẬP NHẬT!");
             cb.checked = false;
             return;
         }
 
         log.classList.remove('hidden');
         log.innerHTML = `
-            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px;">
-                <span style="color: #007aff; font-weight: 800;">[STATUS: READY]</span><br>
-                <small style="color: #8e8e93;">File Mod: ${sharedFileName}</small><br>
-                <p style="font-size: 9px; margin: 8px 0; color: #fff;">
-                    <b>BƯỚC 1:</b> Nhấn COPY PATH.<br>
-                    <b>BƯỚC 2:</b> Mở ESign và tìm đến đường dẫn này trong file .ipa Game.<br>
-                    <b>BƯỚC 3:</b> Dán file Mod đè vào.
-                </p>
-                <div style="display:flex; gap:5px;">
-                    <button onclick="copyPath('${system.selected.path}')" style="background:#007aff; border:none; color:#fff; padding:8px; border-radius:6px; flex:1; font-weight:800; font-size:10px;">COPY PATH</button>
-                    <button onclick="window.location.href='esign://'" style="background:#34c759; border:none; color:#fff; padding:8px; border-radius:6px; flex:1; font-weight:800; font-size:10px;">MỞ ESIGN</button>
+            <div style="background: rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                <span style="color: #34c759; font-weight: 800; font-size: 12px;">● ĐÃ KÍCH HOẠT: ${type.toUpperCase()}</span><br>
+                <small style="color: #8e8e93;">File hệ thống: ${sharedFileName}</small>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 10px 0;">
+                <div style="display:flex; gap:8px;">
+                    <button onclick="launchGame('freefire://')" style="background:#007aff; border:none; color:#fff; padding:10px; border-radius:8px; flex:1; font-weight:800; font-size:10px;">MỞ FREE FIRE</button>
+                    <button onclick="launchGame('freefiremax://')" style="background:#34c759; border:none; color:#fff; padding:10px; border-radius:8px; flex:1; font-weight:800; font-size:10px;">MỞ FF MAX</button>
                 </div>
             </div>
         `;
@@ -193,11 +181,11 @@ function processFileReplace(type, cb) {
     }
 }
 
-// 6. TIỆN ÍCH HỖ TRỢ
-function copyPath(p) {
-    navigator.clipboard.writeText(p);
+// 6. TIỆN ÍCH
+function launchGame(scheme) {
+    window.location.href = scheme;
     const log = document.getElementById('overwrite-log');
-    log.innerHTML += `<br><span style="color:#34c759;">> Đã sao chép đường dẫn!</span>`;
+    log.innerHTML += `<br><span style="color:#ffcc00; font-size:9px;">> Đang yêu cầu mở Game...</span>`;
 }
 
 function switchTab(el, id) {
@@ -205,6 +193,7 @@ function switchTab(el, id) {
     document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
     el.classList.add('active');
     document.getElementById('tab-' + id).classList.remove('hidden');
+    if(id === 'dashboard') requestNativeDeviceApps();
 }
 
 function toggleMusic() {

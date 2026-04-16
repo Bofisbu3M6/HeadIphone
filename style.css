@@ -1,50 +1,53 @@
-:root { --gold: #ffd700; --bg: #050505; --apple-gray: #1c1c1e; }
-body { margin: 0; background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+:root { --gold: #f1c40f; --bg: #000; --card: #1a1a1a; --border: #333; }
+body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; }
+.hidden { display: none !important; }
 
-/* CĂN GIỮA TOÀN BỘ */
-.page-center { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; }
-.page-center-content { display: flex; flex-direction: column; align-items: center; width: 100%; margin-top: 20px; }
+/* Căn giữa */
+.page-center { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
+.full-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-/* HEADER */
-.header-group { margin-bottom: 30px; }
-.apple-logo-wrap { display: flex; justify-content: center; }
-.main-logo { width: 85px; height: 85px; }
-.brand-title { font-size: 1.3rem; font-weight: 800; background: linear-gradient(#fff, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 15px; }
-.slogan { font-size: 8px; color: #888; letter-spacing: 1.5px; }
+/* Apple Logo */
+.apple-svg { width: 60px; height: 60px; margin-bottom: 10px; }
+.brand-title { font-weight: 800; font-size: 1.2rem; background: linear-gradient(to bottom, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.slogan { font-size: 9px; color: #666; letter-spacing: 2px; }
 
-/* CARD KIM LOẠI */
-.metal-card { background: var(--apple-gray); border: 1px solid #2c2c2e; border-radius: 24px; padding: 30px; width: 90%; max-width: 380px; box-sizing: border-box; }
-.border-gold { border-color: rgba(255, 215, 0, 0.3); box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+/* Card metal */
+.metal-border { background: var(--card); border: 1px solid var(--border); border-radius: 25px; padding: 25px; width: 85%; max-width: 350px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+.main-input { width: 100%; background: #000; border: 1px solid #333; padding: 15px; border-radius: 15px; color: #fff; margin-bottom: 15px; box-sizing: border-box; font-size: 12px; }
 
-/* INPUT & SELECT CĂN GIỮA */
-.metal-input { width: 100%; background: #000; border: 1px solid #3a3a3c; padding: 15px; border-radius: 14px; color: #fff; margin-bottom: 12px; font-size: 12px; outline: none; box-sizing: border-box; text-align: center; }
-.text-center { text-align: center; }
-.gold-bg { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; font-weight: 800; border: none; padding: 16px; border-radius: 14px; width: 100%; cursor: pointer; text-transform: uppercase; }
+.btn-gold { width: 100%; background: linear-gradient(to right, #f1c40f, #f39c12); border: none; padding: 15px; border-radius: 15px; font-weight: 800; cursor: pointer; }
+.btn-contact { display: block; text-align: center; color: #f1c40f; font-size: 11px; margin-top: 15px; text-decoration: none; font-weight: 600; }
 
-/* LOGO APP HIỂN THỊ (CHỐNG LỖI) */
-.app-selector-group { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-.app-selector-group select { margin-bottom: 0 !important; }
-.logo-display-box { width: 65px; height: 65px; border-radius: 15px; border: 2px solid var(--gold); background: #000; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-#current-logo-img { width: 100%; height: 100%; object-fit: cover; }
+/* Tab Nav */
+.top-nav { display: flex; background: #111; padding: 10px; width: 100%; justify-content: center; gap: 10px; }
+.nav-item { background: transparent; border: none; color: #888; padding: 10px 15px; font-weight: 800; border-radius: 10px; cursor: pointer; font-size: 11px; }
+.nav-item.active { background: #fff; color: #000; }
 
-/* NAV TABS CĂN GIỮA */
-.nav-tabs-container { width: 100%; display: flex; justify-content: center; margin-top: 25px; }
-.nav-tabs { display: flex; background: #1c1c1e; padding: 5px; border-radius: 14px; width: 90%; max-width: 380px; }
-.tab { flex: 1; padding: 12px; text-align: center; font-size: 10px; font-weight: 800; color: #8e8e93; cursor: pointer; border-radius: 10px; transition: 0.3s; }
-.tab.active { background: #fff; color: #000; }
+/* Dashboard Scan Area */
+.app-scan-area { display: flex; gap: 10px; align-items: center; }
+.logo-frame { width: 70px; height: 70px; border-radius: 15px; border: 2px solid var(--gold); overflow: hidden; background: #000; flex-shrink: 0; }
+#logo-img { width: 100%; height: 100%; object-fit: cover; }
+.btn-gold-action { width: 100%; background: linear-gradient(to bottom, #f1c40f, #e67e22); border: none; padding: 18px; border-radius: 18px; font-weight: 800; margin-top: 15px; }
 
-/* SWITCH IOS */
-.ios-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #2c2c2e; font-size: 12px; font-weight: 600; }
-.ios-switch { position: relative; width: 46px; height: 26px; }
-.ios-switch input { opacity: 0; width: 0; height: 0; }
-.ios-slider { position: absolute; inset: 0; background: #3a3a3c; border-radius: 34px; cursor: pointer; transition: .4s; }
-.ios-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .4s; }
-input:checked + .ios-slider { background: #34c759; }
-input:checked + .ios-slider:before { transform: translateX(20px); }
+/* Chức năng */
+.mod-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #222; }
+.switch { position: relative; width: 45px; height: 24px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; inset: 0; background: #333; border-radius: 34px; transition: .4s; }
+.slider:before { content: ""; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .4s; }
+input:checked + .slider { background: #34c759; }
+input:checked + .slider:before { transform: translateX(20px); }
 
-/* NÚT ĐĂNG XUẤT */
-.logout-wrap { margin-top: 30px; width: 100%; display: flex; justify-content: center; }
-.btn-logout-red { background: rgba(255, 69, 58, 0.1); color: #ff453a; border: 1px solid rgba(255, 69, 58, 0.2); padding: 15px 30px; border-radius: 16px; font-weight: 700; font-size: 11px; cursor: pointer; width: 90%; max-width: 380px; }
+/* Modal */
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 999; }
+.modal-content { text-align: center; padding: 30px; }
+.btn-game { width: 100%; padding: 15px; margin: 5px 0; border-radius: 10px; border: none; font-weight: 800; color: #fff; }
+.btn-game.ff { background: #e67e22; }
+.btn-game.ffm { background: #34c759; }
 
-.hidden { display: none; }
-.section-title { font-size: 11px; color: var(--gold); text-align: left; text-transform: uppercase; margin-bottom: 15px; border-left: 3px solid var(--gold); padding-left: 10px; }
+/* Logout red */
+.btn-logout-red { margin-top: 30px; background: rgba(255,0,0,0.1); border: 1px solid #ff4444; color: #ff4444; padding: 15px; width: 85%; max-width: 350px; border-radius: 15px; font-weight: 800; }
+
+.admin-scroll { max-height: 200px; overflow-y: auto; margin-top: 15px; }
+.key-item { display: flex; justify-content: space-between; background: #000; padding: 10px; margin-bottom: 5px; border-radius: 10px; font-size: 11px; }
+.key-item button { background: #ff4444; color: #fff; border: none; padding: 5px 10px; border-radius: 5px; }

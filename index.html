@@ -27,7 +27,7 @@
         <div class="alert-box metal-card border-gold">
             <div class="alert-header">THÔNG TIN BẢN QUYỀN</div>
             <div class="alert-body">
-                <p style="font-size: 10px; color: #8e8e93; margin-bottom: 10px;">THỜI GIAN SỬ DỤNG CÒN LẠI</p>
+                <p class="label-hsd">THỜI GIAN SỬ DỤNG CÒN LẠI</p>
                 <h2 id="popup-time" class="time-display">-- : -- : --</h2>
             </div>
             <div class="alert-footer-vertical">
@@ -56,21 +56,27 @@
                     <button class="btn-action gold-bg" onclick="scanDevices()">QUÉT THIẾT BỊ & ỨNG DỤNG</button>
                     
                     <div id="scan-result" class="app-grid hidden">
-                        <div class="app-item" id="game-ff">
+                        <div class="app-item">
                             <img src="https://i.imgur.com/rN9S7aP.png" class="app-icon">
                             <span>Free Fire</span>
                         </div>
-                        <div class="app-item" id="game-ffmax">
+                        <div class="app-item">
                             <img src="https://i.imgur.com/V7Yq7M0.png" class="app-icon">
                             <span>Free Fire MAX</span>
                         </div>
                     </div>
                 </div>
+
+                <div class="logout-container">
+                    <button class="btn-logout" onclick="logoutKey()">
+                        <span class="icon-logout">⎋</span> ĐĂNG XUẤT KEY KHỎI THIẾT BỊ
+                    </button>
+                </div>
             </div>
 
             <div id="tab-chucnang" class="tab-content hidden">
                 <div class="metal-card border-purple">
-                    <h3 class="section-title">MOD VIP CHỨC NĂNG</h3>
+                    <h3 class="section-title">MOD VIP STRONGEST</h3>
                     <div class="control-row">
                         <span class="main-lbl">AIMLOCK 100%</span>
                         <label class="ios-switch">
@@ -108,7 +114,7 @@
                 </div>
 
                 <div class="metal-card border-gold">
-                    <h3 class="section-title">QUẢN LÝ KEY</h3>
+                    <h3 class="section-title">QUẢN LÝ KEY HỆ THỐNG</h3>
                     <input type="text" id="new-key-name" class="metal-input" placeholder="Tên Key...">
                     <select id="key-duration" class="metal-input">
                         <option value="3600000">1 GIỜ</option>

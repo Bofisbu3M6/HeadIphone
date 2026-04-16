@@ -1,4 +1,11 @@
-// DANH SÁCH TOÀN BỘ PHIÊN BẢN THEO YÊU CẦU (KHÔNG XOÁ BẤT CỨ DÒNG NÀO)
+// --- 1. DANH SÁCH KEY HỆ THỐNG (DÙNG CHUNG CHO TẤT CẢ MỌI NGƯỜI) ---
+// Thêm key bạn muốn chia sẻ cho bạn bè vào đây.
+const HE_THONG_KEYS = {
+    "NGUYENLONG-VIP": Date.now() + (365 * 24 * 60 * 60 * 1000), // Hạn 1 năm
+    "FREE-KEY": Date.now() + (1 * 24 * 60 * 60 * 1000)         // Hạn 1 ngày
+};
+
+// --- 2. DANH SÁCH THIẾT BỊ (GIỮ NGUYÊN 100% KHÔNG XOÁ) ---
 const DEVICES = {
     "ANDROID": [
         "Android 4.2.2", "Android 4.3", "Android 4.3.1", "Android 4.4", "Android 4.4.1", "Android 4.4.2", "Android 4.4.3", "Android 4.4.4",
@@ -36,6 +43,8 @@ const DEVICES = {
     ]
 };
 
+// --- 3. LOGIC HỆ THỐNG ---
+
 window.onload = () => {
     const osSel = document.getElementById('os-select');
     Object.keys(DEVICES).forEach(os => osSel.add(new Option(os, os)));
@@ -47,7 +56,7 @@ window.onload = () => {
     updateDevices();
     changeLogo();
     renderKeys();
-    syncSharedFiles();
+    syncFiles();
 };
 
 function updateDevices() {
@@ -64,29 +73,51 @@ function changeLogo() {
         : "https://i.ibb.co/0X8y0Xm/ff-max.png";
 }
 
-// LOGIN
+// FIX LỖI KEY: Kiểm tra cả Key Hệ thống và Key Local
 function handleLogin() {
     const keyInput = document.getElementById('input-key').value.trim();
+    
+    // 1. Check Key Admin
     if (keyInput === "adminappmenunguyenlong") {
-        openApp(true); return;
+        openApp(true);
+        return;
     }
-    let keys = JSON.parse(localStorage.getItem('app_keys') || '{}');
-    if (keys[keyInput]) {
-        if (Date.now() > keys[keyInput]) { alert("Key đã hết hạn!"); }
-        else { showExpiry(keys[keyInput]); }
-    } else { alert("Sai mã Key!"); }
+
+    // 2. Check Key Hệ Thống (Mã bạn tự tay thêm vào code JS này)
+    if (HE_THONG_KEYS[keyInput]) {
+        let expiry = HE_THONG_KEYS[keyInput];
+        if (Date.now() > expiry) {
+            alert("Mã Key hệ thống này đã hết hạn!");
+        } else {
+            showExpiry(expiry);
+            return;
+        }
+    }
+
+    // 3. Check Key Local (Máy nào tạo máy đó dùng)
+    let localKeys = JSON.parse(localStorage.getItem('app_keys') || '{}');
+    if (localKeys[keyInput]) {
+        if (Date.now() > localKeys[keyInput]) {
+            alert("Key cá nhân này đã hết hạn!");
+        } else {
+            showExpiry(localKeys[keyInput]);
+        }
+    } else {
+        alert("LỖI: Key không chính xác hoặc không tồn tại!");
+    }
 }
 
 function showExpiry(expiryTime) {
     document.getElementById('info-modal').classList.remove('hidden');
-    setInterval(() => {
+    if (window.timer) clearInterval(window.timer);
+    window.timer = setInterval(() => {
         let diff = expiryTime - Date.now();
         if (diff <= 0) logout();
         let d = Math.floor(diff / (1000 * 60 * 60 * 24));
         let h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         let m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         let s = Math.floor((diff % (1000 * 60)) / 1000);
-        document.getElementById('expiry-countdown').innerText = `${d} Ngày ${h}:${m}:${s}`;
+        document.getElementById('expiry-countdown').innerText = `CÒN LẠI: ${d} ngày ${h}:${m}:${s}`;
     }, 1000);
 }
 
@@ -96,43 +127,42 @@ function openApp(isAdmin) {
     if (isAdmin) document.getElementById('admin-tab').classList.remove('hidden');
 }
 
+function toggleMod(cb, name) {
+    const statusBox = document.getElementById('file-' + name.replace(/\s+/g, ''));
+    if (cb.checked) {
+        document.getElementById('mod-name-title').innerText = "KÍCH HOẠT: " + name;
+        document.getElementById('game-modal').classList.remove('hidden');
+        statusBox.classList.remove('hidden');
+    } else {
+        statusBox.classList.add('hidden');
+    }
+}
+
 // ADMIN FILE
 function confirmAdminFiles() {
     const aim = document.getElementById('admin-file-aimlock').files[0];
     const rec = document.getElementById('admin-file-norecoil').files[0];
-    if (aim) localStorage.setItem('sys_aim', aim.name);
-    if (rec) localStorage.setItem('sys_rec', rec.name);
-    alert("Hệ thống đã cập nhật file mới cho toàn bộ người dùng!");
-    syncSharedFiles();
+    if (aim) localStorage.setItem('share_aim', aim.name);
+    if (rec) localStorage.setItem('share_rec', rec.name);
+    alert("Đã lưu cấu hình file hệ thống!");
+    syncFiles();
 }
 
-function syncSharedFiles() {
-    const aim = localStorage.getItem('sys_aim');
-    const rec = localStorage.getItem('sys_rec');
-    if (aim) document.querySelector('#file-Aimlock .status-text').innerHTML = `✅ Đã nhận: <b style="color:var(--gold)">${aim}</b>`;
-    if (rec) document.querySelector('#file-NoRecoil .status-text').innerHTML = `✅ Đã nhận: <b style="color:var(--gold)">${rec}</b>`;
+function syncFiles() {
+    const aim = localStorage.getItem('share_aim');
+    const rec = localStorage.getItem('share_rec');
+    if (aim) document.querySelector('#file-Aimlock .status-text').innerHTML = `✅ Đã nạp: <b style="color:var(--gold)">${aim}</b>`;
+    if (rec) document.querySelector('#file-NoRecoil .status-text').innerHTML = `✅ Đã nạp: <b style="color:var(--gold)">${rec}</b>`;
 }
 
-// MOD CHỨC NĂNG
-function toggleMod(cb, name) {
-    const container = document.getElementById('file-' + name.replace(/\s+/g, ''));
-    if (cb.checked) {
-        document.getElementById('mod-name-title').innerText = "KÍCH HOẠT: " + name;
-        document.getElementById('game-modal').classList.remove('hidden');
-        container.classList.remove('hidden');
-    } else {
-        container.classList.add('hidden');
-    }
-}
-
-// HỆ THỐNG PHỤ
+// TIỆN ÍCH
 function startScan() {
     const btn = document.getElementById('btn-scan');
-    btn.innerText = "ĐANG TÌM...";
+    btn.innerText = "ĐANG PHÂN TÍCH...";
     setTimeout(() => {
         btn.innerText = "HOÀN TẤT!"; btn.style.background = "#34c759";
-        setTimeout(() => { btn.innerText = "QUÉT THIẾT BỊ & ỨNG DỤNG"; btn.style.background = ""; }, 1500);
-    }, 800);
+        setTimeout(() => { btn.innerText = "QUÉT DỮ LIỆU GAME"; btn.style.background = ""; }, 1500);
+    }, 1000);
 }
 
 function createKey() {

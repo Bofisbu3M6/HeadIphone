@@ -16,7 +16,7 @@
 
     <div id="login-screen">
         <div class="apple-logo-container">
-            <svg class="main-logo" viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg">
+            <svg class="main-logo" viewBox="0 0 170 170">
                 <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.18-14.35-3.18-4.58 0-9.43 1.06-14.57 3.18-5.14 2.12-9.43 3.23-12.86 3.34-5.24.23-10.14-1.92-14.7-6.46-3.04-2.73-6.83-7.39-11.38-13.97-4.55-6.58-8.14-13.84-10.76-21.78-2.62-7.95-3.93-16.02-3.93-24.22 0-11.54 2.31-21.24 6.94-29.08 3.32-5.59 7.79-10 13.41-13.24 5.61-3.23 11.83-4.87 18.66-4.87 3.84 0 8.44.91 13.81 2.73 5.37 1.82 8.92 2.73 10.65 2.73 1.52 0 5.48-1.07 11.88-3.23 6.4-2.15 11.66-3.11 15.79-2.87 11.69.7 20.91 5.09 27.65 13.17-10.51 6.36-15.72 15.4-15.65 27.13.07 9.4 3.32 17.26 9.76 23.57 3.2 3.12 6.84 5.51 10.92 7.15zM114.92 11.39c0 8.52-3.08 16.14-9.23 22.86-6.66 7.19-14.39 11.23-23.21 12.13.07-8.08 3.25-15.93 9.53-23.55 6.23-7.55 14.15-11.9 23.75-13.04.14.54.16 1.07.16 1.6z" fill="url(#metal-grad)"/>
                 <defs><linearGradient id="metal-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ffffff"/><stop offset="50%" style="stop-color:#8e8e93"/><stop offset="100%" style="stop-color:#c0c0c0"/></linearGradient></defs>
             </svg>
@@ -40,21 +40,43 @@
         </div>
 
         <div class="nav-tabs">
-            <div class="tab active" data-color="blue" onclick="switchTab(this, 'dashboard')">DASHBOARD</div>
-            <div class="tab" data-color="purple" onclick="switchTab(this, 'chucnang')">CHỨC NĂNG</div>
-            <div id="dev-tab" class="tab hidden" data-color="red" onclick="switchTab(this, 'developer')">ADMIN PANEL</div>
+            <div class="tab active" onclick="switchTab(this, 'dashboard')">DASHBOARD</div>
+            <div class="tab" onclick="switchTab(this, 'chucnang')">CHỨC NĂNG</div>
+            <div id="dev-tab" class="tab hidden" onclick="switchTab(this, 'developer')">ADMIN PANEL</div>
         </div>
 
         <div id="content-area">
             <div id="tab-dashboard" class="tab-content">
                 <div class="metal-card border-blue">
-                    <h3 class="section-title color-blue">DEVICE APP IPHONE</h3>
-                    <button class="btn-action blue-bg" onclick="requestNativeDeviceApps()">LẤY ỨNG DỤNG THIẾT BỊ</button>
+                    <h3 class="section-title color-blue">CẤU HÌNH THIẾT BỊ</h3>
+                    <div class="config-grid">
+                        <div class="config-item">
+                            <label>HỆ ĐIỀU HÀNH</label>
+                            <select id="select-os" class="metal-input-small" onchange="updateDeviceList()">
+                                <option value="ios">iOS (iPhone/iPad)</option>
+                                <option value="android">Android</option>
+                                <option value="pc">PC / Laptop (Windows)</option>
+                            </select>
+                        </div>
+                        <div class="config-item">
+                            <label>THIẾT BỊ</label>
+                            <select id="select-device" class="metal-input-small"></select>
+                        </div>
+                        <div class="config-item" style="grid-column: span 2;">
+                            <label>PHIÊN BẢN THIẾT BỊ (OS VERSION)</label>
+                            <select id="select-version" class="metal-input-small"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metal-card border-blue">
+                    <button class="btn-action blue-bg" onclick="requestNativeDeviceApps()">QUÉT ỨNG DỤNG</button>
                     <div id="app-grid-container" class="app-grid"></div>
                 </div>
+
                 <div class="metal-card info-box border-blue">
-                    <div class="info-row"><span>MỤC TIÊU:</span> <span id="display-target" class="val blue-text">CHƯA CHỌN</span></div>
-                    <div class="info-row"><span>APP NAME:</span> <span id="target-path" class="val-path">N/A</span></div>
+                    <div class="info-row"><span>MỤC TIÊU:</span> <span id="display-target" class="val blue-text">N/A</span></div>
+                    <div class="info-row"><span>CẤU HÌNH:</span> <span id="target-info" class="val-path">N/A</span></div>
                 </div>
             </div>
 
@@ -62,65 +84,21 @@
                 <div class="metal-card border-purple">
                     <h3 class="section-title color-purple">Kích Hoạt Chức Năng</h3>
                     <div class="control-row">
-                        <div class="control-label"><span class="main-lbl">AIMLOCK</span><small>Deep Overwrite Assets</small></div>
-                        <label class="ios-switch s-blue"><input type="checkbox" id="check-aimlock" onchange="processFileReplace('aimlock', this)"><span class="ios-slider"></span></label>
+                        <div class="control-label"><span class="main-lbl">AIMLOCK VIP</span></div>
+                        <label class="ios-switch s-blue"><input type="checkbox" onchange="processFileReplace('aimlock', this)"><span class="ios-slider"></span></label>
                     </div>
                     <div class="control-row">
-                        <div class="control-label"><span class="main-lbl">NO RECOIL</span><small>Deep Overwrite Assets</small></div>
-                        <label class="ios-switch s-purple"><input type="checkbox" id="check-norecoil" onchange="processFileReplace('norecoil', this)"><span class="ios-slider"></span></label>
+                        <div class="control-label"><span class="main-lbl">NO RECOIL 100%</span></div>
+                        <label class="ios-switch s-purple"><input type="checkbox" onchange="processFileReplace('norecoil', this)"><span class="ios-slider"></span></label>
                     </div>
                 </div>
-                <div id="overwrite-log" class="terminal-log hidden border-purple"></div>
+                <div id="overwrite-log" class="terminal-log hidden"></div>
             </div>
-
+            
             <div id="tab-developer" class="tab-content hidden">
-                <div class="metal-card border-red">
-                    <h3 class="section-title color-red">TẠO KEY MỚI</h3>
-                    <select id="key-duration" class="metal-input">
-                        <option value="60">1 PHÚT (TEST)</option>
-                        <option value="86400">1 NGÀY</option>
-                        <option value="604800">7 NGÀY</option>
-                        <option value="2592000">30 NGÀY</option>
-                        <option value="999999999">VĨNH VIỄN</option>
-                    </select>
-                    <button class="btn-metal primary" style="background:var(--apple-red); color:#fff" onclick="adminCreateKey()">TẠO & COPY KEY</button>
                 </div>
-
-                <div class="metal-card border-red">
-                    <h3 class="section-title color-red">THÊM FILE VÀO CHỨC NĂNG</h3>
-                    <div class="admin-file-row">
-                        <span>AIMLOCK:</span>
-                        <input type="file" id="f-aimlock" hidden onchange="saveAdminFile('aimlock')">
-                        <button class="btn-sub" onclick="document.getElementById('f-aimlock').click()">CHỌN</button>
-                        <span id="name-aimlock" class="file-name-display">Trống</span>
-                    </div>
-                    <div class="admin-file-row">
-                        <span>NO RECOIL:</span>
-                        <input type="file" id="f-norecoil" hidden onchange="saveAdminFile('norecoil')">
-                        <button class="btn-sub" onclick="document.getElementById('f-norecoil').click()">CHỌN</button>
-                        <span id="name-norecoil" class="file-name-display">Trống</span>
-                    </div>
-                </div>
-                <button class="btn-logout" onclick="logout()">THOÁT</button>
-            </div>
         </div>
     </div>
-
-    <div id="notification-overlay" class="hidden glass-overlay">
-        <div class="metal-card alert-box">
-            <div class="alert-header"><span>HỆ THỐNG AIMLOCK STRONGEST IPHONE❄️</span></div>
-            <div class="alert-body">
-                <p>Kích hoạt thành công!</p>
-                <p class="small-note">Thời gian còn lại:</p>
-                <h2 id="key-countdown" class="blue-text">--:--:--:--</h2>
-            </div>
-            <div class="alert-footer">
-                <button class="btn-alert-close" onclick="closeNotification()">OK</button>
-                <button class="btn-alert-hide" onclick="hideNotificationFor2Hours()">ẨN TRONG 2 GIỜ</button>
-            </div>
-        </div>
-    </div>
-
     <script src="script.js"></script>
 </body>
 </html>

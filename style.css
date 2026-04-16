@@ -1,205 +1,85 @@
 :root {
-    --bg-dark: #050505;
-    --metal-gradient: linear-gradient(165deg, #1a1a1c 0%, #0a0a0b 100%);
-    --apple-blue: #00d2ff;
-    --apple-purple: #bf5af2;
-    --apple-red: #ff453a;
-    --apple-green: #32d74b;
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --border-glass: rgba(255, 255, 255, 0.08);
+    --gold: #ffd700;
+    --gold-dark: #b8860b;
+    --bg-black: #050505;
+    --metal: #1a1a1c;
+    --glass: rgba(255, 255, 255, 0.03);
 }
 
-/* Reset & Nền tảng */
-* { 
-    box-sizing: border-box; 
-    font-family: 'Montserrat', sans-serif; 
-    -webkit-tap-highlight-color: transparent; 
-}
+* { box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
 
 body { 
-    background: var(--bg-dark); 
-    background-image: radial-gradient(circle at 50% 50%, #1a1a1c 0%, #050505 100%);
-    color: #fff; 
-    margin: 0; 
-    padding: 15px; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    min-height: 100vh; 
-    overflow-x: hidden; 
+    background: var(--bg-black); 
+    color: #fff; margin: 0; padding: 15px; 
+    display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+    background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #050505 100%);
 }
 
-/* Hiệu ứng Tuyết rơi */
-.snowflake { 
-    position: fixed; 
-    top: -20px; 
-    color: rgba(255, 255, 255, 0.15); 
-    animation: fall linear infinite; 
-    pointer-events: none; 
-    z-index: 1; 
-    filter: blur(1px);
-}
-
-@keyframes fall { 
-    to { transform: translateY(105vh) rotate(360deg); } 
-}
-
-/* Apple Logo */
-.apple-logo-container { 
-    width: 100%; 
-    display: flex; 
-    justify-content: center; 
-    margin-top: 40px; 
-    margin-bottom: 10px; 
-}
-
-.main-logo { 
-    width: 90px; 
-    height: 90px; 
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); 
-}
+.apple-logo-container { margin-top: 40px; margin-bottom: 10px; }
+.main-logo { width: 90px; height: 90px; filter: drop-shadow(0 0 15px rgba(255,215,0,0.3)); }
 
 .brand-title { 
-    font-weight: 800; 
-    font-size: 1.1rem; 
-    text-align: center; 
-    background: linear-gradient(to bottom, #fff, #8e8e93);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin: 0; 
+    font-weight: 800; font-size: 1.2rem; text-align: center; margin: 0;
+    background: linear-gradient(to bottom, #fff, var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 
-.slogan { 
-    font-size: 8px; 
-    color: #8e8e93; 
-    font-weight: 600; 
-    text-align: center; 
-    letter-spacing: 1px; 
-    margin-top: 5px; 
-    margin-bottom: 20px;
-}
+.slogan { font-size: 8px; color: #8e8e93; text-align: center; margin: 8px 0 20px 0; letter-spacing: 1px; }
 
-/* Thẻ Metal Card */
 .metal-card {
-    background: var(--metal-gradient); 
-    border-radius: 20px; 
-    padding: 20px; 
-    width: 100%; 
-    max-width: 360px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.7); 
-    border: 1px solid var(--border-glass); 
-    margin-bottom: 20px; 
-    z-index: 2;
+    background: linear-gradient(145deg, #1c1c1e, #111);
+    border-radius: 20px; padding: 20px; width: 100%; max-width: 360px;
+    border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;
 }
 
-.border-blue { border-top: 2px solid var(--apple-blue); }
-.border-purple { border-top: 2px solid var(--apple-purple); }
+.border-gold { border: 1px solid rgba(255,215,0,0.3) !important; box-shadow: 0 0 20px rgba(255,215,0,0.05); }
+
+.section-title {
+    font-size: 10px; color: var(--gold); font-weight: 800; 
+    border-left: 3px solid var(--gold); padding-left: 10px; margin: 15px 0 10px 0;
+}
+
+.metal-input {
+    width: 100%; background: #000; border: 1px solid #333; padding: 15px;
+    border-radius: 12px; color: #fff; outline: none; margin-bottom: 10px; font-size: 12px;
+}
+
+.gold-bg { background: linear-gradient(to right, var(--gold), var(--gold-dark)) !important; color: #000 !important; }
+
+.btn-metal.primary { width: 100%; border: none; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; }
 
 /* Tabs */
-.nav-tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 360px;
-    background: rgba(255,255,255,0.05);
-    padding: 5px;
-    border-radius: 12px;
+.nav-tabs { display: flex; gap: 5px; width: 100%; max-width: 360px; margin-bottom: 15px; }
+.tab { 
+    flex: 1; padding: 12px; text-align: center; font-size: 9px; font-weight: 800;
+    background: var(--glass); border-radius: 10px; color: #8e8e93; cursor: pointer;
 }
-
-.tab {
-    flex: 1;
-    padding: 10px;
-    text-align: center;
-    font-size: 10px;
-    font-weight: 800;
-    color: #8e8e93;
-    cursor: pointer;
-    transition: 0.3s;
-    border-radius: 8px;
-}
-
 .tab.active { background: #fff; color: #000; }
 
-/* Grid chọn App */
-.app-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 15px;
+/* Popup */
+.glass-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+    backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 1000;
 }
+.alert-box { width: 300px; text-align: center; }
+.btn-alert-close { width: 100%; padding: 12px; background: var(--gold); border: none; border-radius: 10px; font-weight: 800; margin-top: 10px; }
+.btn-alert-hide { background: none; border: none; color: #8e8e93; font-size: 10px; margin-top: 10px; cursor: pointer; }
 
+/* Dashboard App */
+.app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
 .app-item {
-    background: rgba(0,0,0,0.3);
-    padding: 15px;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid transparent;
-    transition: 0.3s;
+    background: rgba(0,0,0,0.3); border-radius: 15px; padding: 15px;
+    display: flex; flex-direction: column; align-items: center; border: 1px solid transparent;
 }
+.app-item.selected { border-color: var(--gold); background: rgba(255,215,0,0.05); }
+.app-icon { width: 45px; height: 45px; border-radius: 10px; margin-bottom: 8px; }
+.app-name { font-size: 9px; font-weight: 600; }
 
-.app-item.selected {
-    border-color: var(--apple-blue);
-    background: rgba(0, 210, 255, 0.1);
-}
+/* Chức năng active */
+.active-box { background: rgba(255,215,0,0.05); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; text-align: center; }
+.active-box p { color: var(--gold); font-weight: 800; font-size: 11px; margin-top: 0; }
+.btn-launch { flex: 1; padding: 10px; border: none; border-radius: 8px; background: var(--gold); font-weight: 800; font-size: 10px; cursor: pointer; }
 
-.app-icon { width: 45px; height: 45px; border-radius: 12px; margin-bottom: 8px; }
-.app-name { font-size: 10px; font-weight: 700; }
-
-/* Config Grid (Hệ điều hành/Thiết bị) */
-.config-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.config-item { display: flex; flex-direction: column; }
-.config-item label { font-size: 9px; color: #8e8e93; margin-bottom: 5px; font-weight: 700; }
-
-.metal-input, .metal-input-small { 
-    width: 100%; 
-    background: rgba(0,0,0,0.4); 
-    border: 1px solid var(--border-glass); 
-    padding: 12px; 
-    border-radius: 10px; 
-    color: #fff; 
-    font-size: 11px;
-    outline: none; 
-}
-
-/* Nút bấm */
-.btn-metal.primary { 
-    width: 100%; padding: 15px; border: none; border-radius: 12px; 
-    font-weight: 800; background: #fff; color: #000; cursor: pointer; 
-}
-
-.btn-action { 
-    width: 100%; padding: 12px; border: none; border-radius: 10px; 
-    font-weight: 800; color: #fff; cursor: pointer; margin-top: 10px;
-}
-.blue-bg { background: linear-gradient(to right, var(--apple-blue), #0055ff); }
-
-/* Switch iOS */
-.control-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
-.ios-switch { position: relative; width: 42px; height: 22px; }
-.ios-switch input { opacity: 0; width: 0; height: 0; }
-.ios-slider { 
-    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; 
-    background-color: #3a3a3c; transition: .4s; border-radius: 34px; 
-}
-.ios-slider:before { 
-    position: absolute; content: ""; height: 18px; width: 18px; left: 2px; bottom: 2px; 
-    background-color: white; transition: .4s; border-radius: 50%; 
-}
-input:checked + .ios-slider { background-color: var(--apple-green); }
-input:checked + .ios-slider:before { transform: translateX(20px); }
-
-/* Log Terminal */
-.terminal-log { 
-    width: 100%; background: #000; border-radius: 12px; padding: 15px; 
-    margin-top: 15px; border: 1px solid rgba(255,255,255,0.05);
-}
-
+.snowflake { position: fixed; top: -10px; color: rgba(255,255,255,0.2); animation: fall linear infinite; pointer-events: none; }
+@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 .hidden { display: none !important; }

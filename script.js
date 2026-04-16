@@ -32,7 +32,6 @@ function updateDevices() {
 
 function changeLogo() {
     const app = document.getElementById('app-select').value;
-    // Fix lỗi ImgBB: Sử dụng Link ổn định hoặc Base64
     document.getElementById('logo-img').src = app === 'ff' 
         ? "https://i.ibb.co/LnMZ6pG/ff-normal.png" 
         : "https://i.ibb.co/0X8y0Xm/ff-max.png";
@@ -52,7 +51,7 @@ function handleLogin() {
         if (now > keys[keyInput]) {
             delete keys[keyInput];
             localStorage.setItem('app_keys', JSON.stringify(keys));
-            alert("Key đã hết hạn sử dụng và bị xóa!");
+            alert("Key của bạn đã hết hạn sử dụng!");
         } else {
             showExpiry(keys[keyInput], keyInput);
         }
@@ -93,7 +92,7 @@ function openApp(isAdmin) {
 function createKey() {
     const name = document.getElementById('new-key-name').value.trim();
     const days = parseInt(document.getElementById('key-expiry').value);
-    if (!name) return alert("Nhập tên key!");
+    if (!name) return alert("Vui lòng nhập tên key!");
     
     let keys = JSON.parse(localStorage.getItem('app_keys') || '{}');
     let expiry = Date.now() + (days * 24 * 60 * 60 * 1000);
@@ -106,25 +105,75 @@ function renderKeys() {
     const list = document.getElementById('key-list');
     let keys = JSON.parse(localStorage.getItem('app_keys') || '{}');
     list.innerHTML = "";
+    let now = Date.now();
+    
     Object.keys(keys).forEach(k => {
+        let diff = keys[k] - now;
+        let statusText = "Hết hạn";
+        let statusColor = "#ff4444";
+        
+        if (diff > 0) {
+            let d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            let h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            statusText = `Còn ${d}d ${h}h`;
+            statusColor = "#34c759";
+        }
+
         let div = document.createElement('div');
         div.className = 'key-item';
-        div.innerHTML = `<span>${k}</span> <button onclick="deleteKey('${k}')">XÓA</button>`;
+        div.innerHTML = `
+            <div style="display:flex; flex-direction:column; gap:3px;">
+                <span style="font-weight: bold; color: #fff;">${k}</span>
+                <span style="color: ${statusColor};">HSD: ${statusText}</span>
+            </div>
+            <button onclick="deleteKey('${k}')">XÓA</button>
+        `;
         list.appendChild(div);
     });
 }
 
 function deleteKey(k) {
-    let keys = JSON.parse(localStorage.getItem('app_keys') || '{}');
-    delete keys[k];
-    localStorage.setItem('app_keys', JSON.stringify(keys));
-    renderKeys();
+    if(confirm("Bạn có chắc muốn xóa key " + k + " này không?")) {
+        let keys = JSON.parse(localStorage.getItem('app_keys') || '{}');
+        delete keys[k];
+        localStorage.setItem('app_keys', JSON.stringify(keys));
+        renderKeys();
+    }
 }
 
-// Logic Chức năng
-function openGameSelector(name) {
-    document.getElementById('mod-name-title').innerText = "BẬT: " + name;
-    document.getElementById('game-modal').classList.remove('hidden');
+// Chức năng: Quét nhanh & Toggle Chức năng
+function startScan() {
+    const btn = document.getElementById('btn-scan');
+    if(btn.disabled) return;
+    
+    btn.disabled = true;
+    btn.innerText = "ĐANG QUÉT...";
+    btn.style.opacity = "0.7";
+
+    setTimeout(() => {
+        btn.innerText = "QUÉT HOÀN TẤT!";
+        btn.style.background = "#34c759";
+        btn.style.opacity = "1";
+        
+        setTimeout(() => {
+            btn.innerText = "QUÉT THIẾT BỊ & ỨNG DỤNG";
+            btn.style.background = "";
+            btn.disabled = false;
+        }, 1500);
+    }, 600); // Tốc độ quét cực nhanh 0.6s
+}
+
+function toggleMod(checkbox, name) {
+    const fileContainer = document.getElementById('file-' + name.replace(/\s+/g, ''));
+    if (checkbox.checked) {
+        // Chỉ khi BẬT mới hiện thông báo chọn game và file
+        document.getElementById('mod-name-title').innerText = "BẬT: " + name;
+        document.getElementById('game-modal').classList.remove('hidden');
+        if(fileContainer) fileContainer.classList.remove('hidden');
+    } else {
+        // Ẩn đi khi tắt
+        if(fileContainer) fileContainer.classList.add('hidden');
+    }
 }
 
 function closeGameSelector() {

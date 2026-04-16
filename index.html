@@ -48,7 +48,7 @@
                     </div>
                     <button id="btn-scan" class="btn-gold-action" onclick="startScan()">QUÉT THIẾT BỊ & ỨNG DỤNG</button>
                 </div>
-                <button class="btn-logout-red" onclick="logout()">ĐĂNG XUẤT KEY KHỎI THIẾT BỊ</button>
+                <button class="btn-logout-red" onclick="logout()">ĐÓNG ỨNG DỤNG</button>
             </div>
 
             <div id="tab-chucnang" class="tab-content hidden">
@@ -61,7 +61,7 @@
                             <label class="switch"><input type="checkbox" onchange="toggleMod(this, 'Aimlock')"><span class="slider"></span></label>
                         </div>
                         <div id="file-Aimlock" class="file-status hidden">
-                            <span class="status-text">Đang chờ hệ thống...</span>
+                            <span class="status-text">Đang đợi Admin nạp file...</span>
                         </div>
                     </div>
 
@@ -71,7 +71,7 @@
                             <label class="switch"><input type="checkbox" onchange="toggleMod(this, 'No Recoil')"><span class="slider"></span></label>
                         </div>
                         <div id="file-NoRecoil" class="file-status hidden">
-                            <span class="status-text">Đang chờ hệ thống...</span>
+                            <span class="status-text">Đang đợi Admin nạp file...</span>
                         </div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
 
             <div id="tab-admin" class="tab-content hidden">
                 <div class="card-box metal-border">
-                    <h3 class="title-gold">QUẢN LÝ TẠO KEY</h3>
+                    <h3 class="title-gold">TẠO KEY MỚI</h3>
                     <input type="text" id="new-key-name" class="main-input" placeholder="Tên key...">
                     <select id="key-expiry" class="main-input">
                         <option value="1">1 Ngày</option>
@@ -87,21 +87,21 @@
                         <option value="30">30 Ngày</option>
                         <option value="9999">Vĩnh Viễn</option>
                     </select>
-                    <button class="btn-gold" onclick="createKey()">TẠO KEY MỚI</button>
+                    <button class="btn-gold" onclick="createKey()">LƯU KEY</button>
                     <div id="key-list" class="admin-scroll"></div>
                 </div>
 
                 <div class="card-box metal-border" style="margin-top: 15px;">
-                    <h3 class="title-gold">QUẢN LÝ FILE HỆ THỐNG</h3>
+                    <h3 class="title-gold">ADMIN NẠP FILE HỆ THỐNG</h3>
                     <div class="admin-file-input-group">
-                        <label>FILE AIMLOCK:</label>
+                        <label>FILE CHO AIMLOCK:</label>
                         <input type="file" id="admin-file-aimlock" class="main-input file-input">
                     </div>
                     <div class="admin-file-input-group">
-                        <label>FILE NO RECOIL:</label>
+                        <label>FILE CHO NO RECOIL:</label>
                         <input type="file" id="admin-file-norecoil" class="main-input file-input">
                     </div>
-                    <button class="btn-gold" onclick="confirmAdminFiles()">XÁC NHẬN & NẠP FILE</button>
+                    <button class="btn-gold" onclick="confirmAdminFiles()">XÁC NHẬN CẬP NHẬT FILE</button>
                 </div>
             </div>
         </div>
@@ -109,23 +109,23 @@
 
     <div id="game-modal" class="modal hidden">
         <div class="modal-content metal-border">
-            <h4 id="mod-name-title">BẬT CHỨC NĂNG</h4>
-            <p>Vui lòng chọn phiên bản game để áp dụng:</p>
-            <button class="btn-game ff" onclick="closeGameSelector()">MỞ FREE FIRE</button>
-            <button class="btn-game ffm" onclick="closeGameSelector()">MỞ FREE FIRE MAX</button>
+            <h4 id="mod-name-title">CÀI ĐẶT MOD</h4>
+            <p>Vui lòng chọn phiên bản game của bạn:</p>
+            <button class="btn-game ff" onclick="closeGameSelector()">FREE FIRE THƯỜNG</button>
+            <button class="btn-game ffm" onclick="closeGameSelector()">FREE FIRE MAX</button>
             <button class="btn-close" onclick="closeGameSelector()">ĐÓNG</button>
         </div>
     </div>
 
     <div id="info-modal" class="modal hidden">
         <div class="modal-content metal-border">
-            <h2 style="color:#34c759; margin-top: 0;">THÀNH CÔNG!</h2>
-            <p>Nhận diện Key hợp lệ trên hệ thống.</p>
+            <h2 style="color:#34c759; margin-top: 0;">KÍCH HOẠT!</h2>
+            <p>Key của bạn hợp lệ.</p>
             <div class="countdown-box">
-                <span style="font-size: 11px; color:#aaa;">THỜI GIAN SỬ DỤNG CÒN LẠI:</span><br>
-                <span id="expiry-countdown" style="font-size: 1.2rem; font-weight: bold; color: var(--gold);">--:--:--</span>
+                <span style="font-size: 11px; color:#aaa;">HẠN DÙNG:</span><br>
+                <span id="expiry-countdown" style="font-size: 1.1rem; font-weight: 800; color: var(--gold);">00:00:00</span>
             </div>
-            <button class="btn-gold" style="margin-top: 15px;" onclick="closeInfoModal()">VÀO APP</button>
+            <button class="btn-gold" style="margin-top: 15px;" onclick="closeInfoModal()">TRUY CẬP HỆ THỐNG</button>
         </div>
     </div>
 

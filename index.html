@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body class="page-center">
+
     <div id="login-screen" class="full-screen">
         <div class="header-login">
             <svg class="apple-svg" viewBox="0 0 170 170">
@@ -59,8 +60,8 @@
                             <span>AIMLOCK 100%</span>
                             <label class="switch"><input type="checkbox" onchange="toggleMod(this, 'Aimlock')"><span class="slider"></span></label>
                         </div>
-                        <div id="file-Aimlock" class="file-upload hidden">
-                            <input type="file" class="main-input file-input" title="Thêm file trực tiếp">
+                        <div id="file-Aimlock" class="file-status hidden">
+                            <span class="status-text">Đang chờ hệ thống...</span>
                         </div>
                     </div>
 
@@ -69,11 +70,10 @@
                             <span>NO RECOIL 100%</span>
                             <label class="switch"><input type="checkbox" onchange="toggleMod(this, 'No Recoil')"><span class="slider"></span></label>
                         </div>
-                        <div id="file-NoRecoil" class="file-upload hidden">
-                            <input type="file" class="main-input file-input" title="Thêm file trực tiếp">
+                        <div id="file-NoRecoil" class="file-status hidden">
+                            <span class="status-text">Đang chờ hệ thống...</span>
                         </div>
                     </div>
-                    
                 </div>
             </div>
 
@@ -88,7 +88,20 @@
                         <option value="9999">Vĩnh Viễn</option>
                     </select>
                     <button class="btn-gold" onclick="createKey()">TẠO KEY MỚI</button>
-                    <div id="key-list" class="scroll-list admin-scroll"></div>
+                    <div id="key-list" class="admin-scroll"></div>
+                </div>
+
+                <div class="card-box metal-border" style="margin-top: 15px;">
+                    <h3 class="title-gold">QUẢN LÝ FILE HỆ THỐNG</h3>
+                    <div class="admin-file-input-group">
+                        <label>FILE AIMLOCK:</label>
+                        <input type="file" id="admin-file-aimlock" class="main-input file-input">
+                    </div>
+                    <div class="admin-file-input-group">
+                        <label>FILE NO RECOIL:</label>
+                        <input type="file" id="admin-file-norecoil" class="main-input file-input">
+                    </div>
+                    <button class="btn-gold" onclick="confirmAdminFiles()">XÁC NHẬN & NẠP FILE</button>
                 </div>
             </div>
         </div>

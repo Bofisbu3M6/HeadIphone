@@ -5,98 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Support File Strongest ❄️</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
-<body class="center-all">
-    <div id="login-screen" class="screen active">
-        <div class="header-logo">
-            <div class="apple-icon">🍎</div>
-            <h1>Support File Strongest ❄️</h1>
-            <p class="slogan">CHẤT LƯỢNG GIÁ RẺ SỐ 1 VN</p>
+<body class="center-layout">
+
+    <div id="login-screen" class="active-screen">
+        <div class="header-login">
+            <div class="apple-logo">🍎</div>
+            <h1 class="brand-name">Support File Strongest ❄️</h1>
+            <p class="slogan-text">CHẤT LƯỢNG GIÁ RẺ SỐ 1 VN</p>
         </div>
-        <div class="card">
-            <input type="text" id="key-input" class="input-field" placeholder="NHẬP KEY APP TẠI ĐÂY...">
-            <button class="btn-yellow" onclick="handleLogin()">KÍCH HOẠT KEY APP</button>
-            <a href="https://zalo.me/0933653553" class="zalo-btn">LIÊN HỆ ADMIN MUA KEY (ZALO: 0933653553)</a>
+        
+        <div class="card-main border-glow">
+            <input type="text" id="key-input" class="input-style" placeholder="NHẬP KEY APP TẠI ĐÂY...">
+            <button class="btn-yellow-gradient" onclick="handleLogin()">KÍCH HOẠT KEY APP</button>
+            <a href="https://zalo.me/0933653553" class="zalo-link">LIÊN HỆ ADMIN MUA KEY (0933653553)</a>
         </div>
     </div>
 
-    <div id="main-app" class="screen">
-        <div class="tab-bar">
-            <button class="tab-btn active" onclick="switchTab(this, 'dashboard')">DASHBOARD</button>
-            <button class="tab-btn" onclick="switchTab(this, 'chucnang')">CHỨC NĂNG</button>
-            <button id="admin-tab" class="tab-btn hidden" onclick="switchTab(this, 'admin')">ADMIN</button>
+    <div id="main-app" class="hidden">
+        <div class="tab-navigation">
+            <button class="tab-item active" onclick="changeTab(this, 'dashboard')">DASHBOARD</button>
+            <button class="tab-item" onclick="changeTab(this, 'chucnang')">CHỨC NĂNG</button>
+            <button id="admin-access" class="tab-item hidden" onclick="changeTab(this, 'admin')">ADMIN</button>
         </div>
 
-        <div class="container">
-            <div id="tab-dashboard" class="content-tab active">
-                <div class="card border-yellow">
-                    <h2 class="title-yellow">HỆ THỐNG THIẾT BỊ</h2>
-                    <select id="os-select" class="input-field" onchange="loadDevices()"></select>
-                    <select id="device-select" class="input-field"></select>
+        <div class="app-container">
+            <div id="tab-dashboard" class="tab-content active">
+                <div class="card-main border-yellow">
+                    <h2 class="section-title">HỆ THỐNG THIẾT BỊ</h2>
+                    <select id="os-selector" class="input-style" onchange="loadDevices()"></select>
+                    <select id="device-selector" class="input-style"></select>
 
-                    <h2 class="title-yellow">QUÉT ỨNG DỤNG</h2>
-                    <div class="app-row">
-                        <select id="app-select" class="input-field" onchange="changeAppLogo()">
+                    <h2 class="section-title">QUÉT ỨNG DỤNG</h2>
+                    <div class="scan-wrapper">
+                        <select id="app-selector" class="input-style" onchange="refreshLogo()">
                             <option value="ff">Free Fire</option>
                             <option value="ffm">Free Fire MAX</option>
                         </select>
                         <div class="logo-box">
-                            <img id="display-logo" src="" alt="logo">
+                            <img id="app-logo-display" src="" alt="logo">
                         </div>
                     </div>
-                    <button class="btn-yellow-main" onclick="alert('Đang quét...')">QUÉT THIẾT BỊ & ỨNG DỤNG</button>
+                    <button class="btn-scan-main" onclick="alert('Đang quét hệ thống...')">QUÉT THIẾT BỊ & ỨNG DỤNG</button>
                 </div>
-                <button class="btn-logout" onclick="logout()">ĐĂNG XUẤT KEY KHỎI THIẾT BỊ</button>
+                <button class="btn-logout-system" onclick="logout()">ĐĂNG XUẤT KEY KHỎI THIẾT BỊ</button>
             </div>
 
-            <div id="tab-chucnang" class="content-tab">
-                <div class="card border-yellow">
-                    <h2 class="title-yellow">MOD CHỨC NĂNG</h2>
-                    <div class="switch-row">
+            <div id="tab-chucnang" class="tab-content">
+                <div class="card-main border-purple">
+                    <h2 class="section-title">MOD CHỨC NĂNG VIP</h2>
+                    <div class="mod-row">
                         <span>AIMLOCK 100%</span>
-                        <label class="switch"><input type="checkbox" onchange="showGameChoice('Aimlock')"><span class="slider"></span></label>
+                        <label class="ios-switch"><input type="checkbox" onchange="askGameVersion('Aimlock')"><span class="ios-slider"></span></label>
                     </div>
-                    <div class="switch-row">
+                    <div class="mod-row">
                         <span>NO RECOIL 100%</span>
-                        <label class="switch"><input type="checkbox" onchange="showGameChoice('No Recoil')"><span class="slider"></span></label>
+                        <label class="ios-switch"><input type="checkbox" onchange="askGameVersion('No Recoil')"><span class="ios-slider"></span></label>
                     </div>
                 </div>
             </div>
 
-            <div id="tab-admin" class="content-tab">
-                <div class="card border-yellow">
-                    <h2 class="title-yellow">QUẢN LÝ TỆP</h2>
-                    <input type="file" class="input-field">
-                    <select id="folder-target" class="input-field">
-                        <option value="aimlock">Mục: AIMLOCK</option>
-                        <option value="norecoil">Mục: NO RECOIL</option>
-                    </select>
-                    <button class="btn-yellow" onclick="alert('Đã thêm tệp!')">THÊM TỆP VÀO MỤC</button>
-                    
-                    <hr style="border:0.5px solid #333; margin:20px 0;">
-                    
-                    <h2 class="title-yellow">TẠO & QUẢN LÝ KEY</h2>
-                    <input type="text" id="admin-key-name" class="input-field" placeholder="Tên Key...">
-                    <select id="admin-hsd" class="input-field">
+            <div id="tab-admin" class="tab-content">
+                <div class="card-main border-yellow">
+                    <h2 class="section-title">TẠO KEY & HẠN DÙNG</h2>
+                    <input type="text" id="new-key-name" class="input-style" placeholder="Tên key mới...">
+                    <select id="new-key-time" class="input-style">
                         <option value="1">1 Ngày</option>
                         <option value="7">7 Ngày</option>
                         <option value="30">30 Ngày</option>
                         <option value="9999">Vĩnh Viễn</option>
                     </select>
-                    <button class="btn-yellow" onclick="adminAddKey()">TẠO KEY</button>
-                    <div id="admin-key-list" class="key-list-area"></div>
+                    <button class="btn-yellow-gradient" onclick="adminCreateKey()">XÁC NHẬN TẠO KEY</button>
+                    
+                    <h2 class="section-title" style="margin-top:20px">DANH SÁCH KEY</h2>
+                    <div id="admin-key-list" class="key-scroll-box"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="game-modal" class="modal">
-        <div class="modal-box border-yellow">
-            <h3 id="mod-title">BẬT MOD</h3>
-            <p>Chọn phiên bản Free Fire:</p>
-            <button class="game-btn ff" onclick="closeGameModal()">MỞ FREE FIRE</button>
-            <button class="game-btn ffm" onclick="closeGameModal()">MỞ FREE FIRE MAX</button>
-            <button class="close-btn" onclick="closeGameModal()">ĐÓNG</button>
+    <div id="modal-selector" class="overlay hidden">
+        <div class="modal-card">
+            <h3 id="modal-title">MOD ACTIVATE</h3>
+            <p>Chọn phiên bản game cần Mod:</p>
+            <button class="btn-game ff-color" onclick="closeGameModal()">MỞ FREE FIRE</button>
+            <button class="btn-game ffm-color" onclick="closeGameModal()">MỞ FREE FIRE MAX</button>
+            <button class="btn-cancel" onclick="closeGameModal()">HỦY</button>
         </div>
     </div>
 

@@ -17,22 +17,11 @@
         </div>
         <h1 class="brand-title">Support File Strongest ❄️</h1>
         <p class="slogan">UY TÍN ĐẶT LÊN HÀNG ĐẦU - CHẤT LƯỢNG GIÁ RẺ SỐ 1 VN</p>
-        <div class="metal-card border-gold">
-            <input type="text" id="license-key" class="metal-input" placeholder="NHẬP KEY APP TẠI ĐÂY...">
-            <button class="btn-metal gold-bg" onclick="checkLogin()">KÍCH HOẠT KEY APP</button>
-        </div>
-    </div>
-
-    <div id="key-popup" class="glass-overlay hidden">
-        <div class="alert-box metal-card border-gold">
-            <div class="alert-header">THÔNG TIN BẢN QUYỀN</div>
-            <div class="alert-body">
-                <p class="label-hsd">THỜI GIAN SỬ DỤNG CÒN LẠI</p>
-                <h2 id="popup-time" class="time-display">-- : -- : --</h2>
-            </div>
-            <div class="alert-footer-vertical">
-                <button class="btn-popup-confirm" onclick="closePopupAction()">ĐÃ RÕ</button>
-                <button class="btn-popup-hide" onclick="hideFor2Hours()">ẨN TRONG 2 GIỜ</button>
+        
+        <div class="login-container">
+            <div class="metal-card border-gold">
+                <input type="text" id="license-key" class="metal-input center-text" placeholder="NHẬP KEY APP TẠI ĐÂY...">
+                <button class="btn-metal gold-bg" onclick="checkLogin()">KÍCH HOẠT KEY APP</button>
             </div>
         </div>
     </div>
@@ -55,21 +44,22 @@
                         <option value="macos">🍏 macOS</option>
                     </select>
                     <select id="select-device" class="metal-input"></select>
-                    <button class="btn-action gold-bg" onclick="scanDevices()">QUÉT THIẾT BỊ & ỨNG DỤNG</button>
-                    
-                    <div id="scan-result" class="app-grid hidden">
-                        <div class="app-item">
-                            <img src="https://i.imgur.com/rN9S7aP.png" class="app-icon">
-                            <span>Free Fire</span>
-                        </div>
-                        <div class="app-item">
-                            <img src="https://i.imgur.com/V7Yq7M0.png" class="app-icon">
-                            <span>Free Fire MAX</span>
+
+                    <h3 class="section-title" style="margin-top:20px">CHỌN ỨNG DỤNG</h3>
+                    <div class="app-scan-container">
+                        <select id="select-app" class="metal-input" onchange="changeAppLogo()">
+                            <option value="ff">Free Fire</option>
+                            <option value="ffmax">Free Fire MAX</option>
+                        </select>
+                        <div class="app-preview">
+                            <img id="app-icon-img" src="https://i.ibb.co/LnMZ6pG/ff-normal.png" alt="logo">
                         </div>
                     </div>
+                    
+                    <button class="btn-action gold-bg" onclick="scanDevices()">QUÉT THIẾT BỊ & ỨNG DỤNG</button>
                 </div>
 
-                <div class="logout-container">
+                <div class="logout-wrapper">
                     <button class="btn-logout" onclick="logoutKey()">
                         <span class="icon-logout">⎋</span> ĐĂNG XUẤT KEY KHỎI THIẾT BỊ
                     </button>
@@ -78,55 +68,43 @@
 
             <div id="tab-chucnang" class="tab-content hidden">
                 <div class="metal-card border-purple">
-                    <h3 class="section-title">MOD VIP CHỨC NĂNG</h3>
+                    <h3 class="section-title">MOD VIP STRONGEST</h3>
                     <div class="control-row">
-                        <span class="main-lbl">AIMLOCK 100%</span>
+                        <span>AIMLOCK 100%</span>
                         <label class="ios-switch">
                             <input type="checkbox" onchange="toggleMod('Aimlock', this)">
                             <span class="ios-slider"></span>
                         </label>
                     </div>
                     <div class="control-row">
-                        <span class="main-lbl">NO RECOIL 100%</span>
+                        <span>NO RECOIL 100%</span>
                         <label class="ios-switch">
                             <input type="checkbox" onchange="toggleMod('No Recoil', this)">
                             <span class="ios-slider"></span>
                         </label>
                     </div>
                 </div>
-
-                <div id="mod-status-box" class="metal-card hidden" style="border-color: #34c759;">
-                    <p id="mod-text" style="color: #34c759; font-weight: 800; font-size: 11px; text-align: center;"></p>
-                    <div class="game-launch-btns">
-                        <button class="btn-launch ff" onclick="alert('Đang khởi chạy Free Fire...')">MỞ FREE FIRE</button>
-                        <button class="btn-launch ffmax" onclick="alert('Đang khởi chạy Free Fire MAX...')">MỞ FF MAX</button>
-                    </div>
+                <div id="status-box" class="metal-card hidden" style="border-color: #34c759; text-align: center;">
+                    <p id="status-text" style="color:#34c759; font-weight:800; font-size:12px"></p>
                 </div>
             </div>
 
             <div id="tab-admin" class="tab-content hidden">
                 <div class="metal-card border-gold">
-                    <h3 class="section-title">THÊM FILE TRỰC TIẾP</h3>
-                    <input type="file" id="file-input" class="metal-input">
-                    <select id="target-mod" class="metal-input">
-                        <option value="Aimlock">Mục Aimlock</option>
-                        <option value="No Recoil">Mục No Recoil</option>
-                    </select>
-                    <button class="btn-metal gold-bg" style="width: 100%;" onclick="uploadFile()">XÁC NHẬN THÊM FILE</button>
-                </div>
-
-                <div class="metal-card border-gold">
                     <h3 class="section-title">QUẢN LÝ KEY</h3>
-                    <input type="text" id="new-key-name" class="metal-input" placeholder="Tên Key...">
-                    <select id="key-duration" class="metal-input">
-                        <option value="3600000">1 GIỜ</option>
-                        <option value="86400000">1 NGÀY</option>
-                        <option value="9999999999999">VĨNH VIỄN</option>
-                    </select>
-                    <button class="btn-metal gold-bg" style="width: 100%;" onclick="createKey()">TẠO KEY MỚI</button>
-                    <div id="admin-key-list" class="admin-key-container"></div>
+                    <input type="text" id="admin-key-input" class="metal-input" placeholder="Tên Key...">
+                    <button class="btn-metal gold-bg" onclick="createKey()">TẠO KEY MỚI</button>
+                    <div id="key-list-admin" class="admin-list"></div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="key-popup" class="glass-overlay hidden">
+        <div class="alert-box metal-card border-gold">
+            <p style="font-size:10px; color:#888; text-align:center">HẠN SỬ DỤNG CÒN LẠI</p>
+            <h2 id="popup-time" class="time-display">-- : -- : --</h2>
+            <button class="btn-popup-confirm" onclick="closePopupAction()">VÀO MENU</button>
         </div>
     </div>
 

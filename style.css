@@ -16,7 +16,7 @@ body {
 }
 
 .apple-logo-container { margin-top: 40px; margin-bottom: 10px; }
-.main-logo { width: 90px; height: 90px; filter: drop-shadow(0 0 15px rgba(255,215,0,0.3)); }
+.main-logo { width: 90px; height: 90px; filter: drop-shadow(0 0 15px rgba(255,255,255,0.1)); }
 
 .brand-title { 
     font-weight: 800; font-size: 1.2rem; text-align: center; margin: 0;

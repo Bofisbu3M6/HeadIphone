@@ -17,10 +17,11 @@ function checkLogin() {
         alert("KEY KHÔNG TỒN TẠI TRÊN HỆ THỐNG HOẶC ĐÃ BỊ XOÁ\nVui lòng liên hệ Admin Zalo: " + ZALO);
         return;
     }
+
     if (Date.now() > keys[input].expiry) {
         delete keys[input];
         localStorage.setItem('strongest_keys', JSON.stringify(keys));
-        alert("KEY ĐÃ HẾT HẠN!");
+        alert("KEY ĐÃ HẾT HẠN VÀ BỊ XOÁ!");
         return;
     }
     showKeyPopup(keys[input].expiry);
@@ -60,13 +61,20 @@ function hideFor2Hours() {
     closePopupAction();
 }
 
+function logoutKey() {
+    if (confirm("Bạn có chắc chắn muốn đăng xuất và xóa phiên làm việc?")) {
+        localStorage.removeItem('hide_until');
+        location.reload();
+    }
+}
+
 function enterSystem(role) {
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('main-panel').classList.remove('hidden');
     if (role === "ADMIN") document.getElementById('dev-tab').classList.remove('hidden');
 }
 
-// Admin Logic
+// Logic Admin
 function createKey() {
     const name = document.getElementById('new-key-name').value.trim();
     const dur = parseInt(document.getElementById('key-duration').value);
@@ -101,13 +109,13 @@ function renderAdminKeys() {
 function uploadFile() {
     const file = document.getElementById('file-input').files[0];
     const target = document.getElementById('target-mod').value;
-    if(!file) return alert("Chọn file!");
-    alert(`ĐÃ THÊM FILE THÀNH CÔNG VÀO MỤC ${target.toUpperCase()}!`);
+    if(!file) return alert("Vui lòng chọn file!");
+    alert(`XÁC NHẬN: Đã thêm file chung thành công vào ${target}!`);
 }
 
 function scanDevices() {
     const btn = document.querySelector('.btn-action');
-    btn.innerText = "ĐANG QUÉT THIẾT BỊ...";
+    btn.innerText = "ĐANG QUÉT...";
     setTimeout(() => {
         document.getElementById('scan-result').classList.remove('hidden');
         btn.innerText = "QUÉT THÀNH CÔNG ✅";
@@ -135,7 +143,10 @@ function switchTab(el, id) {
 function updateDeviceList() {
     const os = document.getElementById('select-os').value;
     const dev = document.getElementById('select-device');
-    const data = { android: ["SAMSUNG GALAXY S24", "XIAOMI 14 PRO", "ROG PHONE 8"], ios: ["IPHONE 15 PRO MAX", "IPHONE 14", "IPAD PRO M2"] };
+    const data = { 
+        android: ["SAMSUNG GALAXY S24 ULTRA", "XIAOMI 14 PRO", "ROG PHONE 8"], 
+        ios: ["IPHONE 15 PRO MAX", "IPHONE 14 PRO", "IPAD PRO M4"] 
+    };
     dev.innerHTML = "";
     data[os].forEach(d => dev.innerHTML += `<option>${d}</option>`);
 }

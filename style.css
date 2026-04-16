@@ -1,85 +1,47 @@
-:root {
-    --gold: #ffd700;
-    --gold-dark: #b8860b;
-    --bg-black: #050505;
-    --metal: #1a1a1c;
-    --glass: rgba(255, 255, 255, 0.03);
-}
+:root { --gold: #ffd700; --bg: #050505; --green: #34c759; }
+body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
 
-* { box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+/* LOGO APPLE CHUẨN */
+.apple-logo-container { margin-top: 50px; width: 100%; display: flex; justify-content: center; }
+.main-logo { width: 80px; height: 80px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
+.brand-title { font-size: 1.2rem; font-weight: 800; background: linear-gradient(#fff, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 10px 0 0; }
+.slogan { font-size: 8px; color: #888; letter-spacing: 1px; }
 
-body { 
-    background: var(--bg-black); 
-    color: #fff; margin: 0; padding: 15px; 
-    display: flex; flex-direction: column; align-items: center; min-height: 100vh;
-    background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #050505 100%);
-}
+/* KHUNG TRANG TRÍ */
+.metal-card { background: #111; border: 1px solid #222; border-radius: 20px; padding: 20px; width: 90%; max-width: 380px; margin-top: 20px; }
+.border-gold { border-color: rgba(255,215,0,0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.border-purple { border-color: #af52de; }
 
-.apple-logo-container { margin-top: 40px; margin-bottom: 10px; }
-.main-logo { width: 90px; height: 90px; filter: drop-shadow(0 0 15px rgba(255,255,255,0.1)); }
+.metal-input { width: 100%; background: #000; border: 1px solid #333; padding: 12px; border-radius: 10px; color: #fff; margin-bottom: 10px; font-size: 11px; box-sizing: border-box; }
+.gold-bg { background: linear-gradient(to right, #ffd700, #b8860b); color: #000; font-weight: 800; border: none; cursor: pointer; padding: 15px; border-radius: 12px; }
 
-.brand-title { 
-    font-weight: 800; font-size: 1.2rem; text-align: center; margin: 0;
-    background: linear-gradient(to bottom, #fff, var(--gold));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
+/* NÚT GẠT IOS */
+.control-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #222; }
+.main-lbl { font-size: 11px; font-weight: 600; }
+.ios-switch { position: relative; width: 44px; height: 24px; }
+.ios-switch input { opacity: 0; width: 0; height: 0; }
+.ios-slider { position: absolute; cursor: pointer; inset: 0; background: #333; transition: .4s; border-radius: 34px; }
+.ios-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background: #fff; transition: .4s; border-radius: 50%; }
+input:checked + .ios-slider { background: var(--green); }
+input:checked + .ios-slider:before { transform: translateX(20px); }
 
-.slogan { font-size: 8px; color: #8e8e93; text-align: center; margin: 8px 0 20px 0; letter-spacing: 1px; }
+/* APP GRID */
+.app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+.app-item { background: #000; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #222; transition: 0.3s; }
+.app-item:active { transform: scale(0.95); border-color: var(--gold); }
+.app-icon { width: 50px; height: 50px; border-radius: 12px; margin-bottom: 8px; }
 
-.metal-card {
-    background: linear-gradient(145deg, #1c1c1e, #111);
-    border-radius: 20px; padding: 20px; width: 100%; max-width: 360px;
-    border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;
-}
+/* ADMIN KEYS */
+.admin-key-container { margin-top: 15px; max-height: 200px; overflow-y: auto; }
+.key-card { background: #000; padding: 10px; border-radius: 8px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; }
+.btn-delete { background: #ff3b30; color: #fff; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
 
-.border-gold { border: 1px solid rgba(255,215,0,0.3) !important; box-shadow: 0 0 20px rgba(255,215,0,0.05); }
+/* GAME BUTTONS */
+.game-launch-btns { display: flex; gap: 5px; margin-top: 10px; }
+.btn-launch { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 10px; }
+.btn-launch.ff { background: #ff5e00; color: #fff; }
+.btn-launch.ffmax { background: #34c759; color: #fff; }
 
-.section-title {
-    font-size: 10px; color: var(--gold); font-weight: 800; 
-    border-left: 3px solid var(--gold); padding-left: 10px; margin: 15px 0 10px 0;
-}
-
-.metal-input {
-    width: 100%; background: #000; border: 1px solid #333; padding: 15px;
-    border-radius: 12px; color: #fff; outline: none; margin-bottom: 10px; font-size: 12px;
-}
-
-.gold-bg { background: linear-gradient(to right, var(--gold), var(--gold-dark)) !important; color: #000 !important; }
-
-.btn-metal.primary { width: 100%; border: none; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; }
-
-/* Tabs */
-.nav-tabs { display: flex; gap: 5px; width: 100%; max-width: 360px; margin-bottom: 15px; }
-.tab { 
-    flex: 1; padding: 12px; text-align: center; font-size: 9px; font-weight: 800;
-    background: var(--glass); border-radius: 10px; color: #8e8e93; cursor: pointer;
-}
-.tab.active { background: #fff; color: #000; }
-
-/* Popup */
-.glass-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-    backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 1000;
-}
-.alert-box { width: 300px; text-align: center; }
-.btn-alert-close { width: 100%; padding: 12px; background: var(--gold); border: none; border-radius: 10px; font-weight: 800; margin-top: 10px; }
-.btn-alert-hide { background: none; border: none; color: #8e8e93; font-size: 10px; margin-top: 10px; cursor: pointer; }
-
-/* Dashboard App */
-.app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-.app-item {
-    background: rgba(0,0,0,0.3); border-radius: 15px; padding: 15px;
-    display: flex; flex-direction: column; align-items: center; border: 1px solid transparent;
-}
-.app-item.selected { border-color: var(--gold); background: rgba(255,215,0,0.05); }
-.app-icon { width: 45px; height: 45px; border-radius: 10px; margin-bottom: 8px; }
-.app-name { font-size: 9px; font-weight: 600; }
-
-/* Chức năng active */
-.active-box { background: rgba(255,215,0,0.05); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; text-align: center; }
-.active-box p { color: var(--gold); font-weight: 800; font-size: 11px; margin-top: 0; }
-.btn-launch { flex: 1; padding: 10px; border: none; border-radius: 8px; background: var(--gold); font-weight: 800; font-size: 10px; cursor: pointer; }
-
-.snowflake { position: fixed; top: -10px; color: rgba(255,255,255,0.2); animation: fall linear infinite; pointer-events: none; }
-@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
-.hidden { display: none !important; }
+.hidden { display: none; }
+.glass-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: center; align-items: center; }
+.tab-content { width: 100%; display: flex; flex-direction: column; align-items: center; }

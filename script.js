@@ -1,7 +1,7 @@
 // --- 1. DANH SÁCH KEY HỆ THỐNG (MÁY NÀO CŨNG NHẬP ĐƯỢC) ---
 // Bạn có thể đặt tên bất kỳ vào đây, ví dụ: "Anh Yêu Em", "123", "Key_Vip_99"...
 const HE_THONG_KEYS = {
-    "NGUYENLONG-VIP": Date.now() + (365 * 24 * 60 * 60 * 1000), 
+    "TUANHIEP-VIP": Date.now() + (365 * 24 * 60 * 60 * 1000), 
     "ADMIN-LUON-THANG": Date.now() + (999 * 24 * 60 * 60 * 1000),
     "123": Date.now() + (1 * 24 * 60 * 60 * 1000) 
 };

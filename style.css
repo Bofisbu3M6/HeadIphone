@@ -1,48 +1,50 @@
 :root { --gold: #ffd700; --bg: #050505; --apple-gray: #1c1c1e; }
-body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; }
+body { margin: 0; background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
 
-/* CĂN GIỮA TOÀN BỘ APP */
-.full-center { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; text-align: center; }
-.center-app { display: flex; justify-content: center; }
+/* CĂN GIỮA TOÀN BỘ */
+.page-center { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; }
+.page-center-content { display: flex; flex-direction: column; align-items: center; width: 100%; margin-top: 20px; }
 
-/* APPLE LOGO & TITLE */
-.apple-container { margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; }
-.main-logo { width: 80px; height: 80px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
-.brand-title { margin-top: 15px; font-size: 1.2rem; font-weight: 800; background: linear-gradient(#fff, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.slogan { font-size: 9px; color: #888; letter-spacing: 1px; }
+/* HEADER */
+.header-group { margin-bottom: 30px; }
+.apple-logo-wrap { display: flex; justify-content: center; }
+.main-logo { width: 85px; height: 85px; }
+.brand-title { font-size: 1.3rem; font-weight: 800; background: linear-gradient(#fff, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 15px; }
+.slogan { font-size: 8px; color: #888; letter-spacing: 1.5px; }
 
-/* CARD & INPUT */
-.metal-card { background: var(--apple-gray); border: 1px solid #2c2c2e; border-radius: 24px; padding: 25px; width: 90%; max-width: 360px; box-sizing: border-box; }
-.border-gold { border-color: rgba(255, 215, 0, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-.metal-input { width: 100%; background: #000; border: 1px solid #3a3a3c; padding: 15px; border-radius: 14px; color: #fff; margin-bottom: 12px; font-size: 12px; outline: none; box-sizing: border-box; }
+/* CARD KIM LOẠI */
+.metal-card { background: var(--apple-gray); border: 1px solid #2c2c2e; border-radius: 24px; padding: 30px; width: 90%; max-width: 380px; box-sizing: border-box; }
+.border-gold { border-color: rgba(255, 215, 0, 0.3); box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+
+/* INPUT & SELECT CĂN GIỮA */
+.metal-input { width: 100%; background: #000; border: 1px solid #3a3a3c; padding: 15px; border-radius: 14px; color: #fff; margin-bottom: 12px; font-size: 12px; outline: none; box-sizing: border-box; text-align: center; }
 .text-center { text-align: center; }
-.gold-bg { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; font-weight: 800; border: none; padding: 16px; border-radius: 14px; width: 100%; cursor: pointer; transition: 0.3s; }
+.gold-bg { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; font-weight: 800; border: none; padding: 16px; border-radius: 14px; width: 100%; cursor: pointer; text-transform: uppercase; }
 
-/* APP SCAN ROW (LOGO KHÔNG LỖI) */
-.app-scan-row { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-.app-scan-row select { margin-bottom: 0 !important; }
-.logo-box-main { width: 60px; height: 60px; border-radius: 14px; border: 2px solid var(--gold); overflow: hidden; background: #000; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-.logo-box-main img { width: 100%; height: 100%; object-fit: cover; }
+/* LOGO APP HIỂN THỊ (CHỐNG LỖI) */
+.app-selector-group { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+.app-selector-group select { margin-bottom: 0 !important; }
+.logo-display-box { width: 65px; height: 65px; border-radius: 15px; border: 2px solid var(--gold); background: #000; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+#current-logo-img { width: 100%; height: 100%; object-fit: cover; }
 
-/* TABS CĂN GIỮA */
-.nav-tabs-center { width: 100%; display: flex; justify-content: center; margin-top: 25px; }
-.nav-tabs { display: flex; background: #1c1c1e; padding: 5px; border-radius: 14px; gap: 5px; width: 90%; max-width: 380px; }
-.tab { flex: 1; padding: 10px; text-align: center; font-size: 10px; font-weight: 800; border-radius: 10px; color: #8e8e93; cursor: pointer; }
+/* NAV TABS CĂN GIỮA */
+.nav-tabs-container { width: 100%; display: flex; justify-content: center; margin-top: 25px; }
+.nav-tabs { display: flex; background: #1c1c1e; padding: 5px; border-radius: 14px; width: 90%; max-width: 380px; }
+.tab { flex: 1; padding: 12px; text-align: center; font-size: 10px; font-weight: 800; color: #8e8e93; cursor: pointer; border-radius: 10px; transition: 0.3s; }
 .tab.active { background: #fff; color: #000; }
 
-/* CHỨC NĂNG CONTROL */
-.mod-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #2c2c2e; font-size: 12px; font-weight: 600; }
-.switch-ios { position: relative; width: 46px; height: 26px; }
-.switch-ios input { opacity: 0; width: 0; height: 0; }
-.slider-ios { position: absolute; inset: 0; background: #3a3a3c; transition: .4s; border-radius: 34px; }
-.slider-ios:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background: #fff; transition: .4s; border-radius: 50%; }
-input:checked + .slider-ios { background: #34c759; }
-input:checked + .slider-ios:before { transform: translateX(20px); }
+/* SWITCH IOS */
+.ios-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #2c2c2e; font-size: 12px; font-weight: 600; }
+.ios-switch { position: relative; width: 46px; height: 26px; }
+.ios-switch input { opacity: 0; width: 0; height: 0; }
+.ios-slider { position: absolute; inset: 0; background: #3a3a3c; border-radius: 34px; cursor: pointer; transition: .4s; }
+.ios-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .4s; }
+input:checked + .ios-slider { background: #34c759; }
+input:checked + .ios-slider:before { transform: translateX(20px); }
 
-/* NÚT ĐĂNG XUẤT APPLE RED */
-.btn-logout-apple { margin-top: 30px; background: rgba(255, 69, 58, 0.1); color: #ff453a; border: 1px solid rgba(255, 69, 58, 0.2); padding: 15px 40px; border-radius: 16px; font-weight: 700; cursor: pointer; font-size: 11px; }
+/* NÚT ĐĂNG XUẤT */
+.logout-wrap { margin-top: 30px; width: 100%; display: flex; justify-content: center; }
+.btn-logout-red { background: rgba(255, 69, 58, 0.1); color: #ff453a; border: 1px solid rgba(255, 69, 58, 0.2); padding: 15px 30px; border-radius: 16px; font-weight: 700; font-size: 11px; cursor: pointer; width: 90%; max-width: 380px; }
 
-.full-width { width: 100%; }
-.full-center-content { display: flex; flex-direction: column; align-items: center; width: 100%; margin-top: 20px; }
 .hidden { display: none; }
-.section-title { font-size: 11px; color: var(--gold); border-left: 3px solid var(--gold); padding-left: 10px; margin-bottom: 15px; text-transform: uppercase; text-align: left; width: 100%; }
+.section-title { font-size: 11px; color: var(--gold); text-align: left; text-transform: uppercase; margin-bottom: 15px; border-left: 3px solid var(--gold); padding-left: 10px; }

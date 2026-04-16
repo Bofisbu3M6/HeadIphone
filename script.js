@@ -1,29 +1,51 @@
 const ADMIN_KEY = "adminappmenunguyenlong";
-const ZALO_CONTACT = "0933653553 (Nguyên Long)";
+const ZALO_CONTACT = "0933653553 (Nguyen Long)";
 
-// Dữ liệu thiết bị khổng lồ
+// Dữ liệu thiết bị và phiên bản từ cũ nhất đến mới nhất
 const systemData = {
     adr: {
-        brands: ["Samsung", "Oppo", "Redmi", "Xiaomi", "Vivo", "Realme", "Asus ROG", "Nubia RedMagic", "Google Pixel", "Huawei", "Sony", "Nokia", "Motorola", "LG", "Lenovo", "Meizu", "ZTE"],
-        versions: ["Android 15", "Android 14", "Android 13", "Android 12", "Android 11", "Android 10", "Android 9.0", "Android 8.0", "Android 7.0"]
+        brands: ["Samsung", "Oppo", "Redmi", "Xiaomi", "Vivo", "Realme", "Asus ROG", "Nubia RedMagic", "Google Pixel", "Huawei", "Sony", "Nokia", "Motorola", "LG", "Lenovo", "Meizu", "ZTE", "Vsmart", "HTC", "BlackBerry"],
+        versions: [
+            "Android 16 (2026 - Latest)", "Android 15 (V)", "Android 14 (U)", "Android 13 (T)", "Android 12 (S)", "Android 11 (R)", 
+            "Android 10 (Q)", "Android 9.0 (Pie)", "Android 8.0 (Oreo)", "Android 7.0 (Nougat)", 
+            "Android 6.0 (Marshmallow)", "Android 5.0 (Lollipop)", "Android 4.4 (KitKat)"
+        ]
     },
     ios: {
-        brands: ["iPhone 15 Pro Max", "iPhone 15 Plus", "iPhone 14 Pro Max", "iPhone 13 Pro Max", "iPhone 12 Pro Max", "iPhone 11 Series", "iPhone XS/XR", "iPhone X", "iPhone 8/7/6 Plus", "iPad Pro M4", "iPad Pro M2", "iPad Air 5", "iPad Mini 6"],
-        versions: ["iOS 18.0 Beta", "iOS 17.5", "iOS 17.0", "iOS 16.6", "iOS 15.0", "iOS 14.0", "iOS 13.0", "iOS 12.0"]
+        brands: [
+            "iPhone 17 Pro Max (2026)", "iPhone 16 Series", "iPhone 15 Series", "iPhone 14 Series", "iPhone 13 Series", 
+            "iPhone 12 Series", "iPhone 11 Series", "iPhone XS/XR", "iPhone X", "iPhone 8/7/6 Plus", "iPhone 5s/5c/SE",
+            "iPad Pro M4", "iPad Pro M2", "iPad Air 5", "iPad Mini 6"
+        ],
+        versions: [
+            "iOS 19.x (2026 - Latest)", "iOS 18.x", "iOS 17.x", "iOS 16.x", "iOS 15.x", "iOS 14.x", 
+            "iOS 13.x", "iOS 12.x", "iOS 11.x", "iOS 10.x", "iOS 9.x"
+        ]
     },
     pc: {
-        brands: ["Mainboard ASUS ROG", "Mainboard MSI Dragon", "Mainboard Gigabyte Aorus", "Mainboard ASRock", "Mainboard EVGA", "Mainboard NZXT"],
-        versions: ["Windows 11 Pro 23H2", "Windows 11 Home", "Windows 10 Pro", "Windows 10 Enterprise", "Windows 7 Ultimate", "Windows 8.1"]
+        brands: ["Mainboard ASUS ROG", "Mainboard MSI Dragon", "Mainboard Gigabyte Aorus", "Mainboard ASRock", "Mainboard EVGA", "Mainboard NZXT", "Workstation Dell Precision", "Workstation HP Z"],
+        versions: [
+            "Windows 12 Pro (Early Access)", "Windows 11 Pro 24H2", "Windows 11 Pro 23H2", "Windows 10 Pro (All Builds)", 
+            "Windows 10 Enterprise LTSC", "Windows 8.1 Pro", "Windows 7 Ultimate (SP1)", "Windows XP Professional"
+        ]
     },
     laptop: {
-        brands: ["Macbook Pro M3", "Macbook Air M2", "Dell Alienware", "MSI Gaming Series", "ASUS ROG Zephyrus", "HP Omen", "Lenovo Legion", "Acer Predator", "Razer Blade"],
-        versions: ["Windows 11 Premium", "macOS Sonoma", "macOS Ventura", "macOS Monterey", "macOS Big Sur"]
+        brands: [
+            "Macbook Pro M4 (2026)", "Macbook Pro M3", "Macbook Air M2", "Dell Alienware X16", 
+            "MSI Titan/Raider", "ASUS ROG Zephyrus/Strix", "HP Omen/Victus", "Lenovo Legion 9i", 
+            "Acer Predator Helios", "Razer Blade 16", "Microsoft Surface Laptop"
+        ],
+        versions: [
+            "Windows 11 Premium", "macOS 16.x (2026)", "macOS Sonoma (14.x)", "macOS Ventura (13.x)", 
+            "macOS Monterey (12.x)", "macOS Big Sur (11.x)", "macOS Catalina (10.15)"
+        ]
     }
 };
 
+// ĐÃ CẬP NHẬT ĐƯỜNG DẪN ẢNH ICON THEO HÌNH BẠN GỬI
 const appList = [
-    { name: "Free Fire MAX", icon: "https://i.ibb.co/vY8NqZ7/ff-max.png" },
-    { name: "Free Fire", icon: "https://i.ibb.co/6R0n7Ym/ff-normal.png" }
+    { name: "Free Fire MAX", icon: "image_1.png" }, // Sử dụng ảnh image_1.png cho Free Fire MAX
+    { name: "Free Fire", icon: "image_0.png" }      // Sử dụng ảnh image_0.png cho Free Fire thường
 ];
 
 let system = { selected: null };
@@ -32,16 +54,21 @@ let countdownTimer;
 window.onload = () => {
     updateDeviceList();
     initSnow();
-    // Kiểm tra nếu đã ẩn popup trong 2h
     if (localStorage.getItem('hide_until') > Date.now()) {
         enterSystem();
     }
 };
 
-// --- LOGIC ĐĂNG NHẬP & KEY ---
+// --- HỆ THỐNG KIỂM TRA KEY & ĐẾM NGƯỢC ---
 function checkLogin() {
     const keyInput = document.getElementById('license-key').value.trim();
     let keys = JSON.parse(localStorage.getItem('strongest_keys') || '{}');
+
+    // Mẫu Key test (Bạn có thể tạo thêm trong Admin Panel)
+    if (!keys["TEST-GOLD"]) {
+        keys["TEST-GOLD"] = { expiry: Date.now() + 31536000000 }; // 1 năm
+        localStorage.setItem('strongest_keys', JSON.stringify(keys));
+    }
 
     if (keyInput === ADMIN_KEY) { enterSystem("OWNER"); return; }
 
@@ -78,9 +105,9 @@ function startCountdown(expiry) {
         const s = Math.floor((diff % 60000) / 1000);
 
         let str = "";
-        if (y > 0) str += `${y} năm `;
-        if (mon > 0) str += `${mon} th `;
-        str += `${d}n : ${h}g : ${m}p : ${s}s`;
+        if (y > 0) str += `${y}n `;
+        if (mon > 0) str += `${mon}th `;
+        str += `${d}d : ${h}h : ${m}m : ${s}s`;
         document.getElementById('popup-time').innerText = str;
     }
     update();
@@ -103,10 +130,11 @@ function enterSystem(role) {
     if (role === "OWNER") document.getElementById('dev-tab').classList.remove('hidden');
 }
 
-// --- LOGIC THIẾT BỊ ---
+// --- LOGIC HIỂN THỊ DANH MỤC THIẾT BỊ ---
 function updateDeviceList() {
     const os = document.getElementById('select-os').value;
     const devSel = document.getElementById('select-device');
+    if(!devSel) return;
     devSel.innerHTML = "";
     systemData[os].brands.forEach(b => devSel.innerHTML += `<option value="${b}">${b}</option>`);
     updateVersionList();
@@ -115,6 +143,7 @@ function updateDeviceList() {
 function updateVersionList() {
     const os = document.getElementById('select-os').value;
     const verSel = document.getElementById('select-version');
+    if(!verSel) return;
     verSel.innerHTML = "";
     systemData[os].versions.forEach(v => verSel.innerHTML += `<option value="${v}">${v}</option>`);
 }
@@ -135,6 +164,7 @@ function requestNativeDeviceApps() {
     });
 }
 
+// --- LOGIC KÍCH HOẠT (ĐÃ XOÁ DÒNG FILE HỆ THỐNG) ---
 function processFileReplace(type, cb) {
     if (!system.selected) { alert("CHỌN GAME TRƯỚC!"); cb.checked = false; return; }
     const log = document.getElementById('overwrite-log');
@@ -142,7 +172,7 @@ function processFileReplace(type, cb) {
         log.classList.remove('hidden');
         log.innerHTML = `
             <div class="active-box">
-                <p>● ĐÃ KÍCH HOẠT THÀNH CÔNG: ${type.toUpperCase()}</p>
+                <p>● KÍCH HOẠT THÀNH CÔNG: ${type.toUpperCase()}</p>
                 <div style="display:flex; gap:8px;">
                     <button class="btn-launch" onclick="window.location.href='freefire://'">MỞ FREE FIRE</button>
                     <button class="btn-launch" onclick="window.location.href='freefiremax://'">MỞ FF MAX</button>
@@ -160,6 +190,7 @@ function switchTab(el, id) {
 
 function initSnow() {
     const container = document.getElementById('snow-container');
+    if (!container) return;
     for (let i = 0; i < 20; i++) {
         let flake = document.createElement('div');
         flake.className = 'snowflake';

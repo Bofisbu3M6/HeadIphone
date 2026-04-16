@@ -1,23 +1,21 @@
 :root { --gold: #ffd700; --bg: #050505; --green: #34c759; --red: #ff453a; }
-body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
 
-/* LOGO APPLE CĂN GIỮA */
+/* APPLE LOGO */
 .apple-logo-container { margin-top: 50px; width: 100%; display: flex; justify-content: center; }
-.main-logo { width: 80px; height: 80px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
+.main-logo { width: 70px; height: 70px; }
 .brand-title { font-size: 1.1rem; font-weight: 800; background: linear-gradient(#fff, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 10px; }
-.slogan { font-size: 8px; color: #888; letter-spacing: 1px; margin-top: 5px; }
+.slogan { font-size: 8px; color: #888; letter-spacing: 1px; margin-top: 4px; }
 
-/* CARD KIM LOẠI */
+/* METAL CARD */
 .metal-card { background: #111; border: 1px solid #222; border-radius: 20px; padding: 20px; width: 90%; max-width: 380px; margin-top: 20px; box-sizing: border-box; }
 .border-gold { border-color: rgba(255,215,0,0.3); }
 .border-purple { border-color: #af52de; }
-
-.metal-input { width: 100%; background: #000; border: 1px solid #333; padding: 12px; border-radius: 12px; color: #fff; margin-bottom: 10px; font-size: 11px; box-sizing: border-box; outline: none; }
+.metal-input { width: 100%; background: #000; border: 1px solid #333; padding: 12px; border-radius: 12px; color: #fff; margin-bottom: 10px; font-size: 11px; outline: none; box-sizing: border-box; }
 .gold-bg { background: linear-gradient(to right, #ffd700, #b8860b); color: #000; font-weight: 800; border: none; padding: 15px; border-radius: 12px; width: 100%; cursor: pointer; }
 
-/* NÚT GẠT IOS */
+/* IOS SWITCH */
 .control-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #222; }
-.main-lbl { font-size: 11px; font-weight: 600; }
 .ios-switch { position: relative; width: 44px; height: 24px; }
 .ios-switch input { opacity: 0; width: 0; height: 0; }
 .ios-slider { position: absolute; cursor: pointer; inset: 0; background: #333; transition: .4s; border-radius: 34px; }
@@ -25,20 +23,22 @@ body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif
 input:checked + .ios-slider { background: var(--green); }
 input:checked + .ios-slider:before { transform: translateX(20px); }
 
-/* POPUP THÔNG BÁO */
+/* POPUP */
 .glass-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 1000; display: flex; justify-content: center; align-items: center; }
-.label-hsd { font-size: 10px; color: #8e8e93; text-align: center; }
-.time-display { font-size: 1.6rem; color: var(--gold); text-align: center; margin: 15px 0; font-weight: 800; }
-.alert-footer-vertical { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.time-display { font-size: 1.5rem; color: var(--gold); text-align: center; margin: 15px 0; font-weight: 800; }
+.alert-footer-vertical { display: flex; flex-direction: column; gap: 10px; }
 .btn-popup-confirm { background: var(--gold); border: none; padding: 14px; border-radius: 12px; font-weight: 800; cursor: pointer; }
-.btn-popup-hide { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid #333; padding: 12px; border-radius: 12px; cursor: pointer; font-size: 11px; }
+.btn-popup-hide { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid #333; padding: 12px; border-radius: 12px; cursor: pointer; }
 
-/* NÚT ĐĂNG XUẤT RED-APPLE */
-.logout-container { width: 90%; max-width: 380px; margin-top: 30px; padding-bottom: 40px; }
-.btn-logout { width: 100%; background: rgba(255, 69, 58, 0.1); color: var(--red); border: 1px solid rgba(255, 69, 58, 0.3); padding: 15px; border-radius: 15px; font-weight: 700; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; backdrop-filter: blur(10px); transition: 0.3s; }
-.btn-logout:active { transform: scale(0.95); background: rgba(255, 69, 58, 0.2); }
+/* LOGOUT */
+.logout-container { width: 90%; max-width: 380px; margin-top: 30px; }
+.btn-logout { width: 100%; background: rgba(255, 69, 58, 0.1); color: var(--red); border: 1px solid rgba(255, 69, 58, 0.3); padding: 14px; border-radius: 15px; font-weight: 700; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; backdrop-filter: blur(10px); }
 
-/* KHÁC */
+/* TABS */
+.nav-tabs { display: flex; gap: 5px; width: 90%; max-width: 380px; margin-top: 25px; }
+.tab { flex: 1; padding: 12px; text-align: center; font-size: 9px; background: #111; border-radius: 10px; color: #555; font-weight: 800; cursor: pointer; }
+.tab.active { background: #fff; color: #000; }
+
 .app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
 .app-item { background: #000; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #222; }
 .app-icon { width: 50px; height: 50px; border-radius: 10px; margin-bottom: 5px; }
@@ -46,11 +46,9 @@ input:checked + .ios-slider:before { transform: translateX(20px); }
 .btn-launch { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: 800; font-size: 9px; color: #fff; cursor: pointer; }
 .btn-launch.ff { background: #ff5e00; }
 .btn-launch.ffmax { background: #34c759; }
+
 .hidden { display: none !important; }
-.nav-tabs { display: flex; gap: 5px; width: 90%; max-width: 380px; margin-top: 25px; }
-.tab { flex: 1; padding: 12px; text-align: center; font-size: 9px; background: #111; border-radius: 10px; color: #555; font-weight: 800; cursor: pointer; }
-.tab.active { background: #fff; color: #000; }
-.admin-key-container { margin-top: 15px; max-height: 150px; overflow-y: auto; }
-.key-card { background: #000; padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 10px; border: 1px solid #222; }
-.btn-delete { background: var(--red); color: #fff; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-.section-title { font-size: 10px; color: var(--gold); border-left: 2px solid var(--gold); padding-left: 8px; margin-bottom: 15px; }
+.admin-key-container { margin-top: 15px; }
+.key-card { background: #000; padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 10px; border: 1px solid #222; align-items: center; }
+.btn-delete { background: var(--red); color: #fff; border: none; padding: 5px 10px; border-radius: 5px; }
+.section-title { font-size: 10px; color: var(--gold); border-left: 2px solid var(--gold); padding-left: 8px; margin-bottom: 15px; text-transform: uppercase; }

@@ -9,7 +9,6 @@
 </head>
 <body>
     <div id="snow-container"></div>
-    <audio id="bg-music" loop><source src="https://files.catbox.moe/o9v0d0.mp3" type="audio/mpeg"></audio>
 
     <div id="login-screen">
         <div class="apple-logo-container">
@@ -31,7 +30,7 @@
             <div class="alert-header">THÔNG TIN BẢN QUYỀN</div>
             <div class="alert-body">
                 <p style="font-size: 10px; color: #8e8e93; margin-bottom: 10px;">Thời gian sử dụng còn lại:</p>
-                <h2 id="popup-time" style="color: #ffd700; font-size: 1.1rem; text-shadow: 0 0 10px rgba(255,215,0,0.5);">-- : -- : --</h2>
+                <h2 id="popup-time" style="color: #ffd700; font-size: 1.1rem;">-- : -- : --</h2>
             </div>
             <div class="alert-footer">
                 <button class="btn-alert-close" onclick="closePopup()">ĐÓNG</button>
@@ -43,52 +42,71 @@
     <div id="main-panel" class="hidden">
         <div class="glass-header">
             <span class="header-title">SUPPORT FILE STRONGEST ❄️</span>
-            <button id="music-toggle" onclick="toggleMusic()">🔊</button>
         </div>
 
         <div class="nav-tabs">
             <div class="tab active" onclick="switchTab(this, 'dashboard')">DASHBOARD</div>
             <div class="tab" onclick="switchTab(this, 'chucnang')">CHỨC NĂNG</div>
-            <div id="dev-tab" class="tab hidden" onclick="switchTab(this, 'developer')">ADMIN</div>
+            <div id="dev-tab" class="tab hidden" onclick="switchTab(this, 'admin')">ADMIN</div>
         </div>
 
         <div id="content-area">
             <div id="tab-dashboard" class="tab-content">
                 <div class="category-section">
-                    <h3 class="section-title">HỆ ĐIỀU HÀNH</h3>
+                    <h3 class="section-title">HỆ ĐIỀU HÀNH THIẾT BỊ</h3>
                     <select id="select-os" class="metal-input" onchange="updateDeviceList()">
-                        <option value="adr">ANDROID</option>
-                        <option value="ios">IOS (IPHONE/IPAD)</option>
-                        <option value="pc">PC (WINDOWS)</option>
-                        <option value="laptop">LAPTOP (WINDOWS/MAC)</option>
+                        <option value="android">HỆ ĐIỀU HÀNH ANDROID</option>
+                        <option value="ios">HỆ ĐIỀU HÀNH IOS (IPHONE/IPAD)</option>
+                        <option value="pc">MÁY TÍNH ĐỂ BÀN (PC WINDOWS)</option>
+                        <option value="laptop">MÁY TÍNH XÁCH TAY (LAPTOP)</option>
                     </select>
 
-                    <h3 class="section-title">HÃNG THIẾT BỊ</h3>
+                    <h3 class="section-title">HÃNG SẢN XUẤT THIẾT BỊ</h3>
                     <select id="select-device" class="metal-input" onchange="updateVersionList()"></select>
 
-                    <h3 class="section-title">PHIÊN BẢN HỆ THỐNG</h3>
+                    <h3 class="section-title">PHIÊN BẢN HỆ THỐNG CHI TIẾT</h3>
                     <select id="select-version" class="metal-input"></select>
                 </div>
 
                 <div class="metal-card border-gold">
-                    <button class="btn-action gold-bg" onclick="requestNativeDeviceApps()">QUÉT ỨNG DỤNG TRÊN THIẾT BỊ</button>
+                    <button class="btn-action gold-bg" onclick="requestNativeDeviceApps()">QUÉT ỨNG DỤNG GAME</button>
                     <div id="app-grid-container" class="app-grid"></div>
                 </div>
             </div>
 
             <div id="tab-chucnang" class="tab-content hidden">
                 <div class="metal-card border-purple">
-                    <h3 class="section-title" style="color:#af52de; border-color:#af52de;">KÍCH HOẠT MOD VIP</h3>
+                    <h3 class="section-title" style="color:#af52de;">KÍCH HOẠT CHỨC NĂNG VIP</h3>
                     <div class="control-row">
-                        <span class="main-lbl">AIMLOCK VIP PRO</span>
-                        <label class="ios-switch"><input type="checkbox" onchange="processFileReplace('aimlock', this)"><span class="ios-slider"></span></label>
+                        <span class="main-lbl">AIMLOCK VIP PRO 2026</span>
+                        <label class="ios-switch">
+                            <input type="checkbox" onchange="processMod('Aimlock', this)">
+                            <span class="ios-slider"></span>
+                        </label>
                     </div>
                     <div class="control-row">
-                        <span class="main-lbl">NO RECOIL 100%</span>
-                        <label class="ios-switch"><input type="checkbox" onchange="processFileReplace('norecoil', this)"><span class="ios-slider"></span></label>
+                        <span class="main-lbl">NO RECOIL CHỐNG GIẬT 100%</span>
+                        <label class="ios-switch">
+                            <input type="checkbox" onchange="processMod('No Recoil', this)">
+                            <span class="ios-slider"></span>
+                        </label>
                     </div>
                 </div>
                 <div id="overwrite-log" class="terminal-log hidden"></div>
+            </div>
+
+            <div id="tab-admin" class="tab-content hidden">
+                <div class="metal-card border-gold">
+                    <h3 class="section-title">TẠO KEY MỚI</h3>
+                    <input type="text" id="new-key-name" class="metal-input" placeholder="Tên Key...">
+                    <select id="key-duration" class="metal-input">
+                        <option value="3600000">1 GIỜ</option>
+                        <option value="86400000">1 NGÀY</option>
+                        <option value="2592000000">1 THÁNG</option>
+                        <option value="31536000000">1 NĂM</option>
+                    </select>
+                    <button class="btn-metal gold-bg" onclick="createKey()">TẠO KEY HỆ THỐNG</button>
+                </div>
             </div>
         </div>
     </div>

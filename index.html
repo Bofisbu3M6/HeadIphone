@@ -45,7 +45,7 @@
                             <img id="logo-img" src="" alt="logo">
                         </div>
                     </div>
-                    <button class="btn-gold-action" onclick="alert('Đang quét hệ thống...')">QUÉT THIẾT BỊ & ỨNG DỤNG</button>
+                    <button id="btn-scan" class="btn-gold-action" onclick="startScan()">QUÉT THIẾT BỊ & ỨNG DỤNG</button>
                 </div>
                 <button class="btn-logout-red" onclick="logout()">ĐĂNG XUẤT KEY KHỎI THIẾT BỊ</button>
             </div>
@@ -53,14 +53,27 @@
             <div id="tab-chucnang" class="tab-content hidden">
                 <div class="card-box metal-border">
                     <h3 class="title-gold">MOD CHỨC NĂNG VIP</h3>
-                    <div class="mod-item">
-                        <span>AIMLOCK 100%</span>
-                        <label class="switch"><input type="checkbox" onchange="openGameSelector('Aimlock')"><span class="slider"></span></label>
+                    
+                    <div class="mod-container">
+                        <div class="mod-item">
+                            <span>AIMLOCK 100%</span>
+                            <label class="switch"><input type="checkbox" onchange="toggleMod(this, 'Aimlock')"><span class="slider"></span></label>
+                        </div>
+                        <div id="file-Aimlock" class="file-upload hidden">
+                            <input type="file" class="main-input file-input" title="Thêm file trực tiếp">
+                        </div>
                     </div>
-                    <div class="mod-item">
-                        <span>NO RECOIL 100%</span>
-                        <label class="switch"><input type="checkbox" onchange="openGameSelector('No Recoil')"><span class="slider"></span></label>
+
+                    <div class="mod-container">
+                        <div class="mod-item">
+                            <span>NO RECOIL 100%</span>
+                            <label class="switch"><input type="checkbox" onchange="toggleMod(this, 'No Recoil')"><span class="slider"></span></label>
+                        </div>
+                        <div id="file-NoRecoil" class="file-upload hidden">
+                            <input type="file" class="main-input file-input" title="Thêm file trực tiếp">
+                        </div>
                     </div>
+                    
                 </div>
             </div>
 
@@ -75,7 +88,7 @@
                         <option value="9999">Vĩnh Viễn</option>
                     </select>
                     <button class="btn-gold" onclick="createKey()">TẠO KEY MỚI</button>
-                    <div id="key-list" class="scroll-list"></div>
+                    <div id="key-list" class="scroll-list admin-scroll"></div>
                 </div>
             </div>
         </div>
@@ -93,13 +106,13 @@
 
     <div id="info-modal" class="modal hidden">
         <div class="modal-content metal-border">
-            <h2 style="color:#34c759">THÀNH CÔNG!</h2>
-            <p>Key hợp lệ. Chào mừng bạn!</p>
+            <h2 style="color:#34c759; margin-top: 0;">THÀNH CÔNG!</h2>
+            <p>Nhận diện Key hợp lệ trên hệ thống.</p>
             <div class="countdown-box">
-                HẠN SỬ DỤNG CÒN LẠI:<br>
-                <span id="expiry-countdown">--:--:--</span>
+                <span style="font-size: 11px; color:#aaa;">THỜI GIAN SỬ DỤNG CÒN LẠI:</span><br>
+                <span id="expiry-countdown" style="font-size: 1.2rem; font-weight: bold; color: var(--gold);">--:--:--</span>
             </div>
-            <button class="btn-gold" onclick="closeInfoModal()">VÀO MENU</button>
+            <button class="btn-gold" style="margin-top: 15px;" onclick="closeInfoModal()">VÀO APP</button>
         </div>
     </div>
 

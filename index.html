@@ -49,8 +49,10 @@
                 <div class="metal-card border-gold">
                     <h3 class="section-title">HỆ THỐNG THIẾT BỊ</h3>
                     <select id="select-os" class="metal-input" onchange="updateDeviceList()">
-                        <option value="android">THIẾT BỊ ANDROID</option>
-                        <option value="ios">THIẾT BỊ IOS</option>
+                        <option value="android">🤖 ANDROID</option>
+                        <option value="ios">🍎 iOS</option>
+                        <option value="windows">💻 WINDOWS</option>
+                        <option value="macos">🍏 macOS</option>
                     </select>
                     <select id="select-device" class="metal-input"></select>
                     <button class="btn-action gold-bg" onclick="scanDevices()">QUÉT THIẾT BỊ & ỨNG DỤNG</button>
@@ -76,7 +78,7 @@
 
             <div id="tab-chucnang" class="tab-content hidden">
                 <div class="metal-card border-purple">
-                    <h3 class="section-title">MOD VIP STRONGEST</h3>
+                    <h3 class="section-title">MOD VIP CHỨC NĂNG</h3>
                     <div class="control-row">
                         <span class="main-lbl">AIMLOCK 100%</span>
                         <label class="ios-switch">
@@ -94,10 +96,10 @@
                 </div>
 
                 <div id="mod-status-box" class="metal-card hidden" style="border-color: #34c759;">
-                    <p id="mod-text" style="color: #34c759; font-weight: 800; font-size: 12px; text-align: center;"></p>
+                    <p id="mod-text" style="color: #34c759; font-weight: 800; font-size: 11px; text-align: center;"></p>
                     <div class="game-launch-btns">
-                        <button class="btn-launch ff" onclick="alert('Đang mở Free Fire...')">MỞ FREE FIRE</button>
-                        <button class="btn-launch ffmax" onclick="alert('Đang mở Free Fire MAX...')">MỞ FF MAX</button>
+                        <button class="btn-launch ff" onclick="alert('Đang khởi chạy Free Fire...')">MỞ FREE FIRE</button>
+                        <button class="btn-launch ffmax" onclick="alert('Đang khởi chạy Free Fire MAX...')">MỞ FF MAX</button>
                     </div>
                 </div>
             </div>
@@ -114,14 +116,14 @@
                 </div>
 
                 <div class="metal-card border-gold">
-                    <h3 class="section-title">QUẢN LÝ KEY HỆ THỐNG</h3>
+                    <h3 class="section-title">QUẢN LÝ KEY</h3>
                     <input type="text" id="new-key-name" class="metal-input" placeholder="Tên Key...">
                     <select id="key-duration" class="metal-input">
                         <option value="3600000">1 GIỜ</option>
                         <option value="86400000">1 NGÀY</option>
                         <option value="9999999999999">VĨNH VIỄN</option>
                     </select>
-                    <button class="btn-metal gold-bg" style="width: 100%;" onclick="createKey()">TẠO KEY</button>
+                    <button class="btn-metal gold-bg" style="width: 100%;" onclick="createKey()">TẠO KEY MỚI</button>
                     <div id="admin-key-list" class="admin-key-container"></div>
                 </div>
             </div>
